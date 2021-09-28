@@ -88,7 +88,6 @@ class CaseListController extends Controller
         } else {
             $status = FileStatus::get();
             return view('case-list.index', compact('status'));
-            
         }
     }
 
@@ -132,42 +131,46 @@ class CaseListController extends Controller
         ]);
         // $amount = str_replace(',', '', $request->amount);
         // $claim_amount = str_replace(',', '', $request->claim_amount);
-        try {
-            DB::beginTransaction();
-            $caselist = Caselist::create([
-                'file_no' => $request->file_no,
-                'insurance_id' => $request->insurance,
-                'adjuster_id' => $request->adjuster,
-                'broker_id' => $request->broker,
-                'incident_id' => $request->incident,
-                'policy_id' => $request->policy,
-                'insured' => $request->insured,
-                'risk_location' => $request->risk_location,
-                'currency' => $request->currency,
-                'leader' => $request->insurance,
-                'begin' => $request->begin,
-                'end' => $request->end,
-                'dol' => $request->dol,
-                'category' => $request->category,
-                'no_leader_policy' => $request->no_leader_policy,
-                'instruction_date' => $request->instruction_date,
-                'leader_claim_no' => $request->leader_claim_no,
-                'file_status_id' => 1
-            ]);
-            for ($i = 1; $i <= count($request->member); $i++) {
-                MemberInsurance::create([
-                    'file_no_outstanding' => $caselist->id,
-                    'member_insurance' => $request->member[$i],
-                    'share' => $request->percent[$i],
-                    'is_leader' => $request->status[$i] == 'LEADER' ? 1 : 0,
-                    'invoice_leader' => 1
+        if (strlen($request->file_no) == 6) {
+            try {
+                DB::beginTransaction();
+                $caselist = Caselist::create([
+                    'file_no' => $request->file_no . '-JAK',
+                    'insurance_id' => $request->insurance,
+                    'adjuster_id' => $request->adjuster,
+                    'broker_id' => $request->broker,
+                    'incident_id' => $request->incident,
+                    'policy_id' => $request->policy,
+                    'insured' => $request->insured,
+                    'risk_location' => $request->risk_location,
+                    'currency' => $request->currency,
+                    'leader' => $request->insurance,
+                    'begin' => $request->begin,
+                    'end' => $request->end,
+                    'dol' => $request->dol,
+                    'category' => $request->category,
+                    'no_leader_policy' => $request->no_leader_policy,
+                    'instruction_date' => $request->instruction_date,
+                    'leader_claim_no' => $request->leader_claim_no,
+                    'file_status_id' => 1
                 ]);
+                for ($i = 1; $i <= count($request->member); $i++) {
+                    MemberInsurance::create([
+                        'file_no_outstanding' => $caselist->id,
+                        'member_insurance' => $request->member[$i],
+                        'share' => $request->percent[$i],
+                        'is_leader' => $request->status[$i] == 'LEADER' ? 1 : 0,
+                        'invoice_leader' => 1
+                    ]);
+                }
+                DB::commit();
+                return back()->with('success', 'Berhasil Membuat Data');
+            } catch (Exception $th) {
+                DB::rollBack();
+                return back()->with('error', $th->getMessage());
             }
-            DB::commit();
-            return back()->with('success', 'Berhasil Membuat Data');
-        } catch (Exception $th) {
-            DB::rollBack();
-            return back()->with('error', $th->getMessage());
+        } else {
+            return back()->with('error', 'Kode CaseList Tidak Diterima');
         }
     }
 
@@ -275,7 +278,7 @@ class CaseListController extends Controller
             // $claim_amount = str_replace(',', '', $request->claim_amount);
             DB::beginTransaction();
             $caseList->update([
-                'file_no' => $request->file_no,
+                'file_no' => $request->file_no.'-JAK',
                 'insurance_id' => $request->insurance,
                 'adjuster_id' => $request->adjuster,
                 'broker_id' => $request->broker,
@@ -345,13 +348,13 @@ class CaseListController extends Controller
     }
     public function laporan(Request $request)
     {
-        if(auth()->user()->hasRole('admin')){
+        if (auth()->user()->hasRole('admin')) {
             $this->validate($request, [
                 'from' => 'required',
                 'to' => 'required',
                 'adjuster' => 'required'
             ]);
-        }else{
+        } else {
             $this->validate($request, [
                 'from' => 'required',
                 'to' => 'required',
@@ -375,20 +378,19 @@ class CaseListController extends Controller
                 $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
                 $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');
                 $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
-
             }
         } else {
             $case = CaseList::whereBetween('instruction_date', [$request->from, $request->to])->where('file_status_id', $request->status)->where('adjuster_id', auth()->user()->id)->get();
-            
-            
+
+
             $claim_amount_idr = $case->where('currency', 'RP')->sum('claim_amount');
             $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
             $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');
             $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
-            
+
             if ($request->status == "All") {
                 $case =  CaseList::whereBetween('instruction_date', [$request->from, $request->to])->where('adjuster_id', auth()->user()->id)->get();
-                
+
                 $claim_amount_idr = $case->where('currency', 'RP')->sum('claim_amount');
                 $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
                 $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');

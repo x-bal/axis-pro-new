@@ -2,8 +2,10 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="file_no">File No</label>
-             <input name="file_no" id="file_no" type="text" value="{{ $caseList->file_no ?? '' }}" class="form-control @error('file_no') is-invalid @enderror"> 
-
+            <div class="input-group-append">
+                <input name="file_no" id="file_no" type="text" readonly value="{{ old('file_no') }}" class="form-control @error('file_no') is-invalid @enderror">
+                <span class="input-group-text" id="basic-addon2">JAK</span>
+            </div>
             <!--<select name="file_no" id="file_no" class="form-control @error('file_no') is-invalid @enderror">-->
             <!--    <option disabled selected>Select File No</option>-->
             <!--    @foreach($file_no as $data)-->
@@ -175,7 +177,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="no_leader_policy">No Leader Policy </label>
-            <input class="form-control @error('no_leader_policy') is-invalid @enderror" value="{{ $caseList->no_leader_policy ?? '' }}" name="no_leader_policy" id="no_leader_policy" type="number">
+            <input class="form-control @error('no_leader_policy') is-invalid @enderror" value="{{ $caseList->no_leader_policy ?? '' }}" name="no_leader_policy" id="no_leader_policy" type="text">
             @error('no_leader_policy')
             <div class="invalid-feedback">
                 {{ $message }}
@@ -311,7 +313,43 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
+    async function GetTheLastOfCaseList() {
+        try {
+            let data = await fetch('/api/caselist/file_no/last').then(data => {
+                if (!data.ok) {
+                    throw data.statusText
+                }
+                return data.json()
+            })
+            $('#file_no').val(data)
+        } catch (error) {
+            iziToast.error({
+                title: 'Error',
+                message: error.message,
+                position: 'topRight',
+            });
+        }
+    }
+    async function GetTheCaseListWhenItOnEdit(id) {
+        try {
+            let data = await fetch(`/api/caselist/file_no/edit/${id}`).then(data => {
+                if (!data.ok) {
+                    throw data.statusText
+                }
+                return data.json()
+            })
+            $('#file_no').val(data)
+        } catch (error) {
+            iziToast.error({
+                title: 'Error',
+                message: error.message,
+                position: 'topRight',
+            });
+        }
+    }
     const formatter = function(num) {
         var str = num.toString().replace("", ""),
             parts = false,
@@ -339,6 +377,7 @@
     function rupiah(e) {
         e.value = formatter(e.value)
     }
+
     setTimeout(function() {
         $('#incident').select2();
         $('#policy').select2();

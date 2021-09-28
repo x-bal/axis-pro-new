@@ -17,4 +17,7 @@
         </div>
     </div>
 </div>
+<script>
+    GetTheLastOfCaseList()
+</script>
 @endsection
