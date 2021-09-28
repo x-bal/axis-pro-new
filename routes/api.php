@@ -29,3 +29,5 @@ Route::get('/chart/line/caselist/{id}', [AjaxController::class, 'ChartLineCaseLi
 Route::get('/count/{id}', [AjaxController::class, 'count']);
 Route::post('/invoice/post', [AjaxController::class, 'invoice']);
 Route::post('/update/kurs', [AjaxController::class, 'kurs']);
+Route::get('/caselist/file_no/last', [AjaxController::class, 'CaseListFileNoLast']);
+Route::get('/caselist/file_no/edit/{id}', [AjaxController::class, 'CaseListFileNoEdit']);

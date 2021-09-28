@@ -42,8 +42,24 @@
 </head>
 
 <body>
+    @auth
+    @if(auth()->user()->hasRole('admin'))
+    <style>
+        #TheNavOfAxis {
+            background-color: #193C8F !important;
+        }
+    </style>
+    @endif
+    @endauth
+    @guest
+    <style>
+        #TheNavOfAxis {
+            background-color: #193C8F !important;
+        }
+    </style>
+    @endguest
     <div id="app">
-        <nav class="navbar navbar-expand-sm navbar-dark bg-primary shadow-sm">
+        <nav id="TheNavOfAxis" class="navbar navbar-expand-sm navbar-dark bg-primary shadow-sm">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{{ url('/dashboard') }}">
                     {{ config('app.name', 'Laravel') }}
