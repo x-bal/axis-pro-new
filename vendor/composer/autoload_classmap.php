@@ -6,8 +6,16 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Console\\Commands\\CronDua' => $baseDir . '/app/Console/Commands/CronDua.php',
+    'App\\Console\\Commands\\CronEmpat' => $baseDir . '/app/Console/Commands/CronEmpat.php',
+    'App\\Console\\Commands\\CronLima' => $baseDir . '/app/Console/Commands/CronLima.php',
+    'App\\Console\\Commands\\CronSatu' => $baseDir . '/app/Console/Commands/CronSatu.php',
+    'App\\Console\\Commands\\CronTiga' => $baseDir . '/app/Console/Commands/CronTiga.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
+    'App\\Exports\\CaseListExport' => $baseDir . '/app/Exports/CaseListExport.php',
+    'App\\Exports\\InvoiceExport' => $baseDir . '/app/Exports/InvoiceExport.php',
+    'App\\Http\\Controllers\\AjaxController' => $baseDir . '/app/Http/Controllers/AjaxController.php',
     'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
     'App\\Http\\Controllers\\Auth\\LoginController' => $baseDir . '/app/Http/Controllers/Auth/LoginController.php',
@@ -51,6 +59,7 @@ return array(
     'App\\Models\\CategoryExpense' => $baseDir . '/app/Models/CategoryExpense.php',
     'App\\Models\\ClaimDocument' => $baseDir . '/app/Models/ClaimDocument.php',
     'App\\Models\\Client' => $baseDir . '/app/Models/Client.php',
+    'App\\Models\\Currency' => $baseDir . '/app/Models/Currency.php',
     'App\\Models\\Expense' => $baseDir . '/app/Models/Expense.php',
     'App\\Models\\FeeBased' => $baseDir . '/app/Models/FeeBased.php',
     'App\\Models\\FileStatus' => $baseDir . '/app/Models/FileStatus.php',

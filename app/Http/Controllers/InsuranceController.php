@@ -39,19 +39,11 @@ class InsuranceController extends Controller
             'address' => 'required',
             'no_telp' => 'required',
             'no_hp' => 'required',
-            'email' => 'required|email',
-            'status' => 'required',
-            'ppn' => 'required',
-            'type' => 'required',
-            'picture' => 'required',
+            'email' => 'required|email'
         ]);
-
         try {
-            $picture = $request->file('picture');
-            $pictureUrl = $picture->storeAs('images/insurance', $request->name . '_' . \Str::random(15) . '.' . $picture->extension());
-            // Client::create($request->all());
-            $attr['picture'] = $pictureUrl;
             $attr['is_active'] = 1;
+            $attr['ppn'] = 10;
 
             Client::create($attr);
             return redirect()->route('insurance.index')->with('success', 'Insurance has been created');

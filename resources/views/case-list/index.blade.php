@@ -25,8 +25,8 @@
                     </div>
                     @can('case-list-create')
                     <div>
-                    <a href="{{ route('caselist.restore') }}" class="btn btn-warning"><i class="fab fa-creative-commons-sa"> Restore</i></a>
-                    <a href="{{ route('case-list.create') }}" class="btn btn-primary"><i class="fas fa-pen"></i> Create</a>
+                        <a href="{{ route('caselist.restore') }}" class="btn btn-warning"><i class="fab fa-creative-commons-sa"> Restore</i></a>
+                        <a href="{{ route('case-list.create') }}" class="btn btn-primary"><i class="fas fa-pen"></i> Create</a>
                     </div>
                     @endif
                 </div>
@@ -56,12 +56,21 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
+                                    @if(auth()->user()->hasRole('admin'))
+                                    <select name="adjuster" id="adjuster" class="form-control">
+                                        <option value="All">All</option>
+                                        @foreach($adjuster as $list)
+                                        <option value="{{ $list->id }}">{{ $list->nama_lengkap }} - {{ $list->email }}</option>
+                                        @endforeach
+                                    </select>
+                                    @else
                                     <select name="status" id="status" class="form-control">
                                         <option value="All">All</option>
                                         @foreach($status as $stt)
                                         <option value="{{ $stt->id }}">{{ $stt->nama_status }}</option>
                                         @endforeach
                                     </select>
+                                    @endif
                                 </div>
                             </div>
 
