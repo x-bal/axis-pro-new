@@ -49,9 +49,10 @@ class ReportSatuController extends Controller
             foreach ($files as $file) {
                 $name = date('dmYHis')  . '-' . $file->getClientOriginalName();
                 $filename = 'files/report-satu/' . $name;
+                $path = public_path('storage/files/report-satu/' . $name);
 
                 if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
-                    \Image::make($file)->resize(480, 360)->save('storage/files/report-satu/' . $name, 90);
+                    \Image::make($file)->resize(480, 360)->save($path, 90);
                 } else {
                     $file->storeAs('files/report-satu/', $name);
                 }
