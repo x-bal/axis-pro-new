@@ -80,10 +80,16 @@ class CaseListController extends Controller
 
 
 
-
-        $status = FileStatus::get();
-
-        return view('case-list.index', compact('status'));
+        if (auth()->user()->hasRole('admin')) {
+            $adjuster = User::whereHas('roles', function ($qr) {
+                return $qr->where('name', 'Adjuster');
+            })->get();
+            return view('case-list.index', compact('adjuster'));
+        } else {
+            $status = FileStatus::get();
+            return view('case-list.index', compact('status'));
+            
+        }
     }
 
     public function create()
@@ -346,32 +352,51 @@ class CaseListController extends Controller
     }
     public function laporan(Request $request)
     {
-        $this->validate($request, [
-            'from' => 'required',
-            'to' => 'required',
-            'status' => 'required'
-        ]);
+        if(auth()->user()->hasRole('admin')){
+            $this->validate($request, [
+                'from' => 'required',
+                'to' => 'required',
+                'adjuster' => 'required'
+            ]);
+        }else{
+            $this->validate($request, [
+                'from' => 'required',
+                'to' => 'required',
+                'status' => 'required'
+            ]);
+        }
+
         if (auth()->user()->hasRole('admin')) {
-            $case = CaseList::whereBetween('instruction_date', [$request->from, $request->to])->where('file_status_id', $request->status)->get();
+
+            $case = CaseList::whereBetween('instruction_date', [$request->from, $request->to])->where('adjuster_id', $request->adjuster)->get();
+
+
             $claim_amount_idr = $case->where('currency', 'RP')->sum('claim_amount');
             $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
             $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');
             $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
-            if ($request->status == "All") {
+
+            if ($request->adjuster == "All") {
+
                 $case =  CaseList::whereBetween('instruction_date', [$request->from, $request->to])->get();
                 $claim_amount_idr = $case->where('currency', 'RP')->sum('claim_amount');
                 $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
                 $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');
                 $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
+
             }
         } else {
             $case = CaseList::whereBetween('instruction_date', [$request->from, $request->to])->where('file_status_id', $request->status)->where('adjuster_id', auth()->user()->id)->get();
+            
+            
             $claim_amount_idr = $case->where('currency', 'RP')->sum('claim_amount');
             $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
             $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');
             $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
+            
             if ($request->status == "All") {
                 $case =  CaseList::whereBetween('instruction_date', [$request->from, $request->to])->where('adjuster_id', auth()->user()->id)->get();
+                
                 $claim_amount_idr = $case->where('currency', 'RP')->sum('claim_amount');
                 $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
                 $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');

@@ -53,14 +53,14 @@
                 <table class="table table-bordered" id="table">
                     <thead>
                         <tr>
-                            <th rowspan="2">id</th>
-                            <th rowspan="2">case list id</th>
-                            <th rowspan="2">no invoice</th>
-                            <th rowspan="2">member id</th>
-                            <th rowspan="2">due date</th>
-                            <th rowspan="2">date invoice</th>
-                            <th rowspan="2">status paid</th>
-                            <th colspan="2" class="text-center">grand total</th>
+                            <th rowspan="2">No.</th>
+                            <th rowspan="2">Nomor Case</th>
+                            <th rowspan="2">No Invoice</th>
+                            <th rowspan="2">Member Insurance</th>
+                            <th rowspan="2">Due Date</th>
+                            <th rowspan="2">Date Invoice</th>
+                            <th rowspan="2">Status Paid</th>
+                            <th colspan="2" class="text-center">Grand Total</th>
                         </tr>
                         <tr>
                             <th>Rupiah</th>
@@ -71,20 +71,20 @@
                         @foreach($invoice as $data)
                         <tr>
                             <td>{{ $data->id }}</td>
-                            <td>{{ $data->case_list_id }}</td>
+                            <td>{{ $data->caselist->file_no }}</td>
                             <td>{{ $data->no_invoice }}</td>
-                            <td>{{ $data->member_id }}</td>
+                            <td>{{ $data->member->name }}</td>
                             <td>{{ $data->due_date }}</td>
                             <td>{{ $data->date_invoice }}</td>
-                            <td>{{ $data->status_paid }}</td>
-                            <td>@if($data->caselist->currency == 'RP')<strong>Rp.</strong> {{ number_format($data->grand_total) }}@endif</td>
-                            <td>@if($data->caselist->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->grand_total) }}@endif</td>
+                            <td class="text-center">{{ $data->status_paid }}</td>
+                            <td class="text-center">@if($data->caselist->currency == 'RP')<strong>Rp.</strong> {{ number_format($data->grand_total) }}@endif</td>
+                            <td class="text-center">@if($data->caselist->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->grand_total) }}@endif</td>
                         </tr>
                         @endforeach
                         <tr>
-                            <td colspan="7">Total</td>
-                            <td><strong>Rp.</strong> {{ number_format($rupiah) }}</td>
-                            <td><i class="fas fa-dollar-sign"></i> {{ number_format($usd) }}</td>
+                            <th colspan="7">Total</th>
+                            <td class="text-center"><strong>Rp.</strong> {{ number_format($rupiah) }}</td>
+                            <td class="text-center"><i class="fas fa-dollar-sign"></i> {{ number_format($usd) }}</td>
                         </tr>
                     </tbody>
                 </table>
