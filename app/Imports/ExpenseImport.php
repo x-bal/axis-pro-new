@@ -22,7 +22,7 @@ class ExpenseImport implements ToModel
             'case_list_id' => $this->case_list_id,
             'name' => $row[0],
             'amount' => $row[1],
-            'category_expense_id' => $row[2],
+            'category_expense' => $row[2],
         ]);
     }
 }

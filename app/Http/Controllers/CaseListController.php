@@ -58,8 +58,8 @@ class CaseListController extends Controller
                 ->addColumn('action', function ($row) {
 
                     $btn = '<div class="btn-group"><a href="/case-list/' . $row->id . '/edit" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
-                    <form method="post" action="'.route('case-list.destroy', $row->id).'">
-                    '.csrf_field().method_field('delete').'
+                    <form method="post" action="' . route('case-list.destroy', $row->id) . '">
+                    ' . csrf_field() . method_field('delete') . '
                     <button type="submit" class="btn btn-sm btn-danger"><i class="fab fa-bitbucket"></i></button>
                     </form>
                      </div>';
@@ -304,7 +304,7 @@ class CaseListController extends Controller
 
     public function destroy(CaseList $caseList)
     {
-        Invoice::where('case_list_id',$caseList->id)->delete();
+        Invoice::where('case_list_id', $caseList->id)->delete();
         $caseList->delete();
         return back()->with('success', "Delete Successfull");
     }
@@ -327,9 +327,16 @@ class CaseListController extends Controller
     {
         $caseList = CaseList::find(request('id'));
 
-        $caseList->update([
-            'ir_status' => request('status'),
-        ]);
+        if (request('status') == 0) {
+            $caseList->update([
+                'ir_status' => request('status'),
+            ]);
+        } else {
+            $caseList->update([
+                'ir_status' => request('status'),
+                'ir_st_limit' => Carbon::parse($caseList->pr_date)->addDay(14)->format('Y-m-d'),
+            ]);
+        }
 
         return response()->json([
             'status' => true,
@@ -339,12 +346,12 @@ class CaseListController extends Controller
     }
     public function laporan(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'from' => 'required',
             'to' => 'required',
             'status' => 'required'
         ]);
-        if(auth()->user()->hasRole('admin')){
+        if (auth()->user()->hasRole('admin')) {
             $case = CaseList::whereBetween('instruction_date', [$request->from, $request->to])->where('file_status_id', $request->status)->get();
             $claim_amount_idr = $case->where('currency', 'RP')->sum('claim_amount');
             $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
@@ -353,11 +360,11 @@ class CaseListController extends Controller
             if ($request->status == "All") {
                 $case =  CaseList::whereBetween('instruction_date', [$request->from, $request->to])->get();
                 $claim_amount_idr = $case->where('currency', 'RP')->sum('claim_amount');
-            $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
-            $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');
-            $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
+                $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
+                $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');
+                $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
             }
-        }else{
+        } else {
             $case = CaseList::whereBetween('instruction_date', [$request->from, $request->to])->where('file_status_id', $request->status)->where('adjuster_id', auth()->user()->id)->get();
             $claim_amount_idr = $case->where('currency', 'RP')->sum('claim_amount');
             $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
@@ -366,37 +373,37 @@ class CaseListController extends Controller
             if ($request->status == "All") {
                 $case =  CaseList::whereBetween('instruction_date', [$request->from, $request->to])->where('adjuster_id', auth()->user()->id)->get();
                 $claim_amount_idr = $case->where('currency', 'RP')->sum('claim_amount');
-            $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
-            $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');
-            $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
+                $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
+                $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');
+                $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
             }
         }
-        
+
         return view('case-list.laporan', [
             'from' => $request->from,
             'to' => $request->to,
             'status' => $request->status,
             'case' => $case,
             'claim_amount_idr' => $claim_amount_idr,
-            'claim_amount_usd' => $claim_amount_usd, 
-            'fee_idr' => $fee_idr, 
+            'claim_amount_usd' => $claim_amount_usd,
+            'fee_idr' => $fee_idr,
             'fee_usd' => $fee_usd
         ]);
     }
     public function excel(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'from' => 'required',
             'to' => 'required',
             'status' => 'required'
         ]);
-        
+
         // ob_end_clean();
         // ob_start();
         $timestamp = Carbon::now()->format('Y-m-d H:i:s');
-        return Excel::download(new CaseListExport($request->except(['_token'])), 'Case List '.$timestamp.' Report.xlsx');
+        return Excel::download(new CaseListExport($request->except(['_token'])), 'Case List ' . $timestamp . ' Report.xlsx');
     }
-    
+
     public function restore()
     {
         Invoice::onlyTrashed()->restore();

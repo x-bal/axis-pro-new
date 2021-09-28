@@ -39,7 +39,7 @@ class ClaimDocumentController extends Controller
     {
         $attr = $request->validate([
             'case_list_id' => 'required',
-            'file_upload' => 'required',
+            'file_upload' => 'required|max:10240|mimes:png, jpg, jpeg, pdf, xls, xlsx, doc, docx',
             'time_upload' => 'required',
         ]);
 
@@ -50,7 +50,7 @@ class ClaimDocumentController extends Controller
                 $filename = 'files/claim-document/' . $name;
 
                 if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
-                    \Image::make($file)->fit(600, null)->save(\public_path('storage/files/claim-document/' . $name), 90);
+                    \Image::make($file)->resize(480, 360)->save(\public_path('storage/files/claim-document/' . $name), 90);
                 } else {
                     $file->storeAs('files/claim-document', $name);
                 }
