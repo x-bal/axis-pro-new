@@ -120,7 +120,7 @@
                         <tr>
                             <td>{{ $data->file_no }}</td>
                             <td>{{ $data->insurance->name }}</td>
-                            <td>{{ $data->adjuster->nama_lengkap }}</td>
+                            <td><strong>{{ $data->adjuster->nama_lengkap }}</strong></td>
                             <td>{{ $data->broker->nama_broker }}</td>
                             <td>{{ $data->incident->type_incident }}</td>
                             <td>{{ $data->policy->type_policy }}</td>
