@@ -53,7 +53,7 @@ class ReportDuaController extends Controller
                 $filename = 'files/report-dua/' . $name;
 
                 if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
-                    \Image::make($file)->resize(480, 360)->save(\public_path('storage/files/report-dua/' . $name), 90);
+                    \Image::make($file)->resize(480, 360)->save('storage/files/report-dua/' . $name, 90);
                 } else {
                     $file->storeAs('files/report-dua/', $name);
                 }

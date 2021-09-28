@@ -51,7 +51,7 @@ class ReportLimaController extends Controller
                 $filename = 'files/report-lima/' . $name;
 
                 if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
-                    \Image::make($file)->resize(480, 360)->save(\public_path('storage/files/report-lima/' . $name), 90);
+                    \Image::make($file)->resize(480, 360)->save('storage/files/report-lima/' . $name, 90);
                 } else {
                     $file->storeAs('files/report-lima/', $name);
                 }
