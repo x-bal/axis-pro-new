@@ -39,7 +39,7 @@ class ClaimDocumentController extends Controller
     {
         $attr = $request->validate([
             'case_list_id' => 'required',
-            'file_upload' => 'required|max:10240|mimes:png, jpg, jpeg, pdf, xls, xlsx, doc, docx',
+            'file_upload' => 'required|max:10240',
             'time_upload' => 'required',
         ]);
 
