@@ -200,11 +200,9 @@
                                 @csrf
                                 <tbody>
                                     <tr>
-                                        <td width="28%">Upload File</td>
-                                        <td width="6%">&nbsp;</td>
-                                        <!-- <td width="20%">Category</td> -->
-                                        <td width="20%">&nbsp;</td>
-                                        <td width="20%">&nbsp;</td>
+                                        <td width="30%">Upload File</td>
+                                        <td width="10%">&nbsp;</td>
+                                        <td width="60%">&nbsp;</td>
                                     </tr>
                                     <tr>
                                         <input type="hidden" name="case_list_id" value="{{ $caseList->id }}">
@@ -215,17 +213,15 @@
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </td>
-                                        <td><button type="submit" class="btn btn-success">Import</button></td>
+                                        <td>
+                                            <button type="submit" class="btn btn-success">Import</button>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('expense.download') }}" class="btn btn-primary"><i class="fas fa-download"></i> Example Format</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
                             </form>
-                            <!-- <td>
-                                <select name="" class="form-control contoh">
-                                    <option>Load dari tabel_category_expense</option>
-                                </select>
-                            </td> -->
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            </tr>
-                            </tbody>
                         </table>
 
                         <table width="100%" height="52" border="0" class="table tabelbelang table-bordered table-striped table-hover" style="font-size:12px;">
@@ -246,7 +242,7 @@
                                 <tr>
                                     <td height="25">{{ $loop->iteration }}</td>
                                     <td>{{ $expense->name }}</td>
-                                    <td>{{ $expense->category->nama_kategory }}</td>
+                                    <td>{{ $expense->category_expense }}</td>
                                     <td>{{ Carbon\Carbon::parse($expense->created_at)->format('d/m/Y') }}</td>
                                     <td>{{ $caseList->currency == 'RP' ? 'Rp.' : '$' }} {{ number_format($expense->amount)  }}</td>
                                 </tr>
@@ -457,7 +453,7 @@
                                     </tr>
                                 </tbody>
                                 <tr>
-                                    <td width="197">Amount</td>
+                                    <td width="197">Ia Amount</td>
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                 </tr>
@@ -578,7 +574,7 @@
                                     </tr>
                                 </tbody>
                                 <tr>
-                                    <td width="100">Amount</td>
+                                    <td width="100">Pr Amount</td>
                                     <td width="100">Interim Report</td>
                                     <td>&nbsp;</td>
                                 </tr>
@@ -605,6 +601,22 @@
                                     </td>
                                     <td>&nbsp;</td>
                                 </tr>
+                                @if($caseList->ir_status == 0)
+                                <tr>
+                                    <td width="100">Date Complete</td>
+                                    <td width="100">&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="date" name="date_complete" class="form-control" value="{{ $caseList->date_complete ?? '' }}">
+                                        </div>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                @endif
                                 <tr>
                                     <td><input type="submit" class="btn btn-success" value="Upload"></td>
                                     <td>&nbsp;</td>
@@ -720,8 +732,8 @@
                                     </tr>
                                 </tbody>
                                 <tr>
-                                    <td>Amount</td>
-                                    <td>&nbsp;</td>
+                                    <td>{{ $caseList->ir_status == 0 ? 'Pa Amount' : 'Ir St Amount' }}</td>
+                                    <td>{{ $caseList->ir_status == 0 ? '' : 'Ir Nd Amount' }}</td>
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
@@ -751,9 +763,38 @@
                                         @enderror
                                         @endif
                                     </td>
+                                    <td>
+                                        @if($caseList->ir_status == 1)
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'RP' ? 'Rp' : '$' }}</span>
+                                            </div>
+                                            <input type="number" name="ir_nd_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->ir_st_amount ?? '' }}">
+                                        </div>
+
+                                        @error('ir_nd_amount')
+                                        <small class="text-danger"> {{ $message }}</small>
+                                        @enderror
+                                        @endif
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                @if($caseList->ir_status == 1)
+                                <tr>
+                                    <td width="100">Date Complete</td>
+                                    <td width="100">&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="date" name="date_complete" class="form-control" value="{{ $caseList->date_complete ?? '' }}">
+                                        </div>
+                                    </td>
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                 </tr>
+                                @endif
                                 <tr>
                                     <td><input type="submit" class="btn btn-success" value="Upload"></td>
                                     <td>&nbsp;</td>
@@ -871,8 +912,8 @@
                                     </tr>
                                 </tbody>
                                 <tr>
-                                    <td>Amount</td>
-                                    <td>{{ $caseList->ir_status == 0 ? 'Claim Amount' : '&nbsp;' }}</td>
+                                    <td>{{ $caseList->ir_status == 0 ? 'Net Adjustment' : 'Pa Amount' }}</td>
+                                    <td>{{ $caseList->ir_status == 0 ? 'Gross Adjustment' : '' }}</td>
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
@@ -1019,8 +1060,8 @@
                                     </tr>
                                 </tbody>
                                 <tr>
-                                    <td>Amount</td>
-                                    <td>Claim Amount</td>
+                                    <td>Net Adjustment</td>
+                                    <td>Gross Adjustment</td>
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>

@@ -40,7 +40,7 @@ class ReportDuaController extends Controller
     {
         $attr = $request->validate([
             'case_list_id' => 'required',
-            'file_upload' => 'required',
+            'file_upload' => 'max:10240|mimes:png, jpg, jpeg, pdf, xls, xlsx, doc, docx',
             'time_upload' => 'required',
             'pr_amount' => 'required',
             'ir_status' => 'required',
@@ -53,7 +53,7 @@ class ReportDuaController extends Controller
                 $filename = 'files/report-dua/' . $name;
 
                 if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
-                    \Image::make($file)->fit(600, null)->save(\public_path('storage/files/report-dua/' . $name), 90);
+                    \Image::make($file)->resize(480, 360)->save(\public_path('storage/files/report-dua/' . $name), 90);
                 } else {
                     $file->storeAs('files/report-dua/', $name);
                 }
@@ -85,9 +85,8 @@ class ReportDuaController extends Controller
                 $caseList->update($update);
             }
         } else {
-            $caseList->update(['pr_amount' => $request->pr_amount]);
+            $caseList->update(['pr_amount' => $request->pr_amount, 'date_complete' => $request->date_complete]);
         }
-
 
         return back()->with('success', 'Report dua has been uploaded');
     }

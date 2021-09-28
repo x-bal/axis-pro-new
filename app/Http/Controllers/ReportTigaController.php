@@ -40,7 +40,7 @@ class ReportTigaController extends Controller
     {
         $attr = $request->validate([
             'case_list_id' => 'required',
-            'file_upload' => 'required',
+            'file_upload' => 'required|max:10240|mimes:png, jpg, jpeg, pdf, xls, xlsx, doc, docx',
             'time_upload' => 'required',
         ]);
 
@@ -51,7 +51,7 @@ class ReportTigaController extends Controller
                 $filename = 'files/report-tiga/' . $name;
 
                 if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
-                    \Image::make($file)->fit(600, null)->save(\public_path('storage/files/report-tiga/' . $name), 90);
+                    \Image::make($file)->resize(480, 360)->save(\public_path('storage/files/report-tiga/' . $name), 90);
                 } else {
                     $file->storeAs('files/report-tiga/', $name);
                 }
@@ -71,14 +71,20 @@ class ReportTigaController extends Controller
                 $caseList->update([
                     'ir_st_amount' => $request->ir_st_amount,
                     'ir_st_status' => 1,
+                    'ir_nd_amount' => $request->ir_nd_amount,
+                    'ir_nd_status' => 1,
                     'ir_st_date' => Carbon::now(),
+                    'ir_nd_date' => Carbon::now(),
                     'pa_limit' => Carbon::now()->addDay(14),
                     'now_update' => Carbon::now(),
+                    'date_complete' => $request->date_complete,
                 ]);
             } else {
                 $caseList->update([
                     'ir_st_amount' => $request->ir_st_amount,
+                    'ir_nd_amount' => $request->ir_nd_amount,
                     'now_update' => Carbon::now(),
+                    'date_complete' => $request->date_complete,
                 ]);
             }
         } else {

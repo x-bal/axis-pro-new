@@ -333,9 +333,16 @@ class CaseListController extends Controller
     {
         $caseList = CaseList::find(request('id'));
 
-        $caseList->update([
-            'ir_status' => request('status'),
-        ]);
+        if (request('status') == 0) {
+            $caseList->update([
+                'ir_status' => request('status'),
+            ]);
+        } else {
+            $caseList->update([
+                'ir_status' => request('status'),
+                'ir_st_limit' => Carbon::parse($caseList->pr_date)->addDay(14)->format('Y-m-d'),
+            ]);
+        }
 
         return response()->json([
             'status' => true,
@@ -362,6 +369,7 @@ class CaseListController extends Controller
         if (auth()->user()->hasRole('admin')) {
 
             $case = CaseList::whereBetween('instruction_date', [$request->from, $request->to])->where('adjuster_id', $request->adjuster)->get();
+
 
             $claim_amount_idr = $case->where('currency', 'RP')->sum('claim_amount');
             $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
