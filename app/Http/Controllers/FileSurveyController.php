@@ -16,7 +16,7 @@ class FileSurveyController extends Controller
 
         $attr = $request->validate([
             'case_list_id' => 'required',
-            'file_upload' => 'required|max:5120',
+            'file_upload' => 'required|max:10240',
             'time_upload' => 'required',
         ]);
 
@@ -27,7 +27,7 @@ class FileSurveyController extends Controller
                 $filename = 'files/file-survey/' . $name;
 
                 if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
-                    \Image::make($file)->fit(600, null)->save(\public_path('storage/files/file-survey/' . $name), 90);
+                    \Image::make($file)->resize(480, 360)->save('/files/file-survey/' . $name, 90);
                 } else {
                     $file->storeAs('files/file-survey/', $name);
                 }
