@@ -6,6 +6,7 @@ use App\Models\CaseList;
 use App\Models\ReportTiga;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class ReportTigaController extends Controller
@@ -49,7 +50,7 @@ class ReportTigaController extends Controller
             foreach ($files as $file) {
                 $name = date('dmYHis')  . '-' . $file->getClientOriginalName();
                 $filename = 'files/report-tiga/' . $name;
-                $path = 'files/report-satu/' . $name;
+                $path = 'files/report-tiga/' . $name;
 
                 if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
                     \Image::make($file)->resize(480, 360)->save($path, 90);
@@ -116,7 +117,14 @@ class ReportTigaController extends Controller
      */
     public function show(ReportTiga $reportTiga)
     {
-        return Storage::download($reportTiga->file_upload);
+        $file = explode('.', $reportTiga->file_upload);
+        $ext = $file[1];
+
+        if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
+            return  Response::download($reportTiga->file_upload);
+        } else {
+            return Storage::download($reportTiga->file_upload);
+        }
     }
 
     /**

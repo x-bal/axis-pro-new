@@ -20,26 +20,26 @@ class HomeController extends Controller
     {
         if (auth()->user()->hasRole('admin')) {
             $satu = CaseList::where('ia_status', 0)->count();
-            $dua = CaseList::where('pr_status', 0)->count();
-            $tiga = CaseList::where('pa_status', 0)->count();
-            $empat = CaseList::where('fr_status', 0)->count();
-            $lima = CaseList::where('fr_status', 0)->count();
+            $dua = CaseList::where('ia_status', 1)->where('pr_status', 0)->count();
+            $tiga = CaseList::where('pa_status', 0)->where('pr_status', 1)->count();
+            $empat = CaseList::where('fr_status', 0)->where('pa_status', 1)->count();
+            $lima = CaseList::where('fr_status', 0)->where('ir_st_status', 1)->where('pa_status', 1)->count();
         } else {
-            $satu = CaseList::where('ia_status', 0)->where('adjuster_id', auth()->user()->id)->count();
-            $dua = CaseList::where('pr_status', 0)->where('adjuster_id', auth()->user()->id)->count();
-            $tiga = CaseList::where('pa_status', 0)->where('adjuster_id', auth()->user()->id)->count();
-            $empat = CaseList::where('fr_status', 0)->where('adjuster_id', auth()->user()->id)->count();
-            $lima = CaseList::where('fr_status', 0)->where('adjuster_id', auth()->user()->id)->count();
+            $satu = CaseList::where('adjuster_id', auth()->user()->id)->where('ia_status', 0)->count();
+            $dua = CaseList::where('adjuster_id', auth()->user()->id)->where('ia_status', 1)->where('pr_status', 0)->count();
+            $tiga = CaseList::where('adjuster_id', auth()->user()->id)->where('pa_status', 0)->where('pr_status', 1)->count();
+            $empat = CaseList::where('adjuster_id', auth()->user()->id)->where('fr_status', 0)->where('pa_status', 1)->count();
+            $lima = CaseList::where('adjuster_id', auth()->user()->id)->where('fr_status', 0)->where('ir_st_status', 1)->where('pa_status', 1)->count();
         }
 
-        return view('dashboard.index', compact('satu', 'dua', 'tiga', 'empat'));
+        return view('dashboard.index', compact('satu', 'dua', 'tiga', 'empat', 'lima'));
     }
 
     public function profile()
     {
         $user = User::find(auth()->user()->id);
         $kurs = Currency::first();
-        return view('dashboard.profile', compact('user','kurs'));
+        return view('dashboard.profile', compact('user', 'kurs'));
     }
 
     public function update(Request $request, User $user)
@@ -56,7 +56,7 @@ class HomeController extends Controller
         }
 
         $user->update($attr);
-        
+
         return back()->with('success', 'Your profile has been updated');
     }
 
@@ -76,9 +76,9 @@ class HomeController extends Controller
             $title = 'Report Dua';
 
             if (auth()->user()->hasRole('admin')) {
-                $cases = CaseList::where('pr_status', 0)->get();
+                $cases = CaseList::where('ia_status', 1)->where('pr_status', 0)->get();
             } else {
-                $cases = CaseList::where('pr_status', 0)->where('adjuster_id', auth()->user()->id)->get();
+                $cases = CaseList::where('ia_status', 1)->where('pr_status', 0)->where('adjuster_id', auth()->user()->id)->get();
             }
         }
 
@@ -86,9 +86,9 @@ class HomeController extends Controller
             $title = 'Report Tiga';
 
             if (auth()->user()->hasRole('admin')) {
-                $cases = CaseList::where('pa_status', 0)->get();
+                $cases = CaseList::where('pa_status', 0)->where('pr_status', 1)->get();
             } else {
-                $cases = CaseList::where('pa_status', 0)->where('adjuster_id', auth()->user()->id)->get();
+                $cases = CaseList::where('pa_status', 0)->where('pr_status', 1)->where('adjuster_id', auth()->user()->id)->get();
             }
         }
 
@@ -96,19 +96,19 @@ class HomeController extends Controller
             $title = 'Report Empat';
 
             if (auth()->user()->hasRole('admin')) {
-                $cases = CaseList::where('fr_status', 0)->get();
+                $cases = CaseList::where('fr_status', 0)->where('pa_status', 1)->get();
             } else {
-                $cases = CaseList::where('fr_status', 0)->where('adjuster_id', auth()->user()->id)->get();
+                $cases = CaseList::where('fr_status', 0)->where('pa_status', 1)->where('adjuster_id', auth()->user()->id)->get();
             }
         }
-        
+
         if ($report == 5) {
             $title = 'Report Lima';
 
             if (auth()->user()->hasRole('admin')) {
-                $cases = CaseList::where('fr_status', 0)->get();
+                $cases = CaseList::where('fr_status', 0)->where('ir_st_status', 1)->where('pa_status', 1)->get();
             } else {
-                $cases = CaseList::where('fr_status', 0)->where('adjuster_id', auth()->user()->id)->get();
+                $cases = CaseList::where('fr_status', 0)->where('ir_st_status', 1)->where('pa_status', 1)->where('adjuster_id', auth()->user()->id)->get();
             }
         }
 

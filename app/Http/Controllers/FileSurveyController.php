@@ -6,6 +6,8 @@ use App\Models\CaseList;
 use App\Models\FileSurvey;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Image;
 
@@ -25,7 +27,7 @@ class FileSurveyController extends Controller
             foreach ($files as $file) {
                 $name = date('dmYHis')  . '-' . $file->getClientOriginalName();
                 $filename = 'files/file-survey/' . $name;
-                $path = 'files/report-satu/' . $name;
+                $path = 'files/file-survey/' . $name;
 
                 if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
                     \Image::make($file)->resize(480, 360)->save($path, 90);
@@ -51,6 +53,13 @@ class FileSurveyController extends Controller
 
     public function show(FileSurvey $fileSurvey)
     {
-        return Storage::download($fileSurvey->file_upload);
+        $file = explode('.', $fileSurvey->file_upload);
+        $ext = $file[1];
+
+        if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
+            return  Response::download($fileSurvey->file_upload);
+        } else {
+            return Storage::download($fileSurvey->file_upload);
+        }
     }
 }

@@ -6,6 +6,7 @@ use App\Models\CaseList;
 use App\Models\ReportLima;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class ReportLimaController extends Controller
@@ -49,7 +50,7 @@ class ReportLimaController extends Controller
             foreach ($files as $file) {
                 $name = date('dmYHis')  . '-' . $file->getClientOriginalName();
                 $filename = 'files/report-lima/' . $name;
-                $path = 'files/report-satu/' . $name;
+                $path = 'files/report-lima/' . $name;
 
                 if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
                     \Image::make($file)->resize(480, 360)->save($path, 90);
@@ -87,7 +88,14 @@ class ReportLimaController extends Controller
      */
     public function show(ReportLima $reportLima)
     {
-        return Storage::download($reportLima->file_upload);
+        $file = explode('.', $reportLima->file_upload);
+        $ext = $file[1];
+
+        if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
+            return  Response::download($reportLima->file_upload);
+        } else {
+            return Storage::download($reportLima->file_upload);
+        }
     }
 
     /**

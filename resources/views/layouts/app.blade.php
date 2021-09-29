@@ -39,25 +39,16 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <style>
+        #TheNavOfAxis {
+            background-color: #193C8F !important;
+        }
+    </style>
+
 </head>
 
 <body>
-    @auth
-    @if(auth()->user()->hasRole('admin'))
-    <style>
-        #TheNavOfAxis {
-            background-color: #193C8F !important;
-        }
-    </style>
-    @endif
-    @endauth
-    @guest
-    <style>
-        #TheNavOfAxis {
-            background-color: #193C8F !important;
-        }
-    </style>
-    @endguest
+
     <div id="app">
         <nav id="TheNavOfAxis" class="navbar navbar-expand-sm navbar-dark bg-primary shadow-sm">
             <div class="container-fluid">

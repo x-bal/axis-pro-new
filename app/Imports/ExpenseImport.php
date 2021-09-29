@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Expense;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToModel;
 
@@ -23,6 +24,7 @@ class ExpenseImport implements ToModel
             'name' => $row[0],
             'amount' => $row[1],
             'category_expense' => $row[2],
+            'tanggal' => Carbon::parse($row[3])->format('Y-m-d'),
         ]);
     }
 }

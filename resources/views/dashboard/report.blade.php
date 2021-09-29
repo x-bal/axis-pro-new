@@ -2,6 +2,12 @@
 
 @section('content')
 <style>
+    th {
+        text-align: center;
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+
     td {
         text-align: center;
         font-size: 10px;
@@ -26,52 +32,46 @@
                         <table class="table table-bordered table-striped custom-table" width="100%" id="table">
                             <thead style="font-weight: bold;">
                                 <tr>
-                                    <td rowspan="2" class="border" style="text-align: center; align-items: center;">No</td>
-                                    <td rowspan="2" class="border">File No</td>
-                                    <td rowspan="2" class="border">Initial Adj</td>
-                                    <td colspan="3" class="text-center border-0">Insurance</td>
-                                    <td rowspan="2" class="border">Leader</td>
-                                    <td rowspan="2" class="border">Insured</td>
-                                    <td rowspan="2" class="border">DOL</td>
-                                    <td rowspan="2" class="border">Risk Location / Project</td>
-                                    <td rowspan="2" class="border">Cause of Lost</td>
-                                    <!-- <td rowspan="2" class="border">Claim of Amount</td>
-                            <td rowspan="2" class="border">Instruction Date</td> -->
-                                    <td rowspan="2" class="border">Status</td>
-                                    @can('case-list-edit')
-                                    <td rowspan="2" class="border">Action</td>
-                                    @endcan
-                                </tr>
-                                <tr>
-                                    <td class="border">Name</td>
-                                    <td class="border">Share</td>
-                                    <td class="border">Leader / Member</td>
+                                    <th class="border" style="text-align: center; align-items: center;">No</th>
+                                    <th class="border">File No</th>
+                                    <th class="border">Initial Adj</th>
+                                    <th class="border">Name</th>
+                                    <!-- <th class="border">Share</th> -->
+                                    <!-- <th class="border">Leader / Member</th> -->
+                                    <th class="border">Leader</th>
+                                    <th class="border">Insured</th>
+                                    <th class="border">DOL</th>
+                                    <th class="border">Risk Location / Project</th>
+                                    <th class="border">Cause of Lost</th>
+                                    <!-- <th class="border">Claim of Amount</th>
+                            <th class="border">Instruction Date</th> -->
+                                    <th class="border">Status</th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 @foreach($cases as $case)
                                 <tr>
-                                    <td rowspan="2">{{ $loop->iteration }}</td>
-                                    <td rowspan="2"><a href="{{ route('case-list.show', $case->id) }}">{{ $case->file_no }}</a></td>
-                                    <td rowspan="2">{{ $case->adjuster->kode_adjuster }}</td>
-                                    <td rowspan="2">{{ $case->insurance->name }}</td>
-                                    <td rowspan="2">
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td><a href="{{ route('case-list.show', $case->id) }}">{{ $case->file_no }}</a></td>
+                                    <td>{{ $case->adjuster->kode_adjuster }}</td>
+                                    <td>{{ $case->insurance->name }}</td>
+                                    <!-- <td>
                                         @foreach ($case->member as $member)
-                                        {{ $member->share }} %
+                                        {{ $member->is_leader == 1 && $case->insurance_id == $member->member_insurance ? $member->share : '' }}
                                         @endforeach
                                     </td>
-                                    <td rowspan="2">
+                                    <td>
                                         @foreach ($case->member as $member)
                                         {{ $member->is_leader == 1 ? 'Leader' : 'Member' }}
                                         @endforeach
-                                    </td>
-                                    <td rowspan="2">{{ $case->insurance->name }}</td>
-                                    <td rowspan="2">{{ $case->insured }}</td>
-                                    <td rowspan="2">{{ $case->dol }}</td>
-                                    <td rowspan="2">{{ $case->risk_location }}</td>
-                                    <td rowspan="2">{{ $case->incident->type_incident }}</td>
-                                    <td rowspan="2">{{ $case->status->nama_status }}</td>
+                                    </td> -->
+                                    <td>{{ $case->insurance->name }}</td>
+                                    <td>{{ $case->insured }}</td>
+                                    <td>{{ $case->dol }}</td>
+                                    <td>{{ $case->risk_location }}</td>
+                                    <td>{{ $case->incident->type_incident }}</td>
+                                    <td>{{ $case->status->nama_status }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

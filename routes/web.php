@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/invoice/excel', [InvoiceController::class, 'excel'])->name('invoice.excel');
     Route::resource('invoice', InvoiceController::class);
     Route::get('expense/download', [ExpenseController::class, 'download'])->name('expense.download');
-    Route::resource('expense', ExpenseController::class);
+    Route::post('expense/store', [ExpenseController::class, 'store'])->name('expense.store');
     Route::resource('file-survey', FileSurveyController::class);
     Route::resource('claim-document', ClaimDocumentController::class);
     Route::resource('report-satu', ReportSatuController::class);
