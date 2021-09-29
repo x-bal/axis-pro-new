@@ -19,10 +19,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class AjaxController extends Controller
 {
-    public function invoiceExport()
-    {
-        return Excel::download(new InvoiceExport(), 'InvoiceExport.xlsx');
-    }
     public function TheAutoCompleteFunc(Request $request)
     {
         $data = [];

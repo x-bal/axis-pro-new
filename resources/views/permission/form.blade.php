@@ -1,6 +1,11 @@
 <div class="form-group">
     <label>Name</label>
-    <input type="text" name="name" id="name" class="form-control" value="{{ $permission->key }}">
+    <input type="text" name="name" id="name" class="form-control" value="{{ $permission->name ?? old('name') }}">
+    @error('name')
+    <div class="invalid-feedback">
+        <strong>{{ $message }}</strong>
+    </div>
+    @enderror
 </div>
 
 <div class="m-t-20 text-center">

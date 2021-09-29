@@ -56,10 +56,23 @@
                                     @enderror
                                 </div>
                             </div>
-
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <select name="status" id="status" class="form-control @error('status') is-invalid @enderror">
+                                        <option value="all">All</option>
+                                        <option value="1">Paid</option>
+                                        <option value="0">Unpaid</option>
+                                    </select>
+                                    @error('status')
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $message }}</strong>
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="col-md-1">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">Laporan</button>
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-print"></i> Laporan</button>
                                 </div>
                             </div>
                         </div>
@@ -93,17 +106,17 @@
                                 <td>{{ $inv->date_invoice }}</td>
                                 <td>{{ $inv->due_date }}</td>
                                 <td>{{ $inv->bank->bank_name ?? 'Kosong' }}</td>
-                                <td>@if($inv->caselist->currency == 'RP') <strong>Rp.</strong>  @else <i class="fas fa-dollar-sign"></i> @endif{{ number_format($inv->grand_total) }}</td>
+                                <td>@if($inv->caselist->currency == 'RP') <strong>Rp.</strong> @else <i class="fas fa-dollar-sign"></i> @endif{{ number_format($inv->grand_total) }}</td>
                                 <td>
                                     <span class="badge badge-{{ $inv->status_paid == 1 ? 'success' : 'danger' }} p-1">{{ $inv->status_paid == 1 ? 'Paid' : 'Unpaid' }}</span>
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <button class="btn btn-info btn-sm text-white" data-toggle="modal" onclick="konfirmasi(this)" data-id="{{ $inv->id }}" data-target="#KonfirmasiModal">Konfirmasi</button>
+                                        <button class="btn btn-info btn-sm text-white" data-toggle="modal" onclick="konfirmasi(this)" data-id="{{ $inv->id }}" data-target="#KonfirmasiModal"><i class="fas fa-list-alt"></i> Konfirmasi</button>
                                         <form method="post" action="{{ route('invoice.destroy', $inv->id) }}">
-                                        @csrf
-                                        @method('delete')
-                                        <button type="submit" class="btn btn-sm btn-warning">{{ $inv->caselist->file_no }}</button>
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" onclick="return confirm('Anda Yakin Ingin Menghapus Invoice?')" class="btn btn-sm btn-warning"><i class="fas fa-trash-alt"></i> <br> {{ $inv->caselist->file_no }}</button>
                                         </form>
                                     </div>
                                 </td>

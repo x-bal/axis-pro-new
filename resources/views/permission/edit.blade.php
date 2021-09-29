@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => 'Permissions'])
+@extends('layouts.app', ['title' => 'Permissions'])
 
 @section('content')
 <div class="row justify-content-center text-center">
@@ -9,10 +9,10 @@
 
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <form action="{{ route('admin.permissions.update', $permission->id) }}" method="post">
+        <form action="{{ route('permission.update', $permission->id) }}" method="post">
             @method('PATCH')
             @csrf
-            @include('admin.permission.form')
+            @include('permission.form')
         </form>
     </div>
 </div>

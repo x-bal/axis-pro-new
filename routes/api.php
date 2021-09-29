@@ -23,7 +23,6 @@ Route::get('currency', [AjaxController::class, 'currency']);
 Route::get('caselist/{id}', [AjaxController::class, 'caselist']);
 Route::get('insurance/{id}', [AjaxController::class, 'insurance']);
 Route::get('autocomplete', [AjaxController::class, 'TheAutoCompleteFunc']);
-Route::get('invoice/export', [AjaxController::class, 'invoiceExport'])->name('invoice.export');
 Route::get('/chart/caselist', [AjaxController::class, 'ChartCaseList']);
 Route::get('/chart/line/caselist/{id}', [AjaxController::class, 'ChartLineCaseList']);
 Route::get('/count/{id}', [AjaxController::class, 'count']);
