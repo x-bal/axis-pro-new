@@ -3,7 +3,7 @@
         <div class="form-group">
             <label for="file_no">File No</label>
             <div class="input-group-append">
-                <input name="file_no" id="file_no" type="text" readonly value="{{ old('file_no') }}" class="form-control @error('file_no') is-invalid @enderror">
+                <input name="file_no" id="file_no" type="text" value="{{ old('file_no') }}" class="form-control @error('file_no') is-invalid @enderror">
                 <span class="input-group-text" id="basic-addon2">JAK</span>
             </div>
             <!--<select name="file_no" id="file_no" class="form-control @error('file_no') is-invalid @enderror">-->
