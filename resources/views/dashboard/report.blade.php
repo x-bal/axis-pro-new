@@ -2,6 +2,12 @@
 
 @section('content')
 <style>
+    th {
+        text-align: center;
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+
     td {
         text-align: center;
         font-size: 10px;
@@ -30,8 +36,8 @@
                                     <th class="border">File No</th>
                                     <th class="border">Initial Adj</th>
                                     <th class="border">Name</th>
-                                    <th class="border">Share</th>
-                                    <th class="border">Leader / Member</th>
+                                    <!-- <th class="border">Share</th> -->
+                                    <!-- <th class="border">Leader / Member</th> -->
                                     <th class="border">Leader</th>
                                     <th class="border">Insured</th>
                                     <th class="border">DOL</th>
@@ -40,8 +46,6 @@
                                     <!-- <th class="border">Claim of Amount</th>
                             <th class="border">Instruction Date</th> -->
                                     <th class="border">Status</th>
-                                </tr>
-                                <tr>
                                 </tr>
                             </thead>
 
@@ -52,16 +56,16 @@
                                     <td><a href="{{ route('case-list.show', $case->id) }}">{{ $case->file_no }}</a></td>
                                     <td>{{ $case->adjuster->kode_adjuster }}</td>
                                     <td>{{ $case->insurance->name }}</td>
-                                    <td>
+                                    <!-- <td>
                                         @foreach ($case->member as $member)
-                                        {{ $member->share }} %
+                                        {{ $member->is_leader == 1 && $case->insurance_id == $member->member_insurance ? $member->share : '' }}
                                         @endforeach
                                     </td>
                                     <td>
                                         @foreach ($case->member as $member)
                                         {{ $member->is_leader == 1 ? 'Leader' : 'Member' }}
                                         @endforeach
-                                    </td>
+                                    </td> -->
                                     <td>{{ $case->insurance->name }}</td>
                                     <td>{{ $case->insured }}</td>
                                     <td>{{ $case->dol }}</td>
