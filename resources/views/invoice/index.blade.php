@@ -141,7 +141,7 @@
                                 <label for="Type Bank">Type Bank</label>
                                 <select class="form-control" name="bank" id="bank">
                                     @foreach($bank as $list)
-                                    <option value="{{ $list->id }}">{{ $list->bank_name }}</option>
+                                    <option value="{{ $list->id }}">{{ $list->bank_name }} - {{ $list->currency }}</option>
                                     @endforeach
                                 </select>
                             </div>
