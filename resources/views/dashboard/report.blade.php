@@ -26,20 +26,20 @@
                         <table class="table table-bordered table-striped custom-table" width="100%" id="table">
                             <thead style="font-weight: bold;">
                                 <tr>
-                                    <td class="border" style="text-align: center; align-items: center;">No</td>
-                                    <td class="border">File No</td>
-                                    <td class="border">Initial Adj</td>
-                                    <td class="border">Name</td>
-                                    <td class="border">Share</td>
-                                    <td class="border">Leader / Member</td>
-                                    <td class="border">Leader</td>
-                                    <td class="border">Insured</td>
-                                    <td class="border">DOL</td>
-                                    <td class="border">Risk Location / Project</td>
-                                    <td class="border">Cause of Lost</td>
-                                    <!-- <td class="border">Claim of Amount</td>
-                            <td class="border">Instruction Date</td> -->
-                                    <td class="border">Status</td>
+                                    <th class="border" style="text-align: center; align-items: center;">No</th>
+                                    <th class="border">File No</th>
+                                    <th class="border">Initial Adj</th>
+                                    <th class="border">Name</th>
+                                    <th class="border">Share</th>
+                                    <th class="border">Leader / Member</th>
+                                    <th class="border">Leader</th>
+                                    <th class="border">Insured</th>
+                                    <th class="border">DOL</th>
+                                    <th class="border">Risk Location / Project</th>
+                                    <th class="border">Cause of Lost</th>
+                                    <!-- <th class="border">Claim of Amount</th>
+                            <th class="border">Instruction Date</th> -->
+                                    <th class="border">Status</th>
                                 </tr>
                                 <tr>
                                 </tr>
