@@ -115,10 +115,12 @@ class InvoiceController extends Controller
         ]);
         $rupiah = Invoice::whereHas('caselist', function($qr){
             return $qr->where('currency', 'RP');
-        })->sum('grand_total');
+        })->whereBetween('date_invoice', [$request->from, $request->to])->sum('grand_total');
+
         $usd = Invoice::whereHas('caselist', function($qr){
             return $qr->where('currency', 'USD');
-        })->sum('grand_total');
+        })->whereBetween('date_invoice', [$request->from, $request->to])->sum('grand_total');
+
         $invoice = Invoice::whereBetween('date_invoice', [$request->from, $request->to])->get();
         return view('invoice.laporan',[
             'from' => $request->from,
