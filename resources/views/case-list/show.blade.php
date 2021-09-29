@@ -324,7 +324,16 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ str_replace('files/file-survey/', '', $filesurvey->file_upload) }}</td>
                                     <td>{{ $filesurvey->time_upload }}</td>
-                                    <td> MB</td>
+                                    @php
+                                    $ext = explode('.',$filesurvey->file_upload)
+                                    @endphp
+                                    <td>
+                                        @if(in_array($ext), ['jpeg', 'jpg', 'png'])
+                                        {{ \File:size(public_path('files/file-survey/' . $filesurvey->file_upload)) }} MB
+                                        @else
+                                        MB
+                                        @endif
+                                    </td>
                                     <td>
                                         <a href="{{ route('file-survey.show', $filesurvey->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a>
                                     </td>
