@@ -328,7 +328,7 @@
                                     $ext = explode('.',$filesurvey->file_upload)
                                     @endphp
                                     <td>
-                                        @if(in_array($ext), ['jpeg', 'jpg', 'png'])
+                                        @if($ext == 'jpg' || $ext == 'jpeg' ||$ext == 'png')
                                         {{ \File:size(public_path('files/file-survey/' . $filesurvey->file_upload)) }} MB
                                         @else
                                         MB
