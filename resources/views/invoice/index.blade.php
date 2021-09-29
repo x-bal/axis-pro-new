@@ -116,7 +116,7 @@
                                         <form method="post" action="{{ route('invoice.destroy', $inv->id) }}">
                                             @csrf
                                             @method('delete')
-                                            <button type="submit" onclick="return confirm('Are You Sure')" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> <br> {{ $inv->caselist->file_no }}</button>
+                                            <button type="submit" onclick="return confirm('Anda Yakin Ingin Menghapus Invoice?')" class="btn btn-sm btn-warning"><i class="fas fa-trash-alt"></i> <br> {{ $inv->caselist->file_no }}</button>
                                         </form>
                                     </div>
                                 </td>
