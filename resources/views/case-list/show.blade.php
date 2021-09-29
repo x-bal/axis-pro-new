@@ -325,13 +325,15 @@
                                     <td>{{ str_replace('files/file-survey/', '', $filesurvey->file_upload) }}</td>
                                     <td>{{ $filesurvey->time_upload }}</td>
                                     @php
-                                    $ext = explode('.',$filesurvey->file_upload)
+                                    $name = str_replace('files/file-survey/', '', $filesurvey->file_upload);
+                                    $file = explode('.',$filesurvey->file_upload);
+                                    $ext = $file[1]
                                     @endphp
                                     <td>
                                         @if($ext == 'jpg' || $ext == 'jpeg' ||$ext == 'png')
-                                        {{ \File::size(public_path('files/file-survey/' . $filesurvey->file_upload)) }} MB
+                                        {{ number_format(\File::size(public_path('files/file-survey/'. $name)) / 1048576,2)  }} MB
                                         @else
-                                        MB
+                                        {{ number_format(\Storage::size($filesurvey->file_upload) / 1048576,2 )}} MB
                                         @endif
                                     </td>
                                     <td>
