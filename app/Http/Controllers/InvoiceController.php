@@ -40,8 +40,7 @@ class InvoiceController extends Controller
             'date_invoice' => 'required',
             'no_invoice.*' => 'required'
         ]);
-        if($request->no_invoice == null)
-        {
+        if ($request->no_invoice == null) {
             return back()->with('error', 'Member Invoice Does not Exists');
         }
         if (CaseList::find($request->no_case)->hasInvoice()) {
@@ -103,7 +102,7 @@ class InvoiceController extends Controller
 
     public function destroy(Invoice $invoice)
     {
-        Invoice::where('case_list_id',$invoice->case_list_id)->delete();
+        Invoice::where('case_list_id', $invoice->case_list_id)->delete();
         Invoice::onlyTrashed()->forceDelete();
         return back()->with('success', 'Delete Successfull');
     }
@@ -111,24 +110,47 @@ class InvoiceController extends Controller
     {
         $this->validate($request, [
             'from' => 'required',
-            'to' => 'required'
+            'to' => 'required',
+            'status' => 'required'
         ]);
-        $rupiah = Invoice::whereHas('caselist', function($qr){
-            return $qr->where('currency', 'RP');
-        })->whereBetween('date_invoice', [$request->from, $request->to])->sum('grand_total');
+        if ($request->status == 'all') {
 
-        $usd = Invoice::whereHas('caselist', function($qr){
-            return $qr->where('currency', 'USD');
-        })->whereBetween('date_invoice', [$request->from, $request->to])->sum('grand_total');
+            $rupiah = Invoice::whereHas('caselist', function ($qr) {
+                return $qr->where('currency', 'RP');
+            })->whereBetween('date_invoice', [$request->from, $request->to])->sum('grand_total');
 
-        $invoice = Invoice::whereBetween('date_invoice', [$request->from, $request->to])->get();
-        return view('invoice.laporan',[
-            'from' => $request->from,
-            'to' => $request->to,
-            'invoice' => $invoice,
-            'usd' => $usd,
-            'rupiah' => $rupiah
-        ]);
+            $usd = Invoice::whereHas('caselist', function ($qr) {
+                return $qr->where('currency', 'USD');
+            })->whereBetween('date_invoice', [$request->from, $request->to])->sum('grand_total');
+
+            $invoice = Invoice::whereBetween('date_invoice', [$request->from, $request->to])->get();
+
+            return view('invoice.laporan', [
+                'from' => $request->from,
+                'to' => $request->to,
+                'invoice' => $invoice,
+                'usd' => $usd,
+                'rupiah' => $rupiah
+            ]);
+        }else{
+            $rupiah = Invoice::whereHas('caselist', function ($qr) {
+                return $qr->where('currency', 'RP');
+            })->whereBetween('date_invoice', [$request->from, $request->to])->where('status_paid', $request->status)->sum('grand_total');
+
+            $usd = Invoice::whereHas('caselist', function ($qr) {
+                return $qr->where('currency', 'USD');
+            })->whereBetween('date_invoice', [$request->from, $request->to])->where('status_paid', $request->status)->sum('grand_total');
+
+            $invoice = Invoice::whereBetween('date_invoice', [$request->from, $request->to])->where('status_paid', $request->status)->get();
+
+            return view('invoice.laporan', [
+                'from' => $request->from,
+                'to' => $request->to,
+                'invoice' => $invoice,
+                'usd' => $usd,
+                'rupiah' => $rupiah
+            ]);
+        }
     }
     public function excel(Request $request)
     {
@@ -136,10 +158,10 @@ class InvoiceController extends Controller
             'from' => 'required',
             'to' => 'required'
         ]);
-        
+
         // ob_end_clean();
         // ob_start();
         $timestamp = Carbon::now()->format('Y-m-d H:i:s');
-        return Excel::download(new InvoiceExport($request->except(['_token'])), 'Invoice Excel '.$timestamp.' Report.xlsx');
+        return Excel::download(new InvoiceExport($request->except(['_token'])), 'Invoice Excel ' . $timestamp . ' Report.xlsx');
     }
 }
