@@ -67,11 +67,6 @@
                                     <td rowspan="2">{{ $case->incident->type_incident }}</td>
                                     <td rowspan="2">{{ $case->status->nama_status }}</td>
                                 </tr>
-                                <tr>
-                                    <td class="border">&nbsp;</td>
-                                    <td class="border">&nbsp;</td>
-                                    <td class="border">&nbsp;</td>
-                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
