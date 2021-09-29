@@ -6,6 +6,7 @@ use App\Imports\ExpenseImport;
 use App\Models\Expense;
 use Illuminate\Http\Request;
 use Excel;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class ExpenseController extends Controller
@@ -92,6 +93,6 @@ class ExpenseController extends Controller
 
     public function download()
     {
-        return Storage::download('example-expense.xlsx');
+        return Response::download('expense/example-expense.xlsx');
     }
 }
