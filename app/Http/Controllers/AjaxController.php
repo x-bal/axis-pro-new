@@ -210,20 +210,49 @@ class AjaxController extends Controller
             ];
         } else {
             $bulan = [
-                CaseList::where('adjuster_id',$user->id)->whereMonth('instruction_date', '01')->get()->count(),
-                CaseList::where('adjuster_id',$user->id)->whereMonth('instruction_date', '02')->get()->count(),
-                CaseList::where('adjuster_id',$user->id)->whereMonth('instruction_date', '03')->get()->count(),
-                CaseList::where('adjuster_id',$user->id)->whereMonth('instruction_date', '04')->get()->count(),
-                CaseList::where('adjuster_id',$user->id)->whereMonth('instruction_date', '05')->get()->count(),
-                CaseList::where('adjuster_id',$user->id)->whereMonth('instruction_date', '06')->get()->count(),
-                CaseList::where('adjuster_id',$user->id)->whereMonth('instruction_date', '07')->get()->count(),
-                CaseList::where('adjuster_id',$user->id)->whereMonth('instruction_date', '08')->get()->count(),
-                CaseList::where('adjuster_id',$user->id)->whereMonth('instruction_date', '09')->get()->count(),
-                CaseList::where('adjuster_id',$user->id)->whereMonth('instruction_date', '10')->get()->count(),
-                CaseList::where('adjuster_id',$user->id)->whereMonth('instruction_date', '11')->get()->count(),
-                CaseList::where('adjuster_id',$user->id)->whereMonth('instruction_date', '12')->get()->count(),
+                CaseList::where('adjuster_id', $user->id)->whereMonth('instruction_date', '01')->get()->count(),
+                CaseList::where('adjuster_id', $user->id)->whereMonth('instruction_date', '02')->get()->count(),
+                CaseList::where('adjuster_id', $user->id)->whereMonth('instruction_date', '03')->get()->count(),
+                CaseList::where('adjuster_id', $user->id)->whereMonth('instruction_date', '04')->get()->count(),
+                CaseList::where('adjuster_id', $user->id)->whereMonth('instruction_date', '05')->get()->count(),
+                CaseList::where('adjuster_id', $user->id)->whereMonth('instruction_date', '06')->get()->count(),
+                CaseList::where('adjuster_id', $user->id)->whereMonth('instruction_date', '07')->get()->count(),
+                CaseList::where('adjuster_id', $user->id)->whereMonth('instruction_date', '08')->get()->count(),
+                CaseList::where('adjuster_id', $user->id)->whereMonth('instruction_date', '09')->get()->count(),
+                CaseList::where('adjuster_id', $user->id)->whereMonth('instruction_date', '10')->get()->count(),
+                CaseList::where('adjuster_id', $user->id)->whereMonth('instruction_date', '11')->get()->count(),
+                CaseList::where('adjuster_id', $user->id)->whereMonth('instruction_date', '12')->get()->count(),
             ];
         }
         return response()->json($bulan);
+    }
+    public function CaseListFileNoLast()
+    {
+        try {
+            $resource = CaseList::withTrashed()->get();
+            $wallet = [];
+            foreach ($resource as $data) {
+                array_push($wallet, str_replace('-JAK', '', $data->file_no));
+            }
+            array_multisort($wallet);
+            $response = end($wallet);
+            $response += 1;
+            $response = str_pad($response, 6, '0', STR_PAD_LEFT);
+            return response()->json($response);
+        } catch (Exception $err) {
+            return response()->json($err->getMessage());
+        }
+    }
+    public function CaseListFileNoEdit($id)
+    {
+        try {
+            $case = CaseList::findOrFail($id);
+            $response =  $case->file_no;
+            $response = str_replace('-JAK', '', $response);
+            $response = str_pad($response, 6, '0', STR_PAD_LEFT);
+            return response()->json($response);
+        } catch (Exception $err) {
+            return response()->json($err->getMessage());
+        }
     }
 }
