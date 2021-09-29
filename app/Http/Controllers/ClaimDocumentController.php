@@ -48,7 +48,7 @@ class ClaimDocumentController extends Controller
             foreach ($files as $file) {
                 $name = date('dmYHis')  . '-' . $file->getClientOriginalName();
                 $filename = 'files/claim-document/' . $name;
-                $path = 'files/report-satu/' . $name;
+                $path = 'files/claim-document/' . $name;
 
                 if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
                     \Image::make($file)->resize(480, 360)->save($path, 90);

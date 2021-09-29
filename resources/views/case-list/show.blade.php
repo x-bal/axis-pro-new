@@ -331,7 +331,7 @@
                                     @endphp
                                     <td>
                                         @if($ext == 'jpg' || $ext == 'jpeg' ||$ext == 'png')
-                                        {{ $name }}
+                                        {{{{ number_format(\File::size(public_path('files/file-survey/'. $name)) / 1048576,2)  }} MB}}
                                         @else
                                         {{ number_format(\Storage::size($filesurvey->file_upload) / 1048576,2 )}} MB
                                         @endif
