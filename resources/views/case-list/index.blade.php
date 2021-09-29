@@ -76,7 +76,7 @@
 
                             <div class="col-md-1">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">Laporan</button>
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-print"></i> Laporan</button>
                                 </div>
                             </div>
                         </div>
