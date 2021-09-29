@@ -58,7 +58,6 @@
                                         {{ $member->is_leader == 1 ? 'Leader' : 'Member' }}
                                         @endforeach
                                     </td>
-                                    <td rowspan="2">{{ $case->insurance->name }}</td>
                                     <td rowspan="2">{{ $case->insured }}</td>
                                     <td rowspan="2">{{ $case->dol }}</td>
                                     <td rowspan="2">{{ $case->risk_location }}</td>
