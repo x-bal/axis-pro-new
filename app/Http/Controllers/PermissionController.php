@@ -35,7 +35,7 @@ class PermissionController extends Controller
 
         Permission::create($attr);
         // return redirect()->route('permission.index')->with('success', 'Permission has been created');
-        return back();
+        return back()->with('success', 'Permission has been created');
     }
 
     public function show($id)
@@ -46,7 +46,6 @@ class PermissionController extends Controller
     public function edit(Permission $permission)
     {
         abort_unless(Gate::allows('permission-edit'), 403);
-
         return view('permission.edit', compact('permission'));
     }
 
