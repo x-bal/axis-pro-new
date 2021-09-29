@@ -49,9 +49,10 @@ class ReportTigaController extends Controller
             foreach ($files as $file) {
                 $name = date('dmYHis')  . '-' . $file->getClientOriginalName();
                 $filename = 'files/report-tiga/' . $name;
+                $path = 'files/report-satu/' . $name;
 
                 if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
-                    \Image::make($file)->resize(480, 360)->save('storage/files/report-tiga/' . $name, 90);
+                    \Image::make($file)->resize(480, 360)->save($path, 90);
                 } else {
                     $file->storeAs('files/report-tiga/', $name);
                 }
