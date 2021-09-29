@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\ExpenseImport;
+use App\Models\CaseList;
 use App\Models\Expense;
 use Illuminate\Http\Request;
 use Excel;
@@ -40,6 +41,12 @@ class ExpenseController extends Controller
     {
         $request->validate([
             'file_upload' => 'required'
+        ]);
+
+        $case = CaseList::find($request->case_list_id);
+
+        $case->update([
+            'is_expense' => 1
         ]);
 
         Excel::import(new ExpenseImport($request->case_list_id), $request->file('file_upload'));

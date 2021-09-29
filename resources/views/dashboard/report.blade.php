@@ -18,9 +18,6 @@
                         <div>
                             {{ __($title . ' - (Pending)') }}
                         </div>
-                        @can('case-list-create')
-                        <a href="{{ route('case-list.create') }}" class="btn btn-admin"><i class="fas fa-pen"></i> Create</a>
-                        @endif
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped custom-table" width="100%" id="table">
@@ -38,9 +35,6 @@
                                     <!-- <td rowspan="2" class="border">Claim of Amount</td>
                             <td rowspan="2" class="border">Instruction Date</td> -->
                                     <td rowspan="2" class="border">Status</td>
-                                    @can('case-list-edit')
-                                    <td rowspan="2" class="border">Action</td>
-                                    @endcan
                                 </tr>
                                 <tr>
                                     <td class="border">Name</td>
@@ -72,6 +66,11 @@
                                     <td rowspan="2">{{ $case->risk_location }}</td>
                                     <td rowspan="2">{{ $case->incident->type_incident }}</td>
                                     <td rowspan="2">{{ $case->status->nama_status }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="border">&nbsp;</td>
+                                    <td class="border">&nbsp;</td>
+                                    <td class="border">&nbsp;</td>
                                 </tr>
                                 @endforeach
                             </tbody>
