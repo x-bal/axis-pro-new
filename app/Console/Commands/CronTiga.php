@@ -50,9 +50,11 @@ class CronTiga extends Command
 
                 if ($case->pa_status == 0) {
                     if ($date > $limit) {
-                        Mail::raw("Your time has been exceeded from limit, please upload the report.", function ($message) use ($case) {
-                            // $message->from('axis-pro@gmail.com');
-                            $message->to($case->adjuster->email)->subject('Reminder');
+                        $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
+                        $beautymail->send('emails.welcome', ['adjuster' => $case->adjuster->nama_lengkap, 'content' => 'Your time has been exceeded from limit, please upload the report 3.', 'report' => 'Report 3'], function ($message) use ($case) {
+                            $message
+                                ->to($case->adjuster->email, $case->adjuster->nama_lengkap)
+                                ->subject('Reminder - Report 3');
                         });
                         $case->update(['pa_limit' => Carbon::parse($limit)->addDay(14)->format('Y-m-d')]);
                     }
@@ -62,9 +64,11 @@ class CronTiga extends Command
 
                 if ($case->ir_st_status == 0) {
                     if ($date > $limit) {
-                        Mail::raw("Your time has been exceeded from limit, please upload the report.", function ($message) use ($case) {
-                            // $message->from('axis-pro@gmail.com');
-                            $message->to($case->adjuster->email)->subject('Reminder');
+                        $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
+                        $beautymail->send('emails.welcome', ['adjuster' => $case->adjuster->nama_lengkap, 'content' => 'Your time has been exceeded from limit, please upload the report 3.', 'report' => 'Report 3'], function ($message) use ($case) {
+                            $message
+                                ->to($case->adjuster->email, $case->adjuster->nama_lengkap)
+                                ->subject('Reminder - Report 3');
                         });
                         $case->update(['ir_st_limit' => Carbon::parse($limit)->addDay(14)->format('Y-m-d')]);
                     }
