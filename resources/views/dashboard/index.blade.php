@@ -99,13 +99,13 @@
                 </div>
             </div>
         </div>
-                <div class="col-md-6 mt-3">
+        <div class="col-md-6 mt-3">
             <div class="card">
                 <div class=" card-body bg-warning">
                     <i class="fas fa-file-alt fa-4x text-white"></i>
                     <div class="float-right">
                         <div class="text-white">
-                            <h1 style="font-size: 50px; font-weight: bold; margin-left: 30px; margin-bottom: -10px;">{{ $empat }}</h1>
+                            <h1 style="font-size: 50px; font-weight: bold; margin-left: 30px; margin-bottom: -10px;">{{ $lima }}</h1>
                             <span>Report 5</span>
                         </div>
                     </div>
