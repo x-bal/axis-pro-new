@@ -23,6 +23,7 @@ class ExpenseImport implements ToModel
             'name' => $row[0],
             'amount' => $row[1],
             'category_expense' => $row[2],
+            'tanggal' => $row[3],
         ]);
     }
 }

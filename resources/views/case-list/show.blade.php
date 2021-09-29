@@ -243,7 +243,7 @@
                                     <td height="25">{{ $loop->iteration }}</td>
                                     <td>{{ $expense->name }}</td>
                                     <td>{{ $expense->category_expense }}</td>
-                                    <td>{{ Carbon\Carbon::parse($expense->created_at)->format('d/m/Y') }}</td>
+                                    <td>{{ Carbon\Carbon::parse($expense->tanggal)->format('d/m/Y') }}</td>
                                     <td>{{ $caseList->currency == 'RP' ? 'Rp.' : '$' }} {{ number_format($expense->amount)  }}</td>
                                 </tr>
                                 @php
