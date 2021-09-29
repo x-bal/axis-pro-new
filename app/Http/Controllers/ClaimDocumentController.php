@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ClaimDocument;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class ClaimDocumentController extends Controller
@@ -75,7 +76,14 @@ class ClaimDocumentController extends Controller
      */
     public function show(ClaimDocument $claimDocument)
     {
-        return Storage::download($claimDocument->file_upload);
+        $file = explode('.', $claimDocument->file_upload);
+        $ext = $file[1];
+
+        if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
+            return  Response::download($claimDocument->file_upload);
+        } else {
+            return Storage::download($claimDocument->file_upload);
+        }
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Models\CaseList;
 use App\Models\ReportDua;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class ReportDuaController extends Controller
@@ -100,7 +101,14 @@ class ReportDuaController extends Controller
      */
     public function show(ReportDua $reportDua)
     {
-        return Storage::download($reportDua->file_upload);
+        $file = explode('.', $reportDua->file_upload);
+        $ext = $file[1];
+
+        if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
+            return  Response::download($reportDua->file_upload);
+        } else {
+            return Storage::download($reportDua->file_upload);
+        }
     }
 
     /**

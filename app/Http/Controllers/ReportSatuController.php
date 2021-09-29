@@ -6,6 +6,7 @@ use App\Models\CaseList;
 use App\Models\ReportSatu;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class ReportSatuController extends Controller
@@ -93,7 +94,14 @@ class ReportSatuController extends Controller
      */
     public function show(ReportSatu $reportSatu)
     {
-        return Storage::download($reportSatu->file_upload);
+        $file = explode('.', $reportSatu->file_upload);
+        $ext = $file[1];
+
+        if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
+            return  Response::download($reportSatu->file_upload);
+        } else {
+            return Storage::download($reportSatu->file_upload);
+        }
     }
 
     /**

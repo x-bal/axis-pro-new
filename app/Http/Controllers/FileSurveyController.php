@@ -53,12 +53,11 @@ class FileSurveyController extends Controller
 
     public function show(FileSurvey $fileSurvey)
     {
-        $name = str_replace('files/file-survey/', '', $fileSurvey->file_upload);
         $file = explode('.', $fileSurvey->file_upload);
         $ext = $file[1];
 
         if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
-            return  Response::download('files/file-survey/' . $name);
+            return  Response::download($fileSurvey->file_upload);
         } else {
             return Storage::download($fileSurvey->file_upload);
         }

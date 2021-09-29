@@ -331,7 +331,7 @@
                                     @endphp
                                     <td>
                                         @if($ext == 'jpg' || $ext == 'jpeg' ||$ext == 'png')
-                                        {{ number_format(\File::size($filesurvey->file_upload) / 1048576,2)  }} MB}}
+                                        {{ number_format(\File::size($filesurvey->file_upload) / 1048576,2)  }} MB
                                         @else
                                         {{ number_format(\Storage::size($filesurvey->file_upload) / 1048576,2 )}} MB
                                         @endif
@@ -394,7 +394,18 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ str_replace('files/claim-document/', '', $claimdocument->file_upload) }}</td>
                                     <td>{{ $claimdocument->time_upload }}</td>
-                                    <td> MB</td>
+                                    @php
+                                    $name = str_replace('files/claim-document/', '', $claimdocument->file_upload);
+                                    $file = explode('.',$claimdocument->file_upload);
+                                    $ext = $file[1]
+                                    @endphp
+                                    <td>
+                                        @if($ext == 'jpg' || $ext == 'jpeg' ||$ext == 'png')
+                                        {{ number_format(\File::size($claimdocument->file_upload) / 1048576,2)  }} MB
+                                        @else
+                                        {{ number_format(\Storage::size($claimdocument->file_upload) / 1048576,2 )}} MB
+                                        @endif
+                                    </td>
                                     <td><a href="{{ route('claim-document.show', $claimdocument->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a></td>
                                 </tr>
                                 @endforeach
@@ -502,7 +513,18 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ str_replace('files/report-satu/', '', $reportsatu->file_upload) }}</td>
                                     <td>{{ $reportsatu->time_upload }}</td>
-                                    <td> MB</td>
+                                    @php
+                                    $name = str_replace('files/report-satu/', '', $reportsatu->file_upload);
+                                    $file = explode('.',$reportsatu->file_upload);
+                                    $ext = $file[1]
+                                    @endphp
+                                    <td>
+                                        @if($ext == 'jpg' || $ext == 'jpeg' ||$ext == 'png')
+                                        {{ number_format(\File::size($reportsatu->file_upload) / 1048576,2)  }} MB
+                                        @else
+                                        {{ number_format(\Storage::size($reportsatu->file_upload) / 1048576,2 )}} MB
+                                        @endif
+                                    </td>
                                     <td><a href="{{ route('report-satu.show', $reportsatu->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a></td>
                                 </tr>
                                 @endforeach
@@ -650,7 +672,18 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ str_replace('files/report-dua/', '', $reportdua->file_upload) }}</td>
                                     <td>{{ $reportdua->time_upload }}</td>
-                                    <td> MB</td>
+                                    @php
+                                    $name = str_replace('files/report-dua/', '', $reportdua->file_upload);
+                                    $file = explode('.',$reportdua->file_upload);
+                                    $ext = $file[1]
+                                    @endphp
+                                    <td>
+                                        @if($ext == 'jpg' || $ext == 'jpeg' ||$ext == 'png')
+                                        {{ number_format(\File::size($reportdua->file_upload) / 1048576,2)  }} MB
+                                        @else
+                                        {{ number_format(\Storage::size($reportdua->file_upload) / 1048576,2 )}} MB
+                                        @endif
+                                    </td>
                                     <td><a href="{{ route('report-dua.show', $reportdua->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a></td>
                                 </tr>
                                 @endforeach
@@ -828,7 +861,18 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ str_replace('files/report-tiga/', '', $reporttiga->file_upload) }}</td>
                                     <td>{{ $reporttiga->time_upload }}</td>
-                                    <td> MB</td>
+                                    @php
+                                    $name = str_replace('files/report-tiga/', '', $reporttiga->file_upload);
+                                    $file = explode('.',$reporttiga->file_upload);
+                                    $ext = $file[1]
+                                    @endphp
+                                    <td>
+                                        @if($ext == 'jpg' || $ext == 'jpeg' ||$ext == 'png')
+                                        {{ number_format(\File::size($reporttiga->file_upload) / 1048576,2)  }} MB
+                                        @else
+                                        {{ number_format(\Storage::size($reporttiga->file_upload) / 1048576,2 )}} MB
+                                        @endif
+                                    </td>
                                     <td><a href="{{ route('report-tiga.show', $reporttiga->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a></td>
                                 </tr>
                                 @endforeach
@@ -993,7 +1037,18 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ str_replace('files/report-empat/', '', $reportempat->file_upload) }}</td>
                                     <td>{{ $reportempat->time_upload }}</td>
-                                    <td> MB</td>
+                                    @php
+                                    $name = str_replace('files/report-empat/', '', $reportempat->file_upload);
+                                    $file = explode('.',$reportempat->file_upload);
+                                    $ext = $file[1]
+                                    @endphp
+                                    <td>
+                                        @if($ext == 'jpg' || $ext == 'jpeg' ||$ext == 'png')
+                                        {{ number_format(\File::size($reportempat->file_upload) / 1048576,2)  }} MB
+                                        @else
+                                        {{ number_format(\Storage::size($reportempat->file_upload) / 1048576,2 )}} MB
+                                        @endif
+                                    </td>
                                     <td><a href="{{ route('report-empat.show', $reportempat->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a></td>
                                 </tr>
                                 @endforeach
@@ -1124,7 +1179,18 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ str_replace('files/report-lima/', '', $reportlima->file_upload) }}</td>
                                     <td>{{ $reportlima->time_upload }}</td>
-                                    <td> MB</td>
+                                    @php
+                                    $name = str_replace('files/report-lima/', '', $reportlima->file_upload);
+                                    $file = explode('.',$reportlima->file_upload);
+                                    $ext = $file[1]
+                                    @endphp
+                                    <td>
+                                        @if($ext == 'jpg' || $ext == 'jpeg' ||$ext == 'png')
+                                        {{ number_format(\File::size($reportlima->file_upload) / 1048576,2)  }} MB
+                                        @else
+                                        {{ number_format(\Storage::size($reportlima->file_upload) / 1048576,2 )}} MB
+                                        @endif
+                                    </td>
                                     <td><a href="{{ route('report-lima.show', $reportlima->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a></td>
                                 </tr>
                                 @endforeach

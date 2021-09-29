@@ -6,6 +6,7 @@ use App\Models\CaseList;
 use App\Models\ReportEmpat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class ReportEmpatController extends Controller
@@ -114,6 +115,14 @@ class ReportEmpatController extends Controller
      */
     public function show(ReportEmpat $reportEmpat)
     {
+        $file = explode('.', $reportEmpat->file_upload);
+        $ext = $file[1];
+
+        if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
+            return  Response::download($reportEmpat->file_upload);
+        } else {
+            return Storage::download($reportEmpat->file_upload);
+        }
         return Storage::download($reportEmpat->file_upload);
     }
 }
