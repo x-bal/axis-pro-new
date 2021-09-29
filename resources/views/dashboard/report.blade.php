@@ -26,7 +26,10 @@
                                     <td rowspan="2" class="border" style="text-align: center; align-items: center;">No</td>
                                     <td rowspan="2" class="border">File No</td>
                                     <td rowspan="2" class="border">Initial Adj</td>
-                                    <td colspan="3" class="text-center border-0">Insurance</td>
+                                    <!-- <td colspan="3" class="text-center border-0">Insurance</td> -->
+                                    <td class="border">Name</td>
+                                    <td class="border">Share</td>
+                                    <td class="border">Leader / Member</td>
                                     <td rowspan="2" class="border">Leader</td>
                                     <td rowspan="2" class="border">Insured</td>
                                     <td rowspan="2" class="border">DOL</td>
@@ -35,11 +38,6 @@
                                     <!-- <td rowspan="2" class="border">Claim of Amount</td>
                             <td rowspan="2" class="border">Instruction Date</td> -->
                                     <td rowspan="2" class="border">Status</td>
-                                </tr>
-                                <tr>
-                                    <td class="border">Name</td>
-                                    <td class="border">Share</td>
-                                    <td class="border">Leader / Member</td>
                                 </tr>
                             </thead>
 
