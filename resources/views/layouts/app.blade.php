@@ -43,6 +43,16 @@
         #TheNavOfAxis {
             background-color: #193C8F !important;
         }
+
+        .bg-primary .navbar-nav .active>.nav-link {
+            color: #FFF338 !important;
+        }
+
+        .bg-primary .navbar-nav a:hover {
+            color: #FFF76A !important;
+            text-decoration: none;
+            background-color: transparent;
+        }
     </style>
 
 </head>
