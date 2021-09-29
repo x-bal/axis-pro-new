@@ -329,7 +329,7 @@
                                     @endphp
                                     <td>
                                         @if($ext == 'jpg' || $ext == 'jpeg' ||$ext == 'png')
-                                        {{ \File:size(public_path('files/file-survey/' . $filesurvey->file_upload)) }} MB
+                                        {{ \File::size(public_path('files/file-survey/' . $filesurvey->file_upload)) }} MB
                                         @else
                                         MB
                                         @endif
