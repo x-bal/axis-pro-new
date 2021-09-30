@@ -104,11 +104,6 @@
                                 <th rowspan="2">Fr Date</th>
                                 <th rowspan="2">Fr Amount</th>
                                 <th rowspan="2">Fr Status</th>
-                                <th rowspan="2">Claim Amount</th>
-                                <th rowspan="2">Fee IDR</th>
-                                <th rowspan="2">Fee USD</th>
-                                <th rowspan="2">WIP IDR</th>
-                                <th rowspan="2">WIP USD</th>
                                 <th rowspan="2">Remark</th>
                                 <th rowspan="2">File Status</th>
                             </tr>
@@ -147,29 +142,24 @@
                                 <td>{{ $data->survey_date }}</td>
                                 <td>{{ $data->now_update }}</td>
                                 <td>{{ $data->ia_date }}</td>
-                                <td>{{ $data->ia_amount }}</td>
+                                <td> <strong>{{ number_format($data->ia_amount) }}</strong></td>
                                 <td>{{ $data->ia_status }}</td>
                                 <td>{{ $data->pr_date }}</td>
-                                <td>{{ $data->pr_amount }}</td>
+                                <td><strong>{{ number_format($data->pr_amount) }}</strong></td>
                                 <td>{{ $data->pr_status }}</td>
                                 <td>{{ $data->ir_status }}</td>
                                 <td>{{ $data->ir_st_date }}</td>
-                                <td>{{ $data->ir_st_amount }}</td>
+                                <td><strong>{{ number_format($data->ir_st_amount) }}</strong></td>
                                 <td>{{ $data->ir_st_status }}</td>
                                 <td>{{ $data->ir_nd_date }}</td>
-                                <td>{{ $data->ir_nd_amount }}</td>
+                                <td><strong>{{ number_format($data->ir_nd_amount) }}</strong></td>
                                 <td>{{ $data->ir_nd_status }}</td>
                                 <td>{{ $data->pa_date }}</td>
-                                <td>{{ $data->pa_amount }}</td>
+                                <td><strong>{{ number_format($data->pa_amount) }}</strong></td>
                                 <td>{{ $data->pa_status }}</td>
                                 <td>{{ $data->fr_date }}</td>
-                                <td>{{ $data->fr_amount }}</td>
+                                <td><strong>{{ number_format($data->fr_amount) }}</strong></td>
                                 <td>{{ $data->fr_status }}</td>
-                                <td>{{ $data->claim_amount }}</td>
-                                <td>{{ $data->fee_idr }}</td>
-                                <td>{{ $data->fee_usd }}</td>
-                                <td>{{ $data->wip_idr }}</td>
-                                <td>{{ $data->wip_usd }}</td>
                                 <td>{{ $data->remark }}</td>
                                 <td>{{ $data->status->nama_status }}</td>
                             </tr>
