@@ -14,6 +14,6 @@
 
 @include('beautymail::templates.sunny.contentEnd')
 
-@include('beautymail::templates.minty.button', ['text' => 'Click', 'link' => '/reason'])
+@include('beautymail::templates.minty.button', ['text' => 'Click', 'link' => 'http://axisers.com/reason'])
 
 @stop
