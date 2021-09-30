@@ -77,3 +77,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('report-empat', ReportEmpatController::class);
     Route::resource('report-lima', ReportLimaController::class);
 });
+
+Route::get('/reason', function () {
+    return view('emails.reason');
+})->name('reason');

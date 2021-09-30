@@ -24,9 +24,9 @@ return [
         'address'     => null,
 
         'logo'        => [
-            'path'   => '%PUBLIC%/asset/logo.png',
-            'width'  => 100,
-            'height' => 70,
+            'path'   => '',
+            'width'  => '',
+            'height' => '',
         ],
 
         'twitter'  => null,
