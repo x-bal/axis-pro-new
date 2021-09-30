@@ -278,7 +278,7 @@ class CaseListController extends Controller
             // $claim_amount = str_replace(',', '', $request->claim_amount);
             DB::beginTransaction();
             $caseList->update([
-                'file_no' => $request->file_no.'-JAK',
+                'file_no' => $request->file_no . '-JAK',
                 'insurance_id' => $request->insurance,
                 'adjuster_id' => $request->adjuster,
                 'broker_id' => $request->broker,
@@ -387,6 +387,16 @@ class CaseListController extends Controller
                 $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');
                 $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
             }
+            return view('case-list.laporan', [
+                'from' => $request->from,
+                'to' => $request->to,
+                'case' => $case,
+                'adjuster' => $request->adjuster,
+                'claim_amount_idr' => $claim_amount_idr,
+                'claim_amount_usd' => $claim_amount_usd,
+                'fee_idr' => $fee_idr,
+                'fee_usd' => $fee_usd
+            ]);
         } else {
             $case = CaseList::whereBetween('instruction_date', [$request->from, $request->to])->where('file_status_id', $request->status)->where('adjuster_id', auth()->user()->id)->get();
 
@@ -404,26 +414,33 @@ class CaseListController extends Controller
                 $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');
                 $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
             }
+            return view('case-list.laporan', [
+                'from' => $request->from,
+                'to' => $request->to,
+                'status' => $request->status,
+                'case' => $case,
+                'claim_amount_idr' => $claim_amount_idr,
+                'claim_amount_usd' => $claim_amount_usd,
+                'fee_idr' => $fee_idr,
+                'fee_usd' => $fee_usd
+            ]);
         }
-
-        return view('case-list.laporan', [
-            'from' => $request->from,
-            'to' => $request->to,
-            'status' => $request->status,
-            'case' => $case,
-            'claim_amount_idr' => $claim_amount_idr,
-            'claim_amount_usd' => $claim_amount_usd,
-            'fee_idr' => $fee_idr,
-            'fee_usd' => $fee_usd
-        ]);
     }
     public function excel(Request $request)
     {
-        $this->validate($request, [
-            'from' => 'required',
-            'to' => 'required',
-            'status' => 'required'
-        ]);
+        if (auth()->user()->hasRole('admin')) {
+            $this->validate($request, [
+                'from' => 'required',
+                'to' => 'required',
+                'adjuster' => 'required'
+            ]);
+        } else {
+            $this->validate($request, [
+                'from' => 'required',
+                'to' => 'required',
+                'status' => 'required'
+            ]);
+        }
 
         // ob_end_clean();
         // ob_start();

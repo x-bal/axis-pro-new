@@ -42,12 +42,23 @@
                                 <input type="date" id="to" name="to" value="{{ $to }}" readonly class="form-control">
                             </div>
                         </div>
+                        @if(auth()->user()->hasRole('admin'))
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="adjuster">adjuster</label>
+                                <input type="text" id="adjuster" name="adjuster" value="{{ $adjuster }}" readonly class="form-control">
+                            </div>
+                        </div>
+                        @else
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="status">status</label>
                                 <input type="text" id="status" name="status" value="{{ $status }}" readonly class="form-control">
                             </div>
                         </div>
+
+                        @endif
                     </div>
                 </div>
 

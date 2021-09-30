@@ -50,9 +50,11 @@ class CronLima extends Command
 
                 if ($case->fr_status == 0) {
                     if ($date > $limit) {
-                        Mail::raw("Your time has been exceeded from limit, please upload the report.", function ($message) use ($case) {
-                            // $message->from('axis-pro@gmail.com');
-                            $message->to($case->adjuster->email)->subject('Reminder');
+                        $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
+                        $beautymail->send('emails.welcome', ['adjuster' => $case->adjuster->nama_lengkap, 'content' => 'Your time has been exceeded from limit, please upload the report 5.', 'report' => 'Report 5'], function ($message) use ($case) {
+                            $message
+                                ->to($case->adjuster->email, $case->adjuster->nama_lengkap)
+                                ->subject('Reminder - Report 5');
                         });
                         $case->update(['fr_limit' => Carbon::parse($limit)->addDay(7)->format('Y-m-d')]);
                     }
