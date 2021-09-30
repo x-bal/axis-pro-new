@@ -60,7 +60,7 @@ class CaseListController extends Controller
                     $btn = '<div class="btn-group"><a href="/case-list/' . $row->id . '/edit" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
                     <form method="post" action="' . route('case-list.destroy', $row->id) . '">
                     ' . csrf_field() . method_field('delete') . '
-                    <button type="submit" class="btn btn-sm btn-danger"><i class="fab fa-bitbucket"></i></button>
+                    <button type="submit" onclick="return confirm(`Anda Yakin Ingin Menghapus Data Case List?`)" class="btn btn-sm btn-danger"><i class="fab fa-bitbucket"></i></button>
                     </form>
                      </div>';
                     //     $btn .= "<form action='' method='post' style='display: inline;'>
