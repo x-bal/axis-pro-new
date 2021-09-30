@@ -448,6 +448,26 @@ class CaseListController extends Controller
         return Excel::download(new CaseListExport($request->except(['_token'])), 'Case List ' . $timestamp . ' Report.xlsx');
     }
 
+    public function invoice($id)
+    {
+        $case = CaseList::find($id);
+        $amount = 0;
+
+        foreach ($case->expense as $expense) {
+            $amount += $expense->amount;
+        }
+
+        if ($amount > 0) {
+            $case->update([
+                'is_ready' => 1
+            ]);
+
+            return back()->with('success', 'Your case is ready to generate invoice');
+        } else {
+            return back()->with('error', 'Your expense is empty');
+        }
+    }
+
     public function restore()
     {
         Invoice::onlyTrashed()->restore();

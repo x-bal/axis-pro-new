@@ -25,6 +25,7 @@
                     <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pen"> Create
                     </button> -->
                     <div>
+                        <span class="btn btn-success">Ready to generate : {{ $caselist->count() }}</span>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable"><i class="fas fa-pen"></i> Create</button>
                     </div>
 
@@ -316,7 +317,7 @@
         })
     }
     $(`#no_case`).select2({
-        placeholder: 'Select Product',
+        placeholder: 'Select File No',
         ajax: {
             url: `/api/autocomplete`,
             processResults: function(data) {

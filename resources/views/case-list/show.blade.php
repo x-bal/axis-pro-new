@@ -1202,8 +1202,21 @@
                 </div>
 
                 <div class="button mt-3">
-                    <a href="{{ route('case-list.index') }}" class="btn btn-success">Kembali</a>
+                    @if($caseList->pa_status == 1 || $caseList->ir_st_status == 1)
+                    @if(request()->get('page') == "nav-report-4" )
+                    <form action="{{ route('case-list.invoice', $caseList->id) }}" method="post">
+                        @csrf
+                        <a href="{{ route('case-list.index') }}" class="btn btn-success">Kembali</a>
+                        <button type="submit" class="btn btn-primary">Cetak Invoice</button>
+                    </form>
+                    @endif
+                    @endif
+
+                    @if($caseList->ir_status == 1 && $caseList->pa_status == 1)
+                    @if(request()->get('page') == "nav-report-5")
                     <a href="#" class="btn btn-primary">Cetak Invoice</a>
+                    @endif
+                    @endif
                 </div>
             </div>
         </div>

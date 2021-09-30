@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/report/{rp}', [App\Http\Controllers\HomeController::class, 'report'])->name('report');
     Route::patch('/update/{user:id}', [App\Http\Controllers\HomeController::class, 'update'])->name('profile.update');
 
+    Route::post('/case-list/invoice/{id}', [CaseListController::class, 'invoice'])->name('case-list.invoice');
     Route::post('/case-list/status', [CaseListController::class, 'status'])->name('caselist.status');
     Route::post('/case-list/ir-status', [CaseListController::class, 'irstatus']);
     Route::post('/case-list/getcase', [CaseListController::class, 'getcase']);

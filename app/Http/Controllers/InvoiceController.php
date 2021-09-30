@@ -20,9 +20,11 @@ class InvoiceController extends Controller
     public function index()
     {
         return view('invoice.index', [
-            'invoice' => Invoice::get(),
+            'invoice' => Invoice::whereHas('caselist', function ($case) {
+                return $case->where('is_ready', 2);
+            })->get(),
             'member' => MemberInsurance::get(),
-            'caselist' => CaseList::get(),
+            'caselist' => CaseList::where('is_ready', 1)->get(),
             'bank' => Bank::get()
         ]);
     }
@@ -77,6 +79,7 @@ class InvoiceController extends Controller
                     'grand_total' => $total * $data->share / 100
                 ]);
             }
+            $caselist->update(['is_ready' => 2]);
             DB::commit();
             return back()->with('success', 'Success create Invoice');
         } catch (Exception $err) {
@@ -132,7 +135,7 @@ class InvoiceController extends Controller
                 'usd' => $usd,
                 'rupiah' => $rupiah
             ]);
-        }else{
+        } else {
             $rupiah = Invoice::whereHas('caselist', function ($qr) {
                 return $qr->where('currency', 'RP');
             })->whereBetween('date_invoice', [$request->from, $request->to])->where('status_paid', $request->status)->sum('grand_total');
