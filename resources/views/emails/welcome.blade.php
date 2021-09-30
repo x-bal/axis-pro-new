@@ -14,9 +14,6 @@
 
 @include('beautymail::templates.sunny.contentEnd')
 
-@include('beautymail::templates.sunny.button', [
-'title' => 'Click',
-'link' => 'http://axisers.com/reason'
-])
+
 
 @stop

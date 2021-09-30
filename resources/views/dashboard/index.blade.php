@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="row mt-3">
-        <div class="col-md-4">
+        <div class="col-md-4 mt-3">
             <div class="card">
                 <div class=" card-body bg-danger">
                     <i class="fas fa-file-alt fa-4x text-white"></i>
@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 mt-3">
             <div class="card">
                 <div class=" card-body bg-primary">
                     <i class="fas fa-file-alt fa-4x text-white"></i>
@@ -65,7 +65,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 mt-3">
             <div class="card">
                 <div class=" card-body bg-success">
                     <i class="fas fa-file-alt fa-4x text-white"></i>
