@@ -11,7 +11,6 @@
                     </div>
                     <form method="POST" action="">
                         @csrf
-
                         <div class="form-group">
                             <label for="reason">{{ __('Reason') }}</label>
 

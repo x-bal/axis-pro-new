@@ -9,11 +9,14 @@
 
 @include('beautymail::templates.sunny.contentStart')
 
-<h3 class="secondary"><strong>Hello {{ $adjuster }}</strong></h3>
+<h4 class="secondary"><strong>Hello {{ $adjuster }}</strong></h4>
 <p>{{ $content }}</p>
 
 @include('beautymail::templates.sunny.contentEnd')
 
-@include('beautymail::templates.minty.button', ['text' => 'Click', 'link' => 'http://axisers.com/reason'])
+@include('beautymail::templates.sunny.button', [
+'title' => 'Click',
+'link' => 'http://axisers.com/reason'
+])
 
 @stop
