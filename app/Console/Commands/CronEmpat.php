@@ -47,11 +47,12 @@ class CronEmpat extends Command
 
             if ($case->ir_status == 0) {
                 $limit = Carbon::parse($case->fr_limit)->format('Ymd');
+                $new = Carbon::parse($limit)->addDay(7)->format('d/m/Y');
 
                 if ($case->fr_status == 0) {
                     if ($date > $limit) {
                         $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
-                        $beautymail->send('emails.welcome', ['adjuster' => $case->adjuster->nama_lengkap, 'content' => 'Your time has been exceeded from limit, please upload the report 4.', 'report' => 'Report 4'], function ($message) use ($case) {
+                        $beautymail->send('emails.welcome', ['adjuster' => $case->adjuster->nama_lengkap, 'report' => 'Report 4', 'newlimit' => $new, 'fileno' => $case->file_no], function ($message) use ($case) {
                             $message
                                 ->to($case->adjuster->email, $case->adjuster->nama_lengkap)
                                 ->subject('Reminder - Report 4');
@@ -61,14 +62,15 @@ class CronEmpat extends Command
                 }
             } else {
                 $limit = Carbon::parse($case->pa_limit)->format('Ymd');
+                $new = Carbon::parse($limit)->addDay(14)->format('d/m/Y');
 
                 if ($case->pa_status == 0) {
                     if ($date > $limit) {
                         $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
-                        $beautymail->send('emails.welcome', ['adjuster' => $case->adjuster->nama_lengkap, 'content' => 'Your time has been exceeded from limit, please upload the report 4.', 'report' => 'Report 4'], function ($message) use ($case) {
+                        $beautymail->send('emails.welcome', ['adjuster' => $case->adjuster->nama_lengkap, 'report' => 'Report 4', 'newlimit' => $new, 'fileno' => $case->file_no], function ($message) use ($case) {
                             $message
                                 ->to($case->adjuster->email, $case->adjuster->nama_lengkap)
-                                ->subject('Reminder - Report 2');
+                                ->subject('Reminder - Report 4');
                         });
                         $case->update(['pa_limit' => Carbon::parse($limit)->addDay(14)->format('Y-m-d')]);
                     }

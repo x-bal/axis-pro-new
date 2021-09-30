@@ -1,19 +1,35 @@
-@extends('beautymail::templates.sunny')
+@extends('beautymail::templates.ark')
 
 @section('content')
 
-@include ('beautymail::templates.sunny.heading' , [
-'heading' => 'Reminder - ' . $report,
+@include('beautymail::templates.ark.heading', [
+'heading' => 'Dear '. $adjuster .',',
 'level' => 'h1'
 ])
 
-@include('beautymail::templates.sunny.contentStart')
+@include('beautymail::templates.ark.contentStart')
 
-<h4 class="secondary"><strong>Hello {{ $adjuster }}</strong></h4>
-<p>{{ $content }}</p>
+<p>This is auto message.</p>
 
-@include('beautymail::templates.sunny.contentEnd')
+<p>
+    Please upload your {{ $report }} before {{ $newlimit }}
+</p>
+
+<p>With</p>
+
+<p>
+    Case No : <b>{{ $fileno }} </b>
+</p>
 
 
+
+Do not reply this email <br>
+This mail is automatically sent from <br>
+Axis pro <br> <br>
+
+Thankyou
+</p>
+
+@include('beautymail::templates.ark.contentEnd')
 
 @stop

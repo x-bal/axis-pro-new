@@ -47,11 +47,12 @@ class CronTiga extends Command
 
             if ($case->ir_status == 0) {
                 $limit = Carbon::parse($case->pa_limit)->format('Ymd');
+                $new = Carbon::parse($limit)->addDay(14)->format('d/m/Y');
 
                 if ($case->pa_status == 0) {
                     if ($date > $limit) {
                         $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
-                        $beautymail->send('emails.welcome', ['adjuster' => $case->adjuster->nama_lengkap, 'content' => 'Your time has been exceeded from limit, please upload the report 3.', 'report' => 'Report 3'], function ($message) use ($case) {
+                        $beautymail->send('emails.welcome', ['adjuster' => $case->adjuster->nama_lengkap, 'report' => 'Report 3', 'newlimit' => $new, 'fileno' => $case->file_no], function ($message) use ($case) {
                             $message
                                 ->to($case->adjuster->email, $case->adjuster->nama_lengkap)
                                 ->subject('Reminder - Report 3');
@@ -61,11 +62,12 @@ class CronTiga extends Command
                 }
             } else {
                 $limit = Carbon::parse($case->ir_st_limit)->format('Ymd');
+                $new = Carbon::parse($limit)->addDay(14)->format('d/m/Y');
 
                 if ($case->ir_st_status == 0) {
                     if ($date > $limit) {
                         $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
-                        $beautymail->send('emails.welcome', ['adjuster' => $case->adjuster->nama_lengkap, 'content' => 'Your time has been exceeded from limit, please upload the report 3.', 'report' => 'Report 3'], function ($message) use ($case) {
+                        $beautymail->send('emails.welcome', ['adjuster' => $case->adjuster->nama_lengkap, 'report' => 'Report 3', 'newlimit' => $new, 'fileno' => $case->file_no], function ($message) use ($case) {
                             $message
                                 ->to($case->adjuster->email, $case->adjuster->nama_lengkap)
                                 ->subject('Reminder - Report 3');

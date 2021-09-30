@@ -48,8 +48,10 @@ class CronDua extends Command
 
             if ($case->pr_status == 0) {
                 if ($date > $limit) {
+                    $new = Carbon::parse($limit)->addDay(14)->format('d/m/Y');
+
                     $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
-                    $beautymail->send('emails.welcome', ['adjuster' => $case->adjuster->nama_lengkap, 'content' => 'Your time has been exceeded from limit, please upload the report 2.', 'report' => 'Report 2'], function ($message) use ($case) {
+                    $beautymail->send('emails.welcome', ['adjuster' => $case->adjuster->nama_lengkap, 'report' => 'Report 2', 'newlimit' => $new, 'fileno' => $case->file_no], function ($message) use ($case) {
                         $message
                             ->to($case->adjuster->email, $case->adjuster->nama_lengkap)
                             ->subject('Reminder - Report 2');

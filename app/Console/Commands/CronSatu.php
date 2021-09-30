@@ -45,11 +45,12 @@ class CronSatu extends Command
         foreach ($caseLists as $case) {
             $limit = Carbon::parse($case->ia_limit)->format('Ymd');
             $date = Carbon::now()->format('Ymd');
+            $new = Carbon::parse($limit)->addDay(7)->format('d/m/Y');
 
             if ($case->ia_status == 0) {
                 if ($date > $limit) {
                     $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
-                    $beautymail->send('emails.welcome', ['adjuster' => $case->adjuster->nama_lengkap, 'content' => 'Your time has been exceeded from limit, please upload the report 1.', 'report' => 'Report 1'], function ($message) use ($case) {
+                    $beautymail->send('emails.welcome', ['adjuster' => $case->adjuster->nama_lengkap, 'report' => 'Report 1', 'newlimit' => $new, 'fileno' => $case->file_no], function ($message) use ($case) {
                         $message
                             ->to($case->adjuster->email, $case->adjuster->nama_lengkap)
                             ->subject('Reminder - Report 1');
