@@ -1219,7 +1219,6 @@
                         <a href="{{ route('case-list.index') }}" class="btn btn-success">Kembali</a>
                         <button type="submit" class="btn btn-primary">Cetak Invoice</button>
                     </form>
-                    <a href="#" class="btn btn-primary">Cetak Invoice</a>
                     @endif
                     @endif
                 </div>
