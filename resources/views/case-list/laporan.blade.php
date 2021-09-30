@@ -104,8 +104,6 @@
                                 <th rowspan="2">Fr Date</th>
                                 <th rowspan="2">Fr Amount</th>
                                 <th rowspan="2">Fr Status</th>
-                                <th rowspan="2">WIP IDR</th>
-                                <th rowspan="2">WIP USD</th>
                                 <th rowspan="2">Remark</th>
                                 <th rowspan="2">File Status</th>
                             </tr>
@@ -162,8 +160,6 @@
                                 <td>{{ $data->fr_date }}</td>
                                 <td><strong>{{ number_format($data->fr_amount) }}</strong></td>
                                 <td>{{ $data->fr_status }}</td>
-                                <td><strong>{{ number_format($data->wip_idr) }}</strong></td>
-                                <td><strong>{{ number_format($data->wip_usd) }}</strong></td>
                                 <td>{{ $data->remark }}</td>
                                 <td>{{ $data->status->nama_status }}</td>
                             </tr>

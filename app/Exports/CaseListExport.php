@@ -24,12 +24,6 @@ class CaseListExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
     {
         $collection = new Collection();
         if (auth()->user()->hasRole('admin')) {
-            $status = $this->attr['adjuster'];
-        } else {
-
-            $status = $this->attr['status'];
-        }
-        if (auth()->user()->hasRole('admin')) {
             if ($this->attr['adjuster'] == "All") {
                 $case =  CaseList::select(
                     'id',
@@ -159,7 +153,7 @@ class CaseListExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
                 'wip_usd',
                 'remark',
                 'file_status_id'
-            )->whereBetween('instruction_date', [$this->attr['from'], $this->attr['to']])->where('file_status_id', $status)->get();
+            )->whereBetween('instruction_date', [$this->attr['from'], $this->attr['to']])->where('adjuster_id', $this->attr['adjuster'])->get();
 
             foreach ($case as $data) {
                 $collection->push([
@@ -336,7 +330,7 @@ class CaseListExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
                 'wip_usd',
                 'remark',
                 'file_status_id'
-            )->where('adjuster_id', auth()->user()->id)->whereBetween('instruction_date', [$this->attr['from'], $this->attr['to']])->where('file_status_id', $status)->get();
+            )->where('adjuster_id', auth()->user()->id)->whereBetween('instruction_date', [$this->attr['from'], $this->attr['to']])->where('file_status_id', $this->attr['status'])->get();
 
             foreach ($case as $data) {
                 $collection->push([
