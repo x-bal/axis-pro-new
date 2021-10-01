@@ -19,9 +19,9 @@ class CaseListController extends Controller
         Gate::allows(abort_unless('case-list-access', 403));
 
         if (auth()->user()->hasRole('admin')) {
-            $data = CaseList::all();
+            $data = CaseList::orderBy('file_no','desc')->get();
         } else {
-            $data = CaseList::where('adjuster_id', auth()->user()->id)->get();
+            $data = CaseList::orderBy('file_no','desc')->where('adjuster_id', auth()->user()->id)->get();
         }
 
         if (request()->ajax()) {
