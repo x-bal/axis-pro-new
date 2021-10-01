@@ -48,7 +48,9 @@ class CaseListController extends Controller
                     }
                 })
                 ->editColumn('leader', function ($row) {
-                    return $row->insurance->name;
+                    foreach ($row->member as $member) {
+                        return $member->is_leader == 1 ? Client::find($member->member_insurance)->name ?? '-' : '-';
+                    }
                 })
                 ->editColumn('cause', function ($row) {
                     return $row->incident->type_incident;
