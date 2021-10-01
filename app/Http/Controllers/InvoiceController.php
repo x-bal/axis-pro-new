@@ -107,6 +107,8 @@ class InvoiceController extends Controller
     {
         Invoice::where('case_list_id', $invoice->case_list_id)->delete();
         Invoice::onlyTrashed()->forceDelete();
+        CaseList::find($invoice->case_list_id)->update(['is_ready' => 1]);
+
         return back()->with('success', 'Delete Successfull');
     }
     public function laporan(Request $request)
