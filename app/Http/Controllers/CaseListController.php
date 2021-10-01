@@ -14,14 +14,14 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class CaseListController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         Gate::allows(abort_unless('case-list-access', 403));
 
         if (auth()->user()->hasRole('admin')) {
-            $data = CaseList::orderBy('file_no','desc')->get();
+            $data = CaseList::orderBy('file_no', 'desc')->get();
         } else {
-            $data = CaseList::orderBy('file_no','desc')->where('adjuster_id', auth()->user()->id)->get();
+            $data = CaseList::orderBy('file_no', 'desc')->where('adjuster_id', auth()->user()->id)->get();
         }
 
         if (request()->ajax()) {
