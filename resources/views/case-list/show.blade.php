@@ -4,7 +4,7 @@
 <div class="row mb-5">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header bg-primary text-light" style="font-weight: bold;">DETAIL CASE / INSURANCE : {{ $caseList->insurance->name }} / FILE NO : {{ $caseList->file_no }} / INSTRUCTION DATE : {{ Carbon\Carbon::parse($caseList->instruction_date)->format('d/m/Y') }} // TANGGAL INVOICE : //</div>
+            <div class="card-header bg-primary text-light" style="font-weight: bold; background-color: #193C8F !important;">DETAIL CASE / INSURANCE : {{ $caseList->insurance->name }} / FILE NO : {{ $caseList->file_no }} / INSTRUCTION DATE : {{ Carbon\Carbon::parse($caseList->instruction_date)->format('d/m/Y') }}</div>
         </div>
 
         <div class="card mt-3">
