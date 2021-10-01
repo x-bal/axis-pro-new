@@ -91,7 +91,7 @@
                                     <td>:</td>
                                     <td>
                                         @foreach($caseList->member as $member)
-                                        <p>{{ $caseList->insurance->name }} ({{ $member->share }})</p>
+                                        <p>{{ App\Models\Client::find($member->member_insurance)->name ?? 'Kosong' }} ({{ $member->share }})</p>
                                         @endforeach
                                     </td>
                                     <td>LOCATION RISK / PROJECT</td>
