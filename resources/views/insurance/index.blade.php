@@ -24,7 +24,7 @@
                                 <th>Hp</th>
                                 <th>Email</th>
                                 <!-- <th>Status</th> -->
-                                <th>PPN</th>
+                                <!-- <th>PPN</th> -->
                                 <!-- <th>Type</th> -->
                                 <th>Actions</th>
                             </tr>
@@ -40,7 +40,7 @@
                                 <td>{{ $client->no_hp }}</td>
                                 <td>{{ $client->email }}</td>
                                 <!-- <td>{{ $client->status }}</td> -->
-                                <td>{{ $client->ppn }}%</td>
+                                {{-- <td>{{ $client->ppn }}%</td> --}}
                                 <!-- <td>{{ $client->type }}</td> -->
                                 <td>
                                     @can('insurance-edit')

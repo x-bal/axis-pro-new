@@ -91,7 +91,7 @@
                                     <td>:</td>
                                     <td>
                                         @foreach($caseList->member as $member)
-                                        <p>{{ App\Models\Client::find($member->member_insurance)->name ?? 'Kosong' }} ({{ $member->share }})</p>
+                                        <p>{{ App\Models\Client::find($member->member_insurance)->name ?? 'Kosong' }} ({{ $member->share }}) - @if($member->is_leader) <strong class="text-primary">Leader</strong> @else <strong class="text-secondary">Member</strong> @endif</p>
                                         @endforeach
                                     </td>
                                     <td>LOCATION RISK / PROJECT</td>

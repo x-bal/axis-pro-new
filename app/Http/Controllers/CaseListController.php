@@ -131,6 +131,7 @@ class CaseListController extends Controller
             'no_leader_policy' => 'required',
             'instruction_date' => 'required',
             'leader_claim_no' => 'required',
+            'survey_date' => 'required'
         ]);
         // $amount = str_replace(',', '', $request->amount);
         // $claim_amount = str_replace(',', '', $request->claim_amount);
@@ -155,7 +156,8 @@ class CaseListController extends Controller
                     'no_leader_policy' => $request->no_leader_policy,
                     'instruction_date' => $request->instruction_date,
                     'leader_claim_no' => $request->leader_claim_no,
-                    'file_status_id' => 1
+                    'file_status_id' => 1,
+                    'survey_date' => $request->survey_date
                 ]);
                 for ($i = 1; $i <= count($request->member); $i++) {
                     MemberInsurance::create([
@@ -295,6 +297,7 @@ class CaseListController extends Controller
                 'end' => $request->end,
                 'dol' => $request->dol,
                 'category' => $request->category,
+                'survey_date' => $request->survey_date
             ]);
             MemberInsurance::where('file_no_outstanding', $caseList->id)->delete();
             for ($i = 0; $i < count($request->member); $i++) {
