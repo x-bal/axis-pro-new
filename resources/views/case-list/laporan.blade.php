@@ -140,7 +140,7 @@
                                 <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->fee_usd) }} @endif</td>
                                 <td>@if($data->currency == 'RP')<strong>Rp.</strong> {{ number_format($data->expense->sum('amount')) }} @php $expense_idr += $data->expense->sum('amount') @endphp @endif</td>
                                 <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->expense->sum('amount')) }} @php $expense_usd += $data->expense->sum('amount') @endphp @endif</td>
-                                <td>{{ $data->instruction_date }}</td>
+                                <td>{{ \Carbon\Carbon::parse($data->instruction_date)->format('d/m/Y') }}</td>
                                 <td>{{ $data->survey_date }}</td>
                                 <td>{{ $data->now_update }}</td>
                                 <td>{{ $data->ia_date }}</td>
@@ -167,7 +167,7 @@
                             </tr>
                             @endforeach
                             <tr>
-                                <td colspan="8">total</td>
+                                <td colspan="9">total</td>
                                 <td>{{ number_format($claim_amount_idr) }}</td>
                                 <td>{{ number_format($claim_amount_usd) }}</td>
                                 <td>{{ number_format($fee_idr) }}</td>
