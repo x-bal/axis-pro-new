@@ -71,6 +71,7 @@
                     <table class="table table-bordered" id="table" style="font-size: 15px;">
                         <thead>
                             <tr>
+                                <th rowspan="2">No.</th>
                                 <th rowspan="2">File No</th>
                                 <th rowspan="2">Insurance</th>
                                 <th rowspan="2">Adjuster</th>
@@ -124,6 +125,7 @@
                         <tbody>
                             @foreach($case as $data)
                             <tr>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->file_no }}</td>
                                 <td>{{ $data->insurance->name }}</td>
                                 <td><strong>{{ $data->adjuster->nama_lengkap }}</strong></td>
