@@ -140,26 +140,26 @@
                                 <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->fee_usd) }} @endif</td>
                                 <td>@if($data->currency == 'RP')<strong>Rp.</strong> {{ number_format($data->expense->sum('amount')) }} @php $expense_idr += $data->expense->sum('amount') @endphp @endif</td>
                                 <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->expense->sum('amount')) }} @php $expense_usd += $data->expense->sum('amount') @endphp @endif</td>
-                                <td>{{ \Carbon\Carbon::parse($data->instruction_date)->format('d/m/Y') }}</td>
-                                <td>{{ $data->survey_date }}</td>
-                                <td>{{ $data->now_update }}</td>
-                                <td>{{ $data->ia_date }}</td>
+                                <td>{{ $data->instruction_date ? \Carbon\Carbon::parse($data->instruction_date)->format('d/m/Y') : '' }}</td>
+                                <td>{{ $data->survey_date ? \Carbon\Carbon::parse($data->survey_date)->format('d/m/Y') : '' }}</td>
+                                <td>{{ $data->now_update ? \Carbon\Carbon::parse($data->now_update)->format('d/m/Y') : '' }}</td>
+                                <td>{{ $data->ia_date ? \Carbon\Carbon::parse($data->ia_date)->format('d/m/Y') : ''}}</td>
                                 <td> <strong>{{ number_format($data->ia_amount) }}</strong></td>
                                 <td>{{ $data->ia_status }}</td>
-                                <td>{{ $data->pr_date }}</td>
+                                <td>{{ $data->pr_date ? \Carbon\Carbon::parse($data->pr_date)->format('d/m/Y') : '' }}</td>
                                 <td><strong>{{ number_format($data->pr_amount) }}</strong></td>
                                 <td>{{ $data->pr_status }}</td>
                                 <td>{{ $data->ir_status }}</td>
-                                <td>{{ $data->ir_st_date }}</td>
+                                <td>{{ $data->ir_st_date ? \Carbon\Carbon::parse($data->ir_st_date)->format('d/m/Y') : '' }}</td>
                                 <td><strong>{{ number_format($data->ir_st_amount) }}</strong></td>
                                 <td>{{ $data->ir_st_status }}</td>
-                                <td>{{ $data->ir_nd_date }}</td>
+                                <td>{{ $data->ir_nd_date ? \Carbon\Carbon::parse($data->ir_nd_date)->format('d/m/Y') : '' }}</td>
                                 <td><strong>{{ number_format($data->ir_nd_amount) }}</strong></td>
                                 <td>{{ $data->ir_nd_status }}</td>
-                                <td>{{ $data->pa_date }}</td>
+                                <td>{{ $data->pa_date ? \Carbon\Carbon::parse($data->pa_date)->format('d/m/Y') : '' }}</td>
                                 <td><strong>{{ number_format($data->pa_amount) }}</strong></td>
                                 <td>{{ $data->pa_status }}</td>
-                                <td>{{ $data->fr_date }}</td>
+                                <td>{{ $data->fr_date ? \Carbon\Carbon::parse($data->fr_date)->format('d/m/Y') : '' }}</td>
                                 <td><strong>{{ number_format($data->fr_amount) }}</strong></td>
                                 <td>{{ $data->fr_status }}</td>
                                 <td>{{ $data->remark }}</td>
