@@ -20,6 +20,10 @@ class Client extends Model
         return $this->belongsTo(MemberInsurance::class, 'member_insurance');
     }
 
+    public function share()
+    {
+        return $this->hasMany(MemberInsurance::class, 'member_insurance');
+    }
     public function invoice()
     {
         return $this->hasMany(Invoice::class, 'member_id');

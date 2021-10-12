@@ -34,7 +34,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $client->brand }}</td>
-                                <td>{{ $client->name }}</td>
+                                <td><a href="{{ route('insurance.show', $client->id) }}">{{ $client->name }}</a></td>
                                 <td>{{ $client->address }}</td>
                                 <td>{{ $client->no_telp }}</td>
                                 <td>{{ $client->no_hp }}</td>

@@ -54,7 +54,9 @@ class InsuranceController extends Controller
 
     public function show(Client $insurance)
     {
-        //
+        return view('insurance.show',[
+            'clients' => $insurance
+        ]);
     }
 
     public function edit(Client $insurance)
