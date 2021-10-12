@@ -56,7 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/case-list/excel', [CaseListController::class, 'excel'])->name('caselist.excel');
     Route::get('/case-list/restore', [CaseListController::class, 'restore'])->name('caselist.restore');
     Route::post('expense/laporan',[ExpenseController::class, 'laporan'])->name('expense.laporan');
-    Route::get('/expense',[ExpenseController::class, 'index'])->name('expense.index');
+    Route::get('/expenses',[ExpenseController::class, 'index'])->name('expense.index');
     Route::resource('/case-list', CaseListController::class);
     Route::resource('/cause-of-loss', IncidentController::class);
     Route::resource('/type-of-business', PolicyController::class);
@@ -64,7 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/fee-based', FeeBasedController::class);
     Route::resource('/bank', BankController::class);
     Route::resource('/insurance', InsuranceController::class);
-    Route::resource('/users', UserController::class);
+    Route::resource('/users', UsercController::class);
     Route::resource('/roles', RoleController::class);
     Route::resource('/permission', PermissionController::class);
     Route::post('/invoice/laporan', [InvoiceController::class, 'laporan'])->name('invoice.laporan');
