@@ -222,7 +222,7 @@
         </div>
     </div>
 
-    <!-- <div class="col-md-3">
+    <div class="col-md-3">
         <div class="form-group">
             <label for="survey_date">Survey Date</label>
             <input class="form-control @error('survey_date') is-invalid @enderror" value="{{ $caseList->survey_date ?? '' }}" name="survey_date" id="survey_date" type="date">
@@ -232,7 +232,7 @@
             </div>
             @enderror
         </div>
-    </div> -->
+    </div>
 
     <div class="col-md-3">
         <div class="form-group">
