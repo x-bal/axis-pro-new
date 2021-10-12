@@ -18,7 +18,9 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        //
+        return view('expense.index',[
+            'expense' => Expense::get()
+        ]);
     }
 
     /**
@@ -100,5 +102,12 @@ class ExpenseController extends Controller
     public function download()
     {
         return Response::download('expense/example-expense.xlsx');
+    }
+    public function laporan(Request $request)
+    {
+        $expense = Expense::whereBetween('tanggal', [$request->from, $request->to])->get();
+        return view('expense.laporan',[
+            'expense' => $expense
+        ]);
     }
 }

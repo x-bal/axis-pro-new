@@ -91,6 +91,11 @@
                             <a href="{{ route('invoice.index') }}" class="nav-link"><i class="fas fa-chart-bar"></i> Invoice</a>
                         </li>
                         @endcan
+                        @can('expense-access')
+                        <li class="nav-item {{ request()->is('expense*') ? 'active' : '' }}">
+                            <a href="{{ route('expense.index') }}" class="nav-link"><i class="fas fa-coins"></i> Expense</a>
+                        </li>
+                        @endcan
                         @can('master-access')
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link {{ request()->is('cause-of-loss*') ? 'active' : '' }} {{ request()->is('type-of-business*') ? 'active' : '' }} {{ request()->is('broker*') ? 'active' : '' }} {{ request()->is('fee-based*') ? 'active' : '' }} {{ request()->is('bank*') ? 'active' : '' }} dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

@@ -17,6 +17,6 @@ class Expense extends Model
 
     public function caselist()
     {
-        return $this->belongsTo(CaseList::class);
+        return $this->belongsTo(CaseList::class, 'case_list_id');
     }
 }
