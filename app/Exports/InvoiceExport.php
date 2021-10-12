@@ -22,11 +22,12 @@ class InvoiceExport implements FromCollection, ShouldAutoSize, WithHeadings,With
     }
     public function collection()
     {
+        $no = 1;
         $collection = new Collection();
         $invoice = Invoice::whereBetween('date_invoice', [$this->attr['from'], $this->attr['to']])->get();
         foreach($invoice as $data){
             $collection->push([
-                'id' => $data->id,
+                'id' => $no++,
                 'bank_id' => $data->bank->bank_name ?? 'Kosong',
                 'case_list_id' => $data->caselist->file_no,
                 'no_invoice' => $data->no_invoice,

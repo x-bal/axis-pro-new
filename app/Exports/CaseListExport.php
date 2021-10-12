@@ -22,6 +22,7 @@ class CaseListExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
     }
     public function collection()
     {
+        $no = 1;
         $collection = new Collection();
         if (auth()->user()->hasRole('admin')) {
             if ($this->attr['adjuster'] == "All") {
@@ -69,7 +70,7 @@ class CaseListExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
 
                 foreach ($case as $data) {
                     $collection->push([
-                        "id" => $data->id,
+                        "id" => $no++,
                         "file_no" => $data->file_no,
                         "insurance_id" => $data->insurance->name,
                         "adjuster_id" => $data->adjuster->nama_lengkap,
@@ -157,7 +158,7 @@ class CaseListExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
 
             foreach ($case as $data) {
                 $collection->push([
-                    "id" => $data->id,
+                    "id" => $no++,
                     "file_no" => $data->file_no,
                     "insurance_id" => $data->insurance->name,
                     "adjuster_id" => $data->adjuster->nama_lengkap,
@@ -246,7 +247,7 @@ class CaseListExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
 
                 foreach ($case as $data) {
                     $collection->push([
-                        "id" => $data->id,
+                        "id" => $no++,
                         "file_no" => $data->file_no,
                         "insurance_id" => $data->insurance->name,
                         "adjuster_id" => $data->adjuster->nama_lengkap,
@@ -334,7 +335,7 @@ class CaseListExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
 
             foreach ($case as $data) {
                 $collection->push([
-                    "id" => $data->id,
+                    "id" => $no++,
                     "file_no" => $data->file_no,
                     "insurance_id" => $data->insurance->name,
                     "adjuster_id" => $data->adjuster->nama_lengkap,
