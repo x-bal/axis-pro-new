@@ -28,4 +28,8 @@ class Client extends Model
     {
         return $this->hasMany(Invoice::class, 'member_id');
     }
+    public function caselist()
+    {
+        return $this->hasMany(CaseList::class, 'insurance_id');
+    }
 }
