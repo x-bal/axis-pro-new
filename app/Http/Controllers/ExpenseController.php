@@ -105,6 +105,10 @@ class ExpenseController extends Controller
     }
     public function laporan(Request $request)
     {
+        $this->validate($request,[
+            'from' => 'required',
+            'to' => 'required'
+        ]);
         $expense = Expense::whereBetween('tanggal', [$request->from, $request->to])->get();
         return view('expense.laporan',[
             'expense' => $expense

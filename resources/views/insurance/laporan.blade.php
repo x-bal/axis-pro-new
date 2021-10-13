@@ -31,55 +31,30 @@
                     <table class="table table-bordered" id="table" style="font-size: 15px;">
                         <thead>
                             <tr>
-                                <th>No.</th>
-                                <th>Insurance</th>
-                                <th>File No</th>
-                                <th>Incident</th>
-                                <th>Policy</th>
-                                <th>Category</th>
-                                <th>Instruction Date</th>
+                                <th rowspan="2">No</th>
+                                <th rowspan="2">File No</th>
+                                <th colspan="2">Invoice</th>
+                                <th rowspan="2">Leader / Member</th>
+                                <th rowspan="2">Member Share</th>
+                                <th rowspan="2">Cause Of Lost</th>
+                                <th rowspan="2">Insturction Date</th>
+                            </tr>
+                            <tr>
+                                <th>Rp</th>
+                                <th>Usd</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($client as $data)
+                            @foreach($member as $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <th>{{ $data->name }}</th>
-                                <td>
-                                    <ul class="unstyled-list">
-                                        @foreach($data->caselist->whereBetween('instruction_date',[$from,$to]) as $row)
-                                        <li><a href="{{ route('case-list.show',$row->id) }}">{{ $row->file_no }}</a></li>
-                                        @endforeach
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul class="unstyled-list">
-                                        @foreach($data->caselist->whereBetween('instruction_date',[$from,$to]) as $row)
-                                        <li>{{ $row->incident->type_incident }}</li>
-                                        @endforeach
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul class="unstyled-list">
-                                        @foreach($data->caselist->whereBetween('instruction_date',[$from,$to]) as $row)
-                                        <li>{{ $row->policy->type_policy }}</li>
-                                        @endforeach
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul class="unstyled-list">
-                                        @foreach($data->caselist->whereBetween('instruction_date',[$from,$to]) as $row)
-                                        <li>@if($row->category == 1) Marine @else Non Marine @endif</li>
-                                        @endforeach
-                                    </ul>
-                                </td>
-                                <th>
-                                    <ul class="unstyled-list">
-                                        @foreach($data->caselist->whereBetween('instruction_date',[$from,$to]) as $row)
-                                        <li>{{ \Carbon\Carbon::parse($row->instruction_date)->format('d/m/Y')  }}</li>
-                                        @endforeach
-                                    </ul>
-                                </th>
+                                <td class="text-center"><a href="{{ route('case-list.show', $data->caselist->id) }}">{{ $data->caselist->file_no ?? 'Kosong' }}</a></td>
+                                <td class="text-right">{{ $data->caselist->currency == 'RP' ? number_format($data->caselist->claim_amount) : ''}}</td>
+                                <td class="text-right">{{ $data->caselist->currency == 'USD' ? number_format($data->caselist->claim_amount) : '' }}</td>
+                                <th class="text-center">{{ $data->is_leader ? 'Leader' : 'Member' }}</th>
+                                <td class="text-center">{{ $data->share }}%</td>
+                                <td>{{ $data->caselist->incident->type_incident ?? 'Kosong' }}</td>
+                                <th>{{ $data->caselist->instruction_date }}</th>
                             </tr>
                             @endforeach
                         </tbody>
@@ -101,7 +76,9 @@
             dom: 'Bfrtip',
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
+            ],
+            "paging": false,
+            "ordering": false
         })
     </script>
 </body>

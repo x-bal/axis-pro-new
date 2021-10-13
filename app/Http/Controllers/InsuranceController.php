@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bank;
+use App\Models\CaseList;
 use App\Models\Client;
+use App\Models\MemberInsurance;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -109,7 +111,7 @@ class InsuranceController extends Controller
         $insurance->delete();
         return redirect()->route('insurance.index')->with('success', 'Insurance has been deleted');
     }
-    public function laporan(Request $request)
+    public function laporan(Request $request, $id)
     {
         $this->validate($request,[
             'from' => 'required',
@@ -118,12 +120,11 @@ class InsuranceController extends Controller
         $from = $request->from;
         $to = $request->to;
 
-        $client = Client::whereHas('caselist', function($data) use($from, $to){
+        $member = MemberInsurance::where('member_insurance', $id)->whereHas('caselist', function($data) use($from,$to){
             return $data->whereBetween('instruction_date',[$from, $to]);
         })->get();
-        
         return view('insurance.laporan',[
-            'client' => $client,
+            'member' => $member,
             'from' => $from,
             'to' => $to
         ]);
