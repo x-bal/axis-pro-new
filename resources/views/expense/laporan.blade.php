@@ -44,7 +44,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td><a href="{{ route('case-list.show',$data->caselist->id) }}">{{ $data->caselist->file_no }}</a></td>
                                 <td>{{ $data->name }}</td>
-                                <td>{{ $data->tanggal }}</td>
+                                <th>{{ $data->tanggal }}</th>
                                 <th class="text-right">{{ number_format($data->amount) }}</th>
                             </tr>
                             @endforeach
@@ -67,7 +67,9 @@
             dom: 'Bfrtip',
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
+            ],
+            "paging": false,
+            "ordering": false
         })
     </script>
 </body>
