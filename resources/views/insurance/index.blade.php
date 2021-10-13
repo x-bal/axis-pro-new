@@ -12,6 +12,38 @@
                     <a href="{{ route('insurance.create') }}" class="btn btn-primary"><i class="fas fa-pen"></i> Create</a>
                     @endcan
                 </div>
+                
+                <form action="{{ route('insurance.laporan') }}" method="post">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="date" name="from" id="from" class="form-control @error('from') is-invalid @enderror">
+                                    @error('from')
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $message }}</strong>
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="date" name="to" id="to" class="form-control @error('to') is-invalid @enderror">
+                                    @error('to')
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $message }}</strong>
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-print"></i> Laporan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered">
                         <thead>

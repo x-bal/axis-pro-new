@@ -63,6 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/broker', BrokerController::class);
     Route::resource('/fee-based', FeeBasedController::class);
     Route::resource('/bank', BankController::class);
+    Route::post('/insurance/laporan', [InsuranceController::class, 'laporan'])->name('insurance.laporan');
     Route::resource('/insurance', InsuranceController::class);
     Route::resource('/users', UsercController::class);
     Route::resource('/roles', RoleController::class);

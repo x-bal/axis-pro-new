@@ -109,4 +109,23 @@ class InsuranceController extends Controller
         $insurance->delete();
         return redirect()->route('insurance.index')->with('success', 'Insurance has been deleted');
     }
+    public function laporan(Request $request)
+    {
+        $this->validate($request,[
+            'from' => 'required',
+            'to' => 'required'
+        ]);
+        $from = $request->from;
+        $to = $request->to;
+
+        $client = Client::whereHas('caselist', function($data) use($from, $to){
+            return $data->whereBetween('instruction_date',[$from, $to]);
+        })->get();
+        
+        return view('insurance.laporan',[
+            'client' => $client,
+            'from' => $from,
+            'to' => $to
+        ]);
+    }
 }
