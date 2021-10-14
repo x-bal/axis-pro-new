@@ -157,6 +157,7 @@
                 name: 'share'
             },
             {
+                width: '10%',
                 data: 'is_leader',
                 name: 'is_leader'
             },
