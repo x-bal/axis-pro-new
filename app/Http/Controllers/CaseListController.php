@@ -43,6 +43,24 @@ class CaseListController extends Controller
                     }
                 })
                 ->editColumn('is_leader', function ($row) {
+                    $html = '
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample'.$row->id.'"
+                      aria-expanded="false" aria-controls="collapseExample'.$row->id.'">
+                      &plus;
+                    </button>
+                    <div class="collapse" id="collapseExample'.$row->id.'">
+                        <div class="mt-3">
+                        <ul class="list-unstyled">
+                        ';
+                        foreach($row->member as $data){
+                            $html .= '<li>'.$data->client->brand.'-'.'('.$data->share.')'.'-'. '<strong>'.$data->is_leader.'</strong>'.'<li>';
+                        };
+                        $html .='
+                        </ul>
+                        </div>
+                    </div>
+                    ';
+                    return $html;
                     foreach ($row->member as $member) {
                         return $member->is_leader == 1 ? 'Leader' : 'Member';
                     }
@@ -77,7 +95,7 @@ class CaseListController extends Controller
                 //         $instance->where('file_status_id', request('status'));
                 //     }
                 // })
-                ->rawColumns(['action', 'fileno'])
+                ->rawColumns(['action', 'fileno','is_leader'])
                 ->make(true);
         }
 
