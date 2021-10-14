@@ -44,18 +44,18 @@ class CaseListController extends Controller
                 })
                 ->editColumn('is_leader', function ($row) {
                     $html = '
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample'.$row->id.'"
-                      aria-expanded="false" aria-controls="collapseExample'.$row->id.'">
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample' . $row->id . '"
+                      aria-expanded="false" aria-controls="collapseExample' . $row->id . '">
                       &plus;
                     </button>
-                    <div class="collapse" id="collapseExample'.$row->id.'">
+                    <div class="collapse" id="collapseExample' . $row->id . '">
                         <div class="mt-3">
                         <ul class="list-unstyled">
                         ';
-                        foreach($row->member as $data){
-                            $html .= '<li>'.$data->client->brand.'-'.'('.$data->share.')'.'-'. '<strong>'.$data->is_leader.'</strong>'.'<li>';
-                        };
-                        $html .='
+                    foreach ($row->member as $data) {
+                        $html .= '<li>' . $data->client->brand . '-' . '(' . $data->share . ')' . '-' . '<strong>' . $data->is_leader . '</strong>' . '<li>';
+                    };
+                    $html .= '
                         </ul>
                         </div>
                     </div>
@@ -95,7 +95,7 @@ class CaseListController extends Controller
                 //         $instance->where('file_status_id', request('status'));
                 //     }
                 // })
-                ->rawColumns(['action', 'fileno','is_leader'])
+                ->rawColumns(['action', 'fileno', 'is_leader'])
                 ->make(true);
         }
 
@@ -149,8 +149,17 @@ class CaseListController extends Controller
             'no_leader_policy' => 'required',
             'instruction_date' => 'required',
             'leader_claim_no' => 'required',
-            'survey_date' => 'required'
+            'survey_date' => 'required',
+            'member' => 'required|array|min:1',
+            'percent' => 'required|array|min:1',
+            'status' => 'required|array|min:1'
         ]);
+        if (!(array_sum($request->percent) <= 100 and array_sum($request->percent) >= 100)) {
+            $error = \Illuminate\Validation\ValidationException::withMessages([
+                'percent' => ['Total Member Share Harus 100, Total Yang Di Input : '.array_sum($request->percent)],
+            ]);
+            throw $error;
+        }
         // $amount = str_replace(',', '', $request->amount);
         // $claim_amount = str_replace(',', '', $request->claim_amount);
         if (strlen($request->file_no) == 6) {
