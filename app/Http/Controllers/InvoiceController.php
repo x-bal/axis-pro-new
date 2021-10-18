@@ -182,7 +182,8 @@ class InvoiceController extends Controller
             'invoice' => $invoice,
             'inv' => Invoice::findOrFail($id),
             'share' => $share,
-            'fee'=> $fee
+            'fee'=> $fee,
+            'caselist' => $fee_based->caselist($invoice->caselist->id)->original['caselist']
         ]);
         return $pdf->stream();
     }

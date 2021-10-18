@@ -19,7 +19,7 @@
 </style>
 
 <body>
-    <img src="{{ asset('asset/header.png') }}" alt="">
+    <img src="{{ public_path('asset/header.png') }}" alt="">
     <h5 class="text-center"><b> FINAL INVOICE {{ $invoice->caselist->file_no }} </b></h5>
     <div class="container-fluid">
         <div class="row">
@@ -112,8 +112,8 @@
                         <th><u>Professional Services</u></th>
                     <tr>
                         <td>Adjuster Fee</td>
-                        <td width="220"><strong>(Share {{ $share }} of Total {{ number_format($fee) }})</strong></td>
-                        <td>{{ number_format($fee * $share / 100) }}</td>
+                        <td width="220"><strong>(Share {{ $share }} of Total {{ $caselist->currency }}. {{ number_format($fee) }})</strong></td>
+                        <td>{{ $caselist->currency }}. {{ number_format($fee * $share / 100) }}</td>
                     </tr>
                     </tr>
                     <tr>
@@ -123,14 +123,14 @@
                         <td>
                             <ul>
                                 @foreach($inv->caselist->expense as $ex)
-                                <li>{{ $ex->name }} - {{ $ex->amount }}</li>
+                                <li>{{ $ex->name }} - {{ number_format($ex->amount) }}</li>
                                 @endforeach
                             </ul>
                         </td>
                         <td>
-                            <strong>{{ number_format($inv->caselist->expense->sum('amount') * $share / 100) }}</strong>
+                            <strong>{{ $caselist->currency }}. {{ number_format($inv->caselist->expense->sum('amount') * $share / 100) }}</strong>
                             <hr style="border:1px solid black">
-                            {{ number_format(($fee * $share / 100) + ($inv->caselist->expense->sum('amount') * $share / 100)) }}
+                            {{ $caselist->currency }}. {{ number_format(($fee * $share / 100) + ($inv->caselist->expense->sum('amount') * $share / 100)) }}
                         </td>
                     </tr>
                     </tr>
@@ -140,7 +140,7 @@
                         <td>PPN 10%</td>
                         <td width="220"></td>
                         <td>
-                            {{ number_format((($fee * $share / 100) + ($inv->caselist->expense->sum('amount') * $share / 100)) * 10 / 100) }}
+                            {{ $caselist->currency }}. {{ number_format((($fee * $share / 100) + ($inv->caselist->expense->sum('amount') * $share / 100)) * 10 / 100) }}
                             <hr style="border : 2px double black">
                         </td>
 
@@ -151,7 +151,7 @@
                     <tr>
                         <td>Total</td>
                         <td width="220"></td>
-                        <td>{{ number_format(((($fee * $share / 100) + ($inv->caselist->expense->sum('amount') * $share / 100)) * 10 / 100) + ($fee * $share / 100) + ($inv->caselist->expense->sum('amount') * $share / 100)) }}</td>
+                        <td>{{ $caselist->currency }}. {{ number_format(((($fee * $share / 100) + ($inv->caselist->expense->sum('amount') * $share / 100)) * 10 / 100) + ($fee * $share / 100) + ($inv->caselist->expense->sum('amount') * $share / 100)) }}</td>
                     </tr>
                     </tr>
                 </table>
@@ -205,6 +205,18 @@
                         <th>Account No.USD</th>
                         <th>:</th>
                         <th>124.0045677771</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="col" style="margin-left: 80%;">
+                <table>
+                    <tr>
+                        <th>
+                            <hr style="border: 1px solid black">
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Director</th>
                     </tr>
                 </table>
             </div>
