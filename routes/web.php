@@ -8,6 +8,7 @@ use App\Http\Controllers\{
     ExpenseController,
     FeeBasedController,
     FileSurveyController,
+    GmailController,
     IncidentController,
     InsuranceController,
     InvoiceController,
@@ -54,9 +55,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/case-list/getcase', [CaseListController::class, 'getcase']);
     Route::post('/case-list/laporan', [CaseListController::class, 'laporan'])->name('caselist.laporan');
     Route::post('/case-list/excel', [CaseListController::class, 'excel'])->name('caselist.excel');
+    Route::get('/case-list/{caseList:id}/transcript', [CaseListController::class, 'transcript'])->name('caselist.transcript');
     Route::get('/case-list/restore', [CaseListController::class, 'restore'])->name('caselist.restore');
-    Route::post('expense/laporan',[ExpenseController::class, 'laporan'])->name('expense.laporan');
-    Route::get('/expenses',[ExpenseController::class, 'index'])->name('expense.index');
+    Route::post('expense/laporan', [ExpenseController::class, 'laporan'])->name('expense.laporan');
+    Route::delete('expenses/{expense:id}', [ExpenseController::class, 'destroy'])->name('expense.destroy');
+    Route::get('/expenses', [ExpenseController::class, 'index'])->name('expense.index');
     Route::resource('/case-list', CaseListController::class);
     Route::resource('/cause-of-loss', IncidentController::class);
     Route::resource('/type-of-business', PolicyController::class);
@@ -80,8 +83,23 @@ Route::middleware('auth')->group(function () {
     Route::resource('report-tiga', ReportTigaController::class);
     Route::resource('report-empat', ReportEmpatController::class);
     Route::resource('report-lima', ReportLimaController::class);
+    Route::get('/gmails/{id}/attachment', [GmailController::class, 'download'])->name('gmails.attachment');
+    Route::get('/gmails/{id}/show/{caseList:id}', [GmailController::class, 'show'])->name('gmails.show');
+    Route::resource('gmails', GmailController::class);
 });
 
-Route::get('/reason', function () {
-    return view('emails.reason');
-})->name('reason');
+Route::get('/oauth/gmail', function () {
+    return LaravelGmail::redirect();
+});
+Route::get('/oauth/gmail/callback', [GmailController::class, 'makeToken']);
+Route::get('/oauth/gmail/logout', [GmailController::class, 'logout']);
+
+// Route::get('/oauth/gmail/callback', function () {
+//     LaravelGmail::makeToken();
+//     return redirect()->to('/case-list');
+// });
+
+// Route::get('/oauth/gmail/logout', function () {
+//     LaravelGmail::logout(); //It returns exception if fails
+//     return back();
+// });

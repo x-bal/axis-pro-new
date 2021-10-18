@@ -18,7 +18,7 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        return view('expense.index',[
+        return view('expense.index', [
             'expense' => Expense::get()
         ]);
     }
@@ -96,7 +96,8 @@ class ExpenseController extends Controller
      */
     public function destroy(Expense $expense)
     {
-        //
+        $expense->delete();
+        return back()->with('success', 'Expense has been deleted');
     }
 
     public function download()
@@ -105,12 +106,12 @@ class ExpenseController extends Controller
     }
     public function laporan(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'from' => 'required',
             'to' => 'required'
         ]);
         $expense = Expense::whereBetween('tanggal', [$request->from, $request->to])->get();
-        return view('expense.laporan',[
+        return view('expense.laporan', [
             'expense' => $expense
         ]);
     }

@@ -12,11 +12,16 @@ class Expense extends Model
 
     public function category()
     {
-        return $this->belongsTo(CategoryExpense::class, 'category_expense_id');
+        return $this->belongsTo(CategoryExpense::class, 'category_expense');
     }
 
     public function caselist()
     {
         return $this->belongsTo(CaseList::class, 'case_list_id');
+    }
+
+    public function adjuster()
+    {
+        return $this->belongsTo(User::class, 'adjuster');
     }
 }

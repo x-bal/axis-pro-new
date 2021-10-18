@@ -157,13 +157,19 @@
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('profile') }}">
-                                    {{ __('Profile') }}
+                                    <i class="fas fa-user"></i> {{ __('Profile') }}
                                 </a>
 
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                                    <i class="fas fa-sign-out-alt"></i> {{ __('Logout') }}
                                 </a>
+
+                                @if(\LaravelGmail::check())
+                                <a class="dropdown-item" href="/oauth/gmail/logout">
+                                    <i class="fas fa-paper-plane"></i> {{ __('Logout With Gmail') }}
+                                </a>
+                                @endif
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf

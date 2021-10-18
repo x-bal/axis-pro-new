@@ -87,4 +87,9 @@ class CaseList extends Model
     {
         return $this->invoice()->exists();
     }
+
+    public function gmails()
+    {
+        return $this->hasMany(Gmail::class);
+    }
 }

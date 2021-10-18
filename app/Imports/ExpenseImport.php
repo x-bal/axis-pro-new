@@ -6,8 +6,9 @@ use App\Models\Expense;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ExpenseImport implements ToModel
+class ExpenseImport implements ToModel, WithHeadingRow
 {
     public function __construct($case_list_id)
     {
@@ -21,10 +22,11 @@ class ExpenseImport implements ToModel
     {
         return new Expense([
             'case_list_id' => $this->case_list_id,
-            'name' => $row[0],
-            'amount' => $row[1],
-            'category_expense' => $row[2],
-            'tanggal' => Carbon::parse($row[3])->format('Y-m-d'),
+            'adjuster' => $row['adjuster'],
+            'name' => $row['nama'],
+            'amount' => $row['amount'],
+            'category_expense' => $row['category'],
+            'tanggal' => Carbon::parse($row['tanggal'])->format('Y-m-d'),
         ]);
     }
 }

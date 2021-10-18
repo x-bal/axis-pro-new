@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\CaseListExport;
-use App\Models\{CaseList, User, Broker, Incident, Policy, Client, Currency, Expense, FileStatus, Invoice, MemberInsurance};
+use App\Models\{Attachment, CaseList, User, Broker, Incident, Policy, Client, Currency, Expense, FileStatus, Invoice, MemberInsurance};
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Exception;
@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Gmail;
+use Illuminate\Support\Facades\Storage;
 
 class CaseListController extends Controller
 {
@@ -157,7 +159,8 @@ class CaseListController extends Controller
                     'instruction_date' => $request->instruction_date,
                     'leader_claim_no' => $request->leader_claim_no,
                     'file_status_id' => 1,
-                    'survey_date' => $request->survey_date
+                    'survey_date' => $request->survey_date,
+                    'ia_limit' => Carbon::parse($request->survey_date)->addDay(7)->format('Y-m-d')
                 ]);
                 for ($i = 1; $i <= count($request->member); $i++) {
                     MemberInsurance::create([
@@ -183,14 +186,122 @@ class CaseListController extends Controller
     {
         Gate::allows(abort_unless('case-list-show', 403));
 
+        $messages = $this->getEmail($caseList->file_no);
         $status = FileStatus::get();
-        return view('case-list.show', compact('caseList', 'status'));
+        $gmails = [];
+
+        if ($caseList->is_transcript == 0) {
+            if (auth()->user()->hasRole('admin')) {
+                $gmails = [];
+            } else {
+                $gmails = [];
+            }
+        } elseif ($caseList->is_transcript == 1) {
+            if (auth()->user()->hasRole('admin')) {
+                $gmails = Gmail::where('caselist_id', $caseList->id)->get();
+            } else {
+                $gmails = Gmail::where('adjuster_id', auth()->user()->id)->where('caselist_id', $caseList->id)->get();
+            }
+        } elseif ($caseList->is_transcript == 2) {
+            if (auth()->user()->hasRole('admin')) {
+                $gmails = Gmail::where('caselist_id', $caseList->id)->get();
+            } else {
+                $gmails = Gmail::where('adjuster_id', auth()->user()->id)->where('caselist_id', $caseList->id)->get();
+            }
+        }
+
+        // if ($caseList->gmails() != NULL) {
+        //     if (auth()->user()->hasRole('admin')) {
+        //         $gmails = Gmail::where('caselist_id', $caseList->id)->get();
+        //     } else {
+        //         $gmails = Gmail::where('adjuster_id', auth()->user()->id)->where('caselist_id', $caseList->id)->get();
+        //     }
+        // }
+
+
+        return view('case-list.show', compact('caseList', 'status', 'messages', 'gmails'));
     }
 
-    public function getcase(CaseList $caseList)
+    public function getEmail($fileno)
     {
-        $caseList = CaseList::with('');
+        if (\LaravelGmail::check()) {
+            try {
+                $messages = \LaravelGmail::message()->in($box = $fileno)->preload()->all();
+                return $messages;
+            } catch (Exception $err) {
+                return $err;
+            }
+        }
     }
+
+    public function transcript(CaseList $caseList)
+    {
+        if ($caseList->is_transcript == 0 && $caseList->file_status_id != 5) {
+            if (\LaravelGmail::check()) {
+                $this->insertGmail($caseList);
+
+                $caseList->update(['is_transcript' => 1]);
+            }
+        } elseif ($caseList->is_transcript == 1 && $caseList->file_status_id != 5) {
+            if (\LaravelGmail::check()) {
+                $gmails = Gmail::with('attachments')->where('caselist_id', $caseList->id)->get();
+                foreach ($gmails as $gm) {
+                    $gm->delete();
+                    foreach ($gm->attachments  as $attachment) {
+                        Storage::delete($attachment->file_url);
+                        $attachment->delete();
+                    }
+                }
+
+                $this->insertGmail($caseList);
+            }
+        } elseif ($caseList->is_transcript == 1 && $caseList->file_status_id == 5) {
+            if (\LaravelGmail::check()) {
+                $gmails = Gmail::with('attachments')->where('caselist_id', $caseList->id)->get();
+                foreach ($gmails as $gm) {
+                    $gm->delete();
+                    foreach ($gm->attachments  as $attachment) {
+                        Storage::delete($attachment->file_url);
+                        $attachment->delete();
+                    }
+                }
+
+                $this->insertGmail($caseList);
+                $caseList->update(['is_transcript' => 2]);
+            }
+        }
+
+        return back()->with('success', 'Transcript has been successfully');
+    }
+
+    public function insertGmail($caseList)
+    {
+        $messages = \LaravelGmail::message()->in($box = $caseList->file_no)->preload()->all();
+
+        foreach ($messages as $message) {
+            $label = $message->getLabels();
+
+            $gmail = Gmail::create([
+                'adjuster_id' => $caseList->adjuster_id,
+                'caselist_id' => $caseList->id,
+                'message_id' => $message->getId(),
+                'subject' => $message->getSubject(),
+                'label' => $label[0],
+                'content' => $message->getHtmlBody()
+            ]);
+
+            foreach ($message->getAttachments() as $attachment) {
+                $attachment->saveAttachmentTo($path = 'attachment', $filename = $attachment->filename, $disk = 'public');
+
+                Attachment::create([
+                    'gmail_id' => $gmail->id,
+                    'filename' => $attachment->filename,
+                    'file_url' => 'attachment/' . $attachment->filename
+                ]);
+            }
+        }
+    }
+
 
     public function edit(CaseList $caseList)
     {

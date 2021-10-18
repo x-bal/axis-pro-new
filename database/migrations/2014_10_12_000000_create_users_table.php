@@ -20,9 +20,6 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('no_telepon', 20);
-            $table->string('kode_akses', 10);
-            $table->string('status_user', 10);
-            $table->string('log', 50);
             $table->string('kode_adjuster', 50);
             $table->rememberToken();
             $table->timestamps();

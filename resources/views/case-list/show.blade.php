@@ -195,6 +195,7 @@
                     <div class="tab-pane fade show active mt-3" id="nav-expense" aria-labelledby="nav-expense-tab">
                         <h5 class="mb-3">Expense list</h5>
 
+                        @if(auth()->user()->hasRole('admin'))
                         <table width="200" border="0" class="table table-striped">
                             <form action="{{ route('expense.store') }}" method="post" enctype="multipart/form-data">
                                 @csrf
@@ -223,16 +224,22 @@
                                 </tbody>
                             </form>
                         </table>
+                        @endif
+
+                        <a href="" class="btn btn-primary my-3"><i class="fas fa-file-pdf"></i> Download</a>
 
                         <table width="100%" height="52" border="0" class="table tabelbelang table-bordered table-striped table-hover" style="font-size:12px;">
                             <tbody>
                                 <tr>
                                     <td width="3%">No</td>
+                                    <td width="15%">Adjuster</td>
                                     <td width="15%">Name</td>
                                     <td width="9%">Category</td>
-
                                     <td width="10%">Date</td>
-                                    <td width="53%">Amount</td>
+                                    <td width="43%">Amount</td>
+                                    @if(auth()->user()->hasRole('admin'))
+                                    <td width="10%">Action</td>
+                                    @endif
                                 </tr>
                                 @php
                                 $amount = 0;
@@ -241,10 +248,21 @@
                                 @foreach($caseList->expense as $expense)
                                 <tr>
                                     <td height="25">{{ $loop->iteration }}</td>
+                                    <td>{{ $expense->adjuster }}</td>
                                     <td>{{ $expense->name }}</td>
                                     <td>{{ $expense->category_expense }}</td>
                                     <td>{{ Carbon\Carbon::parse($expense->tanggal)->format('d/m/Y') }}</td>
                                     <td>{{ $caseList->currency == 'RP' ? 'Rp.' : '$' }} {{ number_format($expense->amount)  }}</td>
+
+                                    @if(auth()->user()->hasRole('admin'))
+                                    <td>
+                                        <form action="{{ route('expense.destroy', $expense->id) }}" method="post" onclick="return confirm('Are you sure to delete this expense ?')" style="display: inline;">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    </td>
+                                    @endif
                                 </tr>
                                 @php
                                 $amount += $expense->amount
@@ -253,7 +271,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="4">Total Amount : </td>
+                                    <td colspan="5">Total Amount : </td>
                                     <td>{{ $caseList->currency == 'RP' ? 'Rp.' : '$' }} {{ number_format($amount) }}</td>
                                 </tr>
                             </tfoot>
@@ -264,7 +282,38 @@
                     @if(request()->get('page') == "nav-email")
                     <div class="tab-pane fade show active mt-3" id="nav-email" aria-labelledby="nav-email-tab">
                         <h5 class="mb-3">Email Transcript</h5>
-                        "******"
+                        @if(auth()->user()->hasRole('adjuster') && $caseList->is_transcript != 2)
+                        <a href="{{ route('caselist.transcript', $caseList->id) }}" class="btn btn-success mb-3"><i class="fas fa-exchange-alt"></i> Transcript</a>
+                        @endif
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Subject</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @if($caseList->is_transcript != 2 && $messages != null)
+                                @foreach($messages as $message)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $message->getSubject()  }}</td>
+                                    <td><a class="btn btn-sm btn-info text-white" href="/gmails/{{ $message->getId() }}/show/{{ $caseList->id }}">Detail</a></td>
+                                </tr>
+                                @endforeach
+                                @elseif($caseList->is_transcript == 2 && $caseList->file_status_id == 5)
+                                @foreach($gmails as $gmail)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $gmail->subject  }}</td>
+                                    <td><a class="btn btn-sm btn-info text-white" href="/gmails/{{ $gmail->id }}/show/{{ $caseList->id }}">Detail</a></td>
+                                </tr>
+                                @endforeach
+                                @endif
+                            </tbody>
+                        </table>
                     </div>
                     @endif
 

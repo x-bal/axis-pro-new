@@ -44,9 +44,9 @@ class FileSurveyController extends Controller
         }
 
         $caseList = CaseList::find($request->case_list_id);
-        if ($caseList->survey_date == NULL) {
-            $caseList->update(['survey_date' => Carbon::now(), 'ia_limit' => Carbon::now()->addDay(7)]);
-        }
+        // if ($caseList->survey_date == NULL) {
+        //     $caseList->update(['survey_date' => Carbon::now(), 'ia_limit' => Carbon::now()->addDay(7)]);
+        // }
 
         return back()->with('success', 'File survey has been uploaded');
     }

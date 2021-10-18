@@ -16,13 +16,10 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::create([
-            'nama_lengkap' => 'Developer',
+            'nama_lengkap' => 'Admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('admin'),
             'no_telepon' => '0894375384654',
-            'kode_akses' => '30',
-            'status_user' => 'Y',
-            'log' => '-',
             'kode_adjuster' => 'K110',
         ]);
     }

@@ -33,4 +33,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'adjuster_id');
     }
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class, 'kode_adjuster');
+    }
 }
