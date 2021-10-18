@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitfdcc2c2fbb786997458ec5938ebf9213
+class ComposerStaticInit10645b4da27b501ad83b2bbb67868b9d
 {
     public static $files = array (
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
@@ -33,6 +33,7 @@ class ComposerStaticInitfdcc2c2fbb786997458ec5938ebf9213
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
+        '1f87db08236948d07391152dccb70f04' => __DIR__ . '/..' . '/google/apiclient-services/autoload.php',
         'abede361264e2ae69ec1eee813a101af' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/abs.php',
         '21a5860fbef5be28db5ddfbc3cca67c4' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acos.php',
         '1546e3f9d127f2a9bb2d1b6c31c26ef1' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acosh.php',
@@ -92,11 +93,10 @@ class ComposerStaticInitfdcc2c2fbb786997458ec5938ebf9213
         '4888a6f58c08148ebe17682f9ce9b2a8' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/Operations/divideby.php',
         'eef6fa3879d3efa347cd24d5eb348f85' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/Operations/divideinto.php',
         '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
-        '1f87db08236948d07391152dccb70f04' => __DIR__ . '/..' . '/google/apiclient-services/autoload.php',
         '9cdd7b9056abc3081735233ba9dd9c7f' => __DIR__ . '/..' . '/facade/flare-client-php/src/helpers.php',
+        'a8d3953fd9959404dd22d3dfcd0a79f0' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
-        'a8d3953fd9959404dd22d3dfcd0a79f0' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
         'ed962a97bd972bc82007176b647d4e36' => __DIR__ . '/..' . '/facade/ignition/src/helpers.php',
         'f18cc91337d49233e5754e93f3ed9ec3' => __DIR__ . '/..' . '/laravelcollective/html/src/helpers.php',
         '377b22b161c09ed6e5152de788ca020a' => __DIR__ . '/..' . '/spatie/laravel-permission/src/helpers.php',
@@ -231,11 +231,8 @@ class ComposerStaticInitfdcc2c2fbb786997458ec5938ebf9213
         'F' => 
         array (
             'Fruitcake\\Cors\\' => 15,
-<<<<<<< HEAD
-            'Firebase\\JWT\\' => 13,
-=======
             'FontLib\\' => 8,
->>>>>>> 164d107797b29329f8b701c956ee0bac42c9140a
+            'Firebase\\JWT\\' => 13,
             'Faker\\' => 6,
             'Facade\\Ignition\\' => 16,
             'Facade\\IgnitionContracts\\' => 25,
@@ -602,15 +599,13 @@ class ComposerStaticInitfdcc2c2fbb786997458ec5938ebf9213
         array (
             0 => __DIR__ . '/..' . '/fruitcake/laravel-cors/src',
         ),
-<<<<<<< HEAD
-        'Firebase\\JWT\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
-=======
         'FontLib\\' => 
         array (
             0 => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib',
->>>>>>> 164d107797b29329f8b701c956ee0bac42c9140a
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'Faker\\' => 
         array (
@@ -759,6 +754,7 @@ class ComposerStaticInitfdcc2c2fbb786997458ec5938ebf9213
         'App\\Http\\Controllers\\ExpenseController' => __DIR__ . '/../..' . '/app/Http/Controllers/ExpenseController.php',
         'App\\Http\\Controllers\\FeeBasedController' => __DIR__ . '/../..' . '/app/Http/Controllers/FeeBasedController.php',
         'App\\Http\\Controllers\\FileSurveyController' => __DIR__ . '/../..' . '/app/Http/Controllers/FileSurveyController.php',
+        'App\\Http\\Controllers\\GmailController' => __DIR__ . '/../..' . '/app/Http/Controllers/GmailController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\IncidentController' => __DIR__ . '/../..' . '/app/Http/Controllers/IncidentController.php',
         'App\\Http\\Controllers\\InsuranceController' => __DIR__ . '/../..' . '/app/Http/Controllers/InsuranceController.php',
@@ -782,6 +778,7 @@ class ComposerStaticInitfdcc2c2fbb786997458ec5938ebf9213
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Imports\\ExpenseImport' => __DIR__ . '/../..' . '/app/Imports/ExpenseImport.php',
+        'App\\Models\\Attachment' => __DIR__ . '/../..' . '/app/Models/Attachment.php',
         'App\\Models\\Bank' => __DIR__ . '/../..' . '/app/Models/Bank.php',
         'App\\Models\\Broker' => __DIR__ . '/../..' . '/app/Models/Broker.php',
         'App\\Models\\CaseList' => __DIR__ . '/../..' . '/app/Models/CaseList.php',
@@ -793,6 +790,7 @@ class ComposerStaticInitfdcc2c2fbb786997458ec5938ebf9213
         'App\\Models\\FeeBased' => __DIR__ . '/../..' . '/app/Models/FeeBased.php',
         'App\\Models\\FileStatus' => __DIR__ . '/../..' . '/app/Models/FileStatus.php',
         'App\\Models\\FileSurvey' => __DIR__ . '/../..' . '/app/Models/FileSurvey.php',
+        'App\\Models\\Gmail' => __DIR__ . '/../..' . '/app/Models/Gmail.php',
         'App\\Models\\Incident' => __DIR__ . '/../..' . '/app/Models/Incident.php',
         'App\\Models\\Invoice' => __DIR__ . '/../..' . '/app/Models/Invoice.php',
         'App\\Models\\MemberInsurance' => __DIR__ . '/../..' . '/app/Models/MemberInsurance.php',
@@ -943,6 +941,7 @@ class ComposerStaticInitfdcc2c2fbb786997458ec5938ebf9213
         'Dacastro4\\LaravelGmail\\Traits\\SendsParameters' => __DIR__ . '/..' . '/dacastro4/laravel-gmail/src/Traits/SendsParameters.php',
         'Database\\Factories\\CaseListFactory' => __DIR__ . '/../..' . '/database/factories/CaseListFactory.php',
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
+        'Database\\Seeders\\CategoryExpenseSeeder' => __DIR__ . '/../..' . '/database/seeders/CategoryExpenseSeeder.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
         'Database\\Seeders\\StatusSeeder' => __DIR__ . '/../..' . '/database/seeders/StatusSeeder.php',
         'Database\\Seeders\\UserSeeder' => __DIR__ . '/../..' . '/database/seeders/UserSeeder.php',
@@ -1820,13 +1819,11 @@ class ComposerStaticInitfdcc2c2fbb786997458ec5938ebf9213
         'Faker\\Provider\\zh_TW\\Text' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Provider/zh_TW/Text.php',
         'Faker\\UniqueGenerator' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/UniqueGenerator.php',
         'Faker\\ValidGenerator' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/ValidGenerator.php',
-<<<<<<< HEAD
         'Firebase\\JWT\\BeforeValidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/BeforeValidException.php',
         'Firebase\\JWT\\ExpiredException' => __DIR__ . '/..' . '/firebase/php-jwt/src/ExpiredException.php',
         'Firebase\\JWT\\JWK' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWK.php',
         'Firebase\\JWT\\JWT' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWT.php',
         'Firebase\\JWT\\SignatureInvalidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/SignatureInvalidException.php',
-=======
         'FontLib\\AdobeFontMetrics' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/AdobeFontMetrics.php',
         'FontLib\\Autoloader' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/Autoloader.php',
         'FontLib\\BinaryStream' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/BinaryStream.php',
@@ -1863,7 +1860,6 @@ class ComposerStaticInitfdcc2c2fbb786997458ec5938ebf9213
         'FontLib\\WOFF\\File' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/WOFF/File.php',
         'FontLib\\WOFF\\Header' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/WOFF/Header.php',
         'FontLib\\WOFF\\TableDirectoryEntry' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/WOFF/TableDirectoryEntry.php',
->>>>>>> 164d107797b29329f8b701c956ee0bac42c9140a
         'Fruitcake\\Cors\\CorsServiceProvider' => __DIR__ . '/..' . '/fruitcake/laravel-cors/src/CorsServiceProvider.php',
         'Fruitcake\\Cors\\HandleCors' => __DIR__ . '/..' . '/fruitcake/laravel-cors/src/HandleCors.php',
         'Google\\AccessToken\\Revoke' => __DIR__ . '/..' . '/google/apiclient/src/AccessToken/Revoke.php',
@@ -21730,10 +21726,10 @@ class ComposerStaticInitfdcc2c2fbb786997458ec5938ebf9213
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitfdcc2c2fbb786997458ec5938ebf9213::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitfdcc2c2fbb786997458ec5938ebf9213::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitfdcc2c2fbb786997458ec5938ebf9213::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitfdcc2c2fbb786997458ec5938ebf9213::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit10645b4da27b501ad83b2bbb67868b9d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit10645b4da27b501ad83b2bbb67868b9d::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit10645b4da27b501ad83b2bbb67868b9d::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit10645b4da27b501ad83b2bbb67868b9d::$classMap;
 
         }, null, ClassLoader::class);
     }

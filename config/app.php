@@ -237,11 +237,8 @@ return [
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-<<<<<<< HEAD
         'LaravelGmail' => Dacastro4\LaravelGmail\Facade\LaravelGmail::class,
-=======
         'PDF' => Barryvdh\DomPDF\Facade::class,
->>>>>>> 164d107797b29329f8b701c956ee0bac42c9140a
     ],
 
 ];
