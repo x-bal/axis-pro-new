@@ -14,6 +14,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class InvoiceController extends Controller
 {
@@ -168,5 +169,21 @@ class InvoiceController extends Controller
         // ob_start();
         $timestamp = Carbon::now()->format('Y-m-d H:i:s');
         return Excel::download(new InvoiceExport($request->except(['_token'])), 'Invoice Excel ' . $timestamp . ' Report.xlsx');
+    }
+    public function pdf($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        $fee_based = new AjaxController();
+        $fee = $fee_based->caselist($invoice->caselist->id)->original['sum']['fee'];
+        // ob_end_clean();
+        // ob_start();
+        $share = $invoice->caselist->member->where('member_insurance',$invoice->member_id)->first()->share;
+        $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadview('invoice.pdf', [
+            'invoice' => $invoice,
+            'inv' => Invoice::findOrFail($id),
+            'share' => $share,
+            'fee'=> $fee
+        ]);
+        return $pdf->stream();
     }
 }

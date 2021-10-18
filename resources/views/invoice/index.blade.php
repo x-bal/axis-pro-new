@@ -79,7 +79,6 @@
                         </div>
                     </form>
                     @endif
-
                     <table class="table table-striped table-bordered" id="table">
                         <thead>
                             <tr>
@@ -113,7 +112,8 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <button class="btn btn-info btn-sm text-white" data-toggle="modal" onclick="konfirmasi(this)" data-id="{{ $inv->id }}" data-target="#KonfirmasiModal"><i class="fas fa-list-alt"></i> Konfirmasi</button>
+                                        <a href="{{ route('invoice.pdf', $inv->id) }}" class="btn btn-danger btn-sm"><i class="fas fa-table"></i> <br> PDF</a>
+                                        <button class="btn btn-info btn-sm text-white" data-toggle="modal" onclick="konfirmasi(this)" data-id="{{ $inv->id }}" data-target="#KonfirmasiModal"><i class="fas fa-list-alt"></i> <br> Konfirmasi</button>
                                         <form method="post" action="{{ route('invoice.destroy', $inv->id) }}">
                                             @csrf
                                             @method('delete')

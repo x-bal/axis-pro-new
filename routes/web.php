@@ -68,11 +68,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('/bank', BankController::class);
     Route::post('/insurance/laporan/{id}', [InsuranceController::class, 'laporan'])->name('insurance.laporan');
     Route::resource('/insurance', InsuranceController::class);
-    Route::resource('/users', UsercController::class);
+    Route::resource('/users', UserController::class);
     Route::resource('/roles', RoleController::class);
     Route::resource('/permission', PermissionController::class);
     Route::post('/invoice/laporan', [InvoiceController::class, 'laporan'])->name('invoice.laporan');
     Route::post('/invoice/excel', [InvoiceController::class, 'excel'])->name('invoice.excel');
+    Route::get('invoice/pdf/{id}',[InvoiceController::class, 'pdf'])->name('invoice.pdf');
     Route::resource('invoice', InvoiceController::class);
     Route::get('expense/download', [ExpenseController::class, 'download'])->name('expense.download');
     Route::post('expense/store', [ExpenseController::class, 'store'])->name('expense.store');
