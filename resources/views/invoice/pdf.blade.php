@@ -42,7 +42,7 @@
                     <tr>
                         <th>Date</th>
                         <th width="100">:</th>
-                        <td>{{ $invoice->date_invoice }}</td>
+                        <td>{{ Carbon\Carbon::parse($invoice->date_invoice)->format('d M Y') }}</td>
                     </tr>
                 </table>
             </div>
@@ -169,11 +169,11 @@
             </div>
         </div>
         <div class="row">
-            <div class="col" style="width: 500px;">
+            <div class="col" style="width: 550px;">
                 <table>
                     <tr>
                         <th>Payments</th>
-                        <td>
+                        <td style="white-space: pre-line;">
                             Please make payment <strong>no later than 30 days after receipt of this invoice,
                             </strong> and please mail Bank Slip Trasnfer to <strong>finance@axis-adjusters.com</strong>
                         </td>
@@ -210,7 +210,27 @@
                 </table>
             </div>
         </div>
-        <div class="row" style="margin-top: 20px;">
+        <div style="margin-left: 80%;margin-bottom: 40px;">
+            <table>
+                <tr>
+                    <th>
+                        <h5>
+                            <u>
+                                Febrizal
+                            </u>
+                        </h5>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <h5>
+                            Director
+                        </h5>
+                    </th>
+                </tr>
+            </table>
+        </div>
+        <div class="row">
             <div class="col" style="margin-left: 60%;">
                 <table style="font-size: 8px;">
                     <tr>
