@@ -173,8 +173,16 @@ class InvoiceController extends Controller
     public function pdf($id)
     {
         $invoice = Invoice::findOrFail($id);
-        $pdf = PDF::loadview('invoice.pdf',[
-            'invoice' => $invoice
+        $fee_based = new AjaxController();
+        $fee = $fee_based->caselist($invoice->caselist->id)->original['sum']['fee'];
+        ob_end_clean();
+        ob_start();
+        $share = $invoice->caselist->member->where('member_insurance',$invoice->member_id)->first()->share;
+        $pdf = PDF::loadview('invoice.pdf', [
+            'invoice' => $invoice,
+            'inv' => Invoice::findOrFail($id),
+            'share' => $share,
+            'fee'=> $fee
         ]);
         return $pdf->stream();
     }
