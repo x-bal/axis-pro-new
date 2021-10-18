@@ -181,7 +181,6 @@
                 </table>
             </div>
         </div>
-        <br>
         <div class="row">
             <div class="col" style="width: 300px;margin-left: 12%">
                 <table>
@@ -209,22 +208,6 @@
                     </tr>
                 </table>
             </div>
-        </div>
-        <div style="margin-left: 80%;margin-bottom: 40px;">
-            <table>
-                <tr>
-                    <th>
-                        <u>
-                            Febrizal
-                        </u>
-                    </th>
-                </tr>
-                <tr>
-                    <th>
-                        Director
-                    </th>
-                </tr>
-            </table>
         </div>
         <div class="row">
             <div class="col" style="margin-left: 60%;">
