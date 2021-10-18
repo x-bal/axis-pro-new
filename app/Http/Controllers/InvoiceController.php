@@ -177,6 +177,7 @@ class InvoiceController extends Controller
         $fee = $fee_based->caselist($invoice->caselist->id)->original['sum']['fee'];
         // ob_end_clean();
         // ob_start();
+        // test
         $share = $invoice->caselist->member->where('member_insurance',$invoice->member_id)->first()->share;
         $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadview('invoice.pdf', [
             'invoice' => $invoice,

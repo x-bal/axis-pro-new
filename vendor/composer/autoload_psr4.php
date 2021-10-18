@@ -86,11 +86,8 @@ return array(
     'Google\\Auth\\' => array($vendorDir . '/google/auth/src'),
     'Google\\' => array($vendorDir . '/google/apiclient/src'),
     'Fruitcake\\Cors\\' => array($vendorDir . '/fruitcake/laravel-cors/src'),
-<<<<<<< HEAD
-    'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
-=======
     'FontLib\\' => array($vendorDir . '/phenx/php-font-lib/src/FontLib'),
->>>>>>> 164d107797b29329f8b701c956ee0bac42c9140a
+    'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'Faker\\' => array($vendorDir . '/fakerphp/faker/src/Faker'),
     'Facade\\Ignition\\' => array($vendorDir . '/facade/ignition/src'),
     'Facade\\IgnitionContracts\\' => array($vendorDir . '/facade/ignition-contracts/src'),
