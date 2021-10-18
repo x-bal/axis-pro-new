@@ -214,18 +214,14 @@
             <table>
                 <tr>
                     <th>
-                        <h5>
-                            <u>
-                                Febrizal
-                            </u>
-                        </h5>
+                        <u>
+                            Febrizal
+                        </u>
                     </th>
                 </tr>
                 <tr>
                     <th>
-                        <h5>
-                            Director
-                        </h5>
+                        Director
                     </th>
                 </tr>
             </table>
