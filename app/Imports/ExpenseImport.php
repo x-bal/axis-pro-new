@@ -26,7 +26,7 @@ class ExpenseImport implements ToModel, WithHeadingRow
             'name' => $row['nama'],
             'amount' => $row['amount'],
             'category_expense' => $row['category'],
-            'tanggal' => Carbon::parse($row['tanggal'])->format('Y-m-d'),
+            'tanggal' => gmdate('Y-m-d', ($row['tanggal'] - 25569) * 86400),
         ]);
     }
 }
