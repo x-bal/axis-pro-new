@@ -215,6 +215,7 @@ class CaseListController extends Controller
     {
         Gate::allows(abort_unless('case-list-show', 403));
 
+        $messages = [];
         $status = FileStatus::get();
         $gmails = [];
 
