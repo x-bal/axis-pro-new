@@ -293,6 +293,12 @@ class CaseListController extends Controller
                 $this->insertGmail($caseList);
                 $caseList->update(['is_transcript' => 2]);
             }
+        } elseif ($caseList->is_transcript == 0 && $caseList->file_status_id == 5) {
+            if (\LaravelGmail::check()) {
+                $this->insertGmail($caseList);
+
+                $caseList->update(['is_transcript' => 1]);
+            }
         }
 
         return back()->with('success', 'Transcript has been successfully');
