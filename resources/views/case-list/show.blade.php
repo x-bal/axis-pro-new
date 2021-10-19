@@ -1367,13 +1367,13 @@
                         position: 'topRight',
                     });
 
-                    if (result.case_list.ir_status == 1) {
-                        $("#myTabs").append(`<li class="nav-item">
-                        <a class="nav-link nav-tab r5 {{ request()->get('page') == 'nav-report-5' ? 'active bg-primary text-white' : '' }}" href="{{ $caseList->pa_status == 1 ? '?page=nav-report-5' : '#' }}">Report 5</a>
-                    </li>`)
-                    } else {
-                        $(".r5").remove()
-                    }
+                    // if (result.case_list.ir_status == 1) {
+                    //     $("#myTabs").append(`<li class="nav-item">
+                    //     <a class="nav-link nav-tab r5 {{ request()->get('page') == 'nav-report-5' ? 'active bg-primary text-white' : '' }}" href="{{ $caseList->pa_status == 1 ? '?page=nav-report-5' : '#' }}">Report 5</a>
+                    // </li>`)
+                    // } else {
+                    //     $(".r5").remove()
+                    // }
                 }
             })
         });
