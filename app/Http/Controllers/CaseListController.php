@@ -224,7 +224,7 @@ class CaseListController extends Controller
                 $message = [];
                 $gmails = [];
             } else {
-                $messages = $this->getEmail($caseList->file_no);
+                $messages = $this->getEmail($caseList->file_no); 
                 $gmails = [];
             }
         } elseif ($caseList->is_transcript == 1) {

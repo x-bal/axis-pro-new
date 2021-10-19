@@ -297,7 +297,7 @@
                             </thead>
 
                             <tbody>
-                                @if($caseList->is_transcript != 2 && $messages != null) 
+                                @if(auth()->user()->hasRole('adjuster') && $caseList->is_transcript != 2 && $messages != null)
                                 @foreach($messages as $message)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
@@ -305,7 +305,7 @@
                                     <td><a class="btn btn-sm btn-info text-white" href="/gmails/{{ $message->getId() }}/show/{{ $caseList->id }}">Detail</a></td>
                                 </tr>
                                 @endforeach
-                                @elseif($caseList->is_transcript == 2 && $caseList->file_status_id == 5)
+                                @elseif($caseList->is_transcript != 0 && $caseList->file_status_id == 5)
                                 @foreach($gmails as $gmail)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
