@@ -10,7 +10,7 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                <form action="{{ route('expense.laporan') }}" method="post">
+                    <form action="{{ route('expense.laporan') }}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-md-3">
@@ -34,7 +34,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-1">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary"><i class="fas fa-print"></i> Laporan</button>
                                 </div>
@@ -46,6 +46,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>File No</th>
+                                <th>Adjuster</th>
                                 <th>Description</th>
                                 <th>Date</th>
                                 <th>Amount</th>
@@ -56,8 +57,9 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td><a href="{{ route('case-list.show',$data->caselist->id) }}">{{ $data->caselist->file_no }}</a></td>
+                                <td>{{ $data->adjuster }}</td>
                                 <td>{{ $data->name }}</td>
-                                <td>{{ $data->tanggal }}</td>
+                                <td>{{ Carbon\Carbon::parse($data->tanggal)->format('d/m/Y') }}</td>
                                 <th class="text-right">{{ number_format($data->amount) }}</th>
                             </tr>
                             @endforeach
