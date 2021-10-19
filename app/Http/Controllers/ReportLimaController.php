@@ -79,32 +79,32 @@ class ReportLimaController extends Controller
             'file_status_id' => 5
         ]);
 
-        if (\LaravelGmail::check()) {
-            $messages = \LaravelGmail::message()->in($box = $caseList->file_no)->preload()->all();
+        // if (\LaravelGmail::check()) {
+        //     $messages = \LaravelGmail::message()->in($box = $caseList->file_no)->preload()->all();
 
-            foreach ($messages as $message) {
-                $label = $message->getLabels();
+        //     foreach ($messages as $message) {
+        //         $label = $message->getLabels();
 
-                $gmail = Gmail::create([
-                    'adjuster_id' => $caseList->adjuster_id,
-                    'caselist_id' => $caseList->id,
-                    'message_id' => $message->getId(),
-                    'subject' => $message->getSubject(),
-                    'label' => $label[0],
-                    'content' => $message->getHtmlBody()
-                ]);
+        //         $gmail = Gmail::create([
+        //             'adjuster_id' => $caseList->adjuster_id,
+        //             'caselist_id' => $caseList->id,
+        //             'message_id' => $message->getId(),
+        //             'subject' => $message->getSubject(),
+        //             'label' => $label[0],
+        //             'content' => $message->getHtmlBody()
+        //         ]);
 
-                foreach ($message->getAttachments() as $attachment) {
-                    $attachment->saveAttachmentTo($path = 'attachment', $filename = $attachment->filename, $disk = 'public');
+        //         foreach ($message->getAttachments() as $attachment) {
+        //             $attachment->saveAttachmentTo($path = 'attachment', $filename = $attachment->filename, $disk = 'public');
 
-                    Attachment::create([
-                        'gmail_id' => $gmail->id,
-                        'filename' => $attachment->filename,
-                        'file_url' => 'attachment/' . $attachment->filename
-                    ]);
-                }
-            }
-        }
+        //             Attachment::create([
+        //                 'gmail_id' => $gmail->id,
+        //                 'filename' => $attachment->filename,
+        //                 'file_url' => 'attachment/' . $attachment->filename
+        //             ]);
+        //         }
+        //     }
+        // }
 
         return back()->with('success', 'Report lima has been uploaded');
     }
