@@ -181,8 +181,8 @@
                 </table>
             </div>
         </div>
-        <div class="row">
-            <div class="col" style="width: 300px;margin-left: 12%">
+        <div class="row" style="margin-top: 50px;">
+            <div class="col" style="width: 30%;margin-left: 12%">
                 <table>
                     <tr>
                         <th colspan="3">

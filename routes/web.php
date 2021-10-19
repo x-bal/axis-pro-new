@@ -4,6 +4,7 @@ use App\Http\Controllers\{
     BankController,
     BrokerController,
     CaseListController,
+    CategoryExpenseController,
     ClaimDocumentController,
     ExpenseController,
     FeeBasedController,
@@ -61,6 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::post('expense/laporan', [ExpenseController::class, 'laporan'])->name('expense.laporan');
     Route::delete('expenses/{expense:id}', [ExpenseController::class, 'destroy'])->name('expense.destroy');
     Route::get('/expenses', [ExpenseController::class, 'index'])->name('expense.index');
+    Route::resource('/category-expense', CategoryExpenseController::class);
     Route::resource('/case-list', CaseListController::class);
     Route::resource('/cause-of-loss', IncidentController::class);
     Route::resource('/type-of-business', PolicyController::class);
