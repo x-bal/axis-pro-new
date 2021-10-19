@@ -39,7 +39,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-1">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary"><i class="fas fa-print"></i> Laporan</button>
                                 </div>

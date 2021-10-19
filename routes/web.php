@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/case-list/getcase', [CaseListController::class, 'getcase']);
     Route::post('/case-list/laporan', [CaseListController::class, 'laporan'])->name('caselist.laporan');
     Route::post('/case-list/excel', [CaseListController::class, 'excel'])->name('caselist.excel');
+    Route::get('/case-list/{caseList:id}/expense', [CaseListController::class, 'expense'])->name('caselist.expense');
     Route::get('/case-list/{caseList:id}/transcript', [CaseListController::class, 'transcript'])->name('caselist.transcript');
     Route::get('/case-list/restore', [CaseListController::class, 'restore'])->name('caselist.restore');
     Route::post('expense/laporan', [ExpenseController::class, 'laporan'])->name('expense.laporan');
@@ -73,7 +74,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/permission', PermissionController::class);
     Route::post('/invoice/laporan', [InvoiceController::class, 'laporan'])->name('invoice.laporan');
     Route::post('/invoice/excel', [InvoiceController::class, 'excel'])->name('invoice.excel');
-    Route::get('invoice/pdf/{id}',[InvoiceController::class, 'pdf'])->name('invoice.pdf');
+    Route::get('invoice/pdf/{id}', [InvoiceController::class, 'pdf'])->name('invoice.pdf');
     Route::resource('invoice', InvoiceController::class);
     Route::get('expense/download', [ExpenseController::class, 'download'])->name('expense.download');
     Route::post('expense/store', [ExpenseController::class, 'store'])->name('expense.store');

@@ -44,13 +44,13 @@
                                 <!-- <td>{{ $client->type }}</td> -->
                                 <td>
                                     @can('insurance-edit')
-                                    <a href="{{ route('insurance.edit', $client->id) }}" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('insurance.edit', $client->id) }}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
                                     @endcan
                                     @can('insurance-delete')
                                     <form action="{{ route('insurance.destroy', $client->id) }}" method="post" style="display: inline;" onclick="return confirm('Delete data?')">
                                         @csrf
                                         @method('delete')
-                                        <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                        <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
                                     </form>
                                     @endcan
                                 </td>

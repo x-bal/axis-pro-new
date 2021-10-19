@@ -226,7 +226,7 @@
                         </table>
                         @endif
 
-                        <a href="" class="btn btn-primary my-3"><i class="fas fa-file-pdf"></i> Download</a>
+                        <a href="{{ route('caselist.expense', $caseList->id) }}" class="btn btn-primary my-3"><i class="fas fa-file-pdf"></i> Download</a>
 
                         <table width="100%" height="52" border="0" class="table tabelbelang table-bordered table-striped table-hover" style="font-size:12px;">
                             <tbody>

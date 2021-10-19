@@ -71,7 +71,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary"><i class="fas fa-print"></i> Laporan</button>
                                 </div>
@@ -111,13 +111,13 @@
                                     <span class="badge badge-{{ $inv->status_paid == 1 ? 'success' : 'danger' }} p-1">{{ $inv->status_paid == 1 ? 'Paid' : 'Unpaid' }}</span>
                                 </td>
                                 <td class="text-center">
-                                    <div class="btn-group">
-                                        <a href="{{ route('invoice.pdf', $inv->id) }}" class="btn btn-danger btn-sm"><i class="fas fa-table"></i> <br> PDF</a>
-                                        <button class="btn btn-info btn-sm text-white" data-toggle="modal" onclick="konfirmasi(this)" data-id="{{ $inv->id }}" data-target="#KonfirmasiModal"><i class="fas fa-list-alt"></i> <br> Konfirmasi</button>
-                                        <form method="post" action="{{ route('invoice.destroy', $inv->id) }}">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a href="{{ route('invoice.pdf', $inv->id) }}" class="btn btn-danger btn-sm"><i class="fas fa-file-pdf"></i></a>
+                                        <button class="btn btn-info btn-sm text-white" data-toggle="modal" onclick="konfirmasi(this)" data-id="{{ $inv->id }}" data-target="#KonfirmasiModal"><i class="far fa-check-circle"></i></button>
+                                        <form method="post" action="{{ route('invoice.destroy', $inv->id) }}" style="display: inline;">
                                             @csrf
                                             @method('delete')
-                                            <button type="submit" onclick="return confirm('Anda Yakin Ingin Menghapus Invoice?')" class="btn btn-sm btn-warning"><i class="fas fa-trash-alt"></i> <br> {{ $inv->caselist->file_no }}</button>
+                                            <button type="submit" onclick="return confirm('Anda Yakin Ingin Menghapus Invoice?')" class="btn btn-sm btn-warning"><i class="fas fa-trash-alt"></i></button>
                                         </form>
                                     </div>
                                 </td>

@@ -14,7 +14,7 @@ class AddDescToCategoryExpensesTable extends Migration
     public function up()
     {
         Schema::table('category_expenses', function (Blueprint $table) {
-            $table->string('desc');
+            $table->string('desc')->after('nama_kategory');
         });
     }
 
