@@ -75,7 +75,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="insured">Insured</label>
-            <input type="text" id="insured" value="{{ $caseList->insured }}" name="insured" class="form-control @error('insured') is-invalid @enderror">
+            <input type="text" id="insured" value="{{ $caseList->insured ?? old('insured') }}" name="insured" class="form-control @error('insured') is-invalid @enderror">
             @error('insured')
             <div class="invalid-feedback">
                 {{ $message }}
@@ -87,7 +87,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="dol">Dol</label>
-            <input type="date" value="{{ $caseList->dol ?? '' }}" id="dol" name="dol" class="form-control @error('dol') is-invalid @enderror">
+            <input type="date" value="{{ $caseList->dol ?? old('dol') }}" id="dol" name="dol" class="form-control @error('dol') is-invalid @enderror">
             @error('dol')
             <div class="invalid-feedback">
                 {{ $message }}
@@ -99,7 +99,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="risk_location">Risk Location</label>
-            <input type="text" id="risk_location" value="{{ $caseList->risk_location }}" name="risk_location" class="form-control @error('risk_location') is-invalid @enderror">
+            <input type="text" id="risk_location" value="{{ $caseList->risk_location ?? old('risk_location') }}" name="risk_location" class="form-control @error('risk_location') is-invalid @enderror">
             @error('risk_location')
             <div class="invalid-feedback">
                 {{ $message }}
@@ -177,7 +177,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="no_leader_policy">No Leader Policy </label>
-            <input class="form-control @error('no_leader_policy') is-invalid @enderror" value="{{ $caseList->no_leader_policy ?? '' }}" name="no_leader_policy" id="no_leader_policy" type="text">
+            <input class="form-control @error('no_leader_policy') is-invalid @enderror" value="{{ $caseList->no_leader_policy ?? old('no_leader_policy') }}" name="no_leader_policy" id="no_leader_policy" type="text">
             @error('no_leader_policy')
             <div class="invalid-feedback">
                 {{ $message }}
@@ -189,7 +189,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="begin">Begin</label>
-            <input class="form-control @error('begin') is-invalid @enderror" value="{{ $caseList->begin }}" name="begin" id="begin" type="date">
+            <input class="form-control @error('begin') is-invalid @enderror" value="{{ $caseList->begin ?? old('begin')}}" name="begin" id="begin" type="date">
             @error('begin')
             <div class="invalid-feedback">
                 {{ $message }}
@@ -201,7 +201,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="end">End</label>
-            <input class="form-control @error('end') is-invalid @enderror" value="{{ $caseList->end }}" name="end" id="end" type="date">
+            <input class="form-control @error('end') is-invalid @enderror" value="{{ $caseList->end ?? old('end') }}" name="end" id="end" type="date">
             @error('end')
             <div class="invalid-feedback">
                 {{ $message }}
@@ -213,7 +213,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="instruction_date">Instruction Date</label>
-            <input class="form-control @error('instruction_date') is-invalid @enderror" value="{{ $caseList->instruction_date ?? '' }}" name="instruction_date" id="instruction_date" type="date">
+            <input class="form-control @error('instruction_date') is-invalid @enderror" value="{{ $caseList->instruction_date ?? old('instruction_date') }}" name="instruction_date" id="instruction_date" type="date">
             @error('instruction_date')
             <div class="invalid-feedback">
                 {{ $message }}
@@ -225,7 +225,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="survey_date">Survey Date</label>
-            <input class="form-control @error('survey_date') is-invalid @enderror" value="{{ $caseList->survey_date ?? '' }}" name="survey_date" id="survey_date" type="date">
+            <input class="form-control @error('survey_date') is-invalid @enderror" value="{{ $caseList->survey_date ?? old('survey_date') }}" name="survey_date" id="survey_date" type="date">
             @error('survey_date')
             <div class="invalid-feedback">
                 {{ $message }}
@@ -237,8 +237,30 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="leader_claim_no">Leader Claim No</label>
-            <input class="form-control @error('leader_claim_no') is-invalid @enderror" value="{{ $caseList->leader_claim_no ?? '' }}" name="leader_claim_no" id="leader_claim_no" type="text">
+            <input class="form-control @error('leader_claim_no') is-invalid @enderror" value="{{ $caseList->leader_claim_no ?? old('leader_claim_no') }}" name="leader_claim_no" id="leader_claim_no" type="text">
             @error('leader_claim_no')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="conveyance">Conveyance</label>
+            <input class="form-control @error('conveyance') is-invalid @enderror" value="{{ $caseList->conveyance ?? old('conveyance') }}" name="conveyance" id="conveyance" type="text">
+            @error('conveyance')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="location_of_loss">Location Of Loss</label>
+            <input class="form-control @error('location_of_loss') is-invalid @enderror" value="{{ $caseList->location_of_loss ?? old('location_of_loss') }}" name="location_of_loss" id="location_of_loss" type="text">
+            @error('location_of_loss')
             <div class="invalid-feedback">
                 {{ $message }}
             </div>
