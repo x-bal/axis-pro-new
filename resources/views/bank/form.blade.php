@@ -36,4 +36,27 @@
             @enderror
         </div>
     </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="swift_code">Swift Code</label>
+            <input name="swift_code" id="swift_code" type="text" value="{{ $bank->swift_code ?? '' }}" class="form-control @error('swift_code') is-invalid @enderror">
+            @error('swift_code')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="address">Address</label>
+            <textarea name="address" id="address" class="form-control @error('address') is-invalid @enderror">{{ $bank->address ?? '' }}</textarea>
+            @error('address')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    </div>
+    
 </div>

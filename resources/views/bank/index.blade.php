@@ -33,6 +33,8 @@
                             <th>Bank Name</th>
                             <th>No Account</th>
                             <th>Currency</th>
+                            <th>Swift Code</th>
+                            <th>Address</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -43,6 +45,8 @@
                             <td>{{ $bank->bank_name }}</td>
                             <td>{{ $bank->no_account }}</td>
                             <td>{{ $bank->currency }}</td>
+                            <td>{{ $bank->swift_code }}</td>
+                            <td>{{ $bank->address }}</td>
                             <td>
                                 @can('bank-edit')
                                 <a href="{{ route('bank.edit', $bank->id) }}" class="btn btn-success"><i class="fas fa-edit"></i></a>

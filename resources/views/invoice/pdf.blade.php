@@ -85,7 +85,7 @@
                     <tr>
                         <th>Conveyance</th>
                         <th>:</th>
-                        <th>{{ $invoice->id }}</th>
+                        <th>-</th>
                     </tr>
                     <tr>
                         <th>Date Of Loss</th>
@@ -181,44 +181,47 @@
                 </table>
             </div>
         </div>
-        <div class="row" style="margin-top: 50px;">
-            <div class="col" style="width: 30%;margin-left: 12%">
+        <div class="row">
+            <div class="col" style="width: 30%;margin-left: 12%;">
+                <table>
+                    <tr>
+                        <th>
+                            PT AXIS INTERNASIONAL INDONESIA
+                        </th>
+                    </tr>
+                </table>
+                <table style="margin-left: 450px;margin-top: 80px;">
+                    <tr>
+                        <th>
+                            <br>
+                            <h5><u>Febrizal</u></h5>
+                            <h5>Director</h5>
+                        </th>
+                    </tr>
+                </table>
+                @foreach($bank as $data)
                 <table>
                     <tr>
                         <th colspan="3">
-                            PT AXIS INTERNASIONAL INDONESIA
-                            Bank Mandiri Kcp Kuningan Jakarta
-                            Menara Duta, Jl HR Rasuna Said Kav B-9 Jakarta, Indonesia
+                            <strong>{{ $data->bank_name }}</strong>
+                            <p>{{ $data->address }}</p>
                         </th>
                     </tr>
                     <tr>
                         <th>Swift Code</th>
                         <th>:</th>
-                        <th>BMRIIDJA</th>
+                        <th>{{ $data->swift_code }}</th>
                     </tr>
+                    @foreach($type->where('bank_name',$data->bank_name) as $row)
                     <tr>
-                        <th>Account No.IDR</th>
+                        <th>Account No.{{ $row->currency }}</th>
                         <th>:</th>
-                        <th>124.00456677880</th>
+                        <th>{{ $row->no_account }}</th>
                     </tr>
-                    <tr>
-                        <th>Account No.USD</th>
-                        <th>:</th>
-                        <th>124.0045677771</th>
-                    </tr>
+                    @endforeach
                 </table>
-            </div>
-            <div class="col" style="margin-left: 80%;">
-                <table>
-                    <tr>
-                        <th>
-                            <hr style="border: 1px solid black">
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>Director</th>
-                    </tr>
-                </table>
+                <hr>
+                @endforeach
             </div>
         </div>
         <div class="row">
