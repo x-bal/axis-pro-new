@@ -493,7 +493,17 @@
                                 @php
                                 $exceed = Carbon\Carbon::parse($caseList->ia_limit)->diff(Carbon\Carbon::now())->d
                                 @endphp
-                                <td>{{ $caseList->ia_status == 0 ? $exceed >= 0 ? $exceed : 0  . ' Days' : 'Finish' }}</td>
+                                <td>
+                                    @if($caseList->ia_status == 0)
+                                    @if(Carbon\Carbon::now()->format('Ymd') >= Carbon\Carbon::parse($caseList->ia_limit)->format('Ymd'))
+                                    {{ $exceed }}
+                                    @else
+                                    0
+                                    @endif
+                                    @else
+                                    Finish
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
                                 <td>Date Uploaded</td>
@@ -623,7 +633,17 @@
                                 @php
                                 $exceed = Carbon\Carbon::parse($caseList->pr_limit)->diff(Carbon\Carbon::now())->d
                                 @endphp
-                                <td>{{ $caseList->pr_status == 0 ? $exceed >= 0 ? $exceed : 0  . ' Days' : 'Finish' }}</td>
+                                <td>
+                                    @if($caseList->pr_status == 0)
+                                    @if(Carbon\Carbon::now()->format('Ymd') >= Carbon\Carbon::parse($caseList->pr_limit)->format('Ymd'))
+                                    {{ $exceed }}
+                                    @else
+                                    0
+                                    @endif
+                                    @else
+                                    Finish
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
                                 <td>Date Uploaded</td>
@@ -782,12 +802,32 @@
                                 @php
                                 $exceed = Carbon\Carbon::parse($caseList->pa_limit)->diff(Carbon\Carbon::now())->d
                                 @endphp
-                                <td>{{ $caseList->pa_status == 0 ? $exceed >= 0 ? $exceed : 0  . ' Days' : 'Finish' }}</td>
+                                <td>
+                                    @if($caseList->pa_status == 0)
+                                    @if(Carbon\Carbon::now()->format('Ymd') >= Carbon\Carbon::parse($caseList->pa_limit)->format('Ymd'))
+                                    {{ $exceed }}
+                                    @else
+                                    0
+                                    @endif
+                                    @else
+                                    Finish
+                                    @endif
+                                </td>
                                 @else
                                 @php
                                 $exceed = Carbon\Carbon::parse($caseList->ir_st_limit)->diff(Carbon\Carbon::now())->d
                                 @endphp
-                                <td>{{ $caseList->ir_st_status == 0 ? $exceed >= 0 ? $exceed : 0  . ' Days' : 'Finish' }}</td>
+                                <td>
+                                    @if($caseList->ir_st_status == 0)
+                                    @if(Carbon\Carbon::now()->format('Ymd') >= Carbon\Carbon::parse($caseList->ir_st_limit)->format('Ymd'))
+                                    {{ $exceed }}
+                                    @else
+                                    0
+                                    @endif
+                                    @else
+                                    Finish
+                                    @endif
+                                </td>
                                 @endif
                             </tr>
                             <tr>
@@ -973,12 +1013,32 @@
                                 @php
                                 $exceed = Carbon\Carbon::parse($caseList->fr_limit)->diff(Carbon\Carbon::now())->d
                                 @endphp
-                                <td>{{ $caseList->fr_status == 0 ? $exceed >= 0 ? $exceed : 0  . ' Days' : 'Finish' }}</td>
+                                <td>
+                                    @if($caseList->fr_status == 0)
+                                    @if(Carbon\Carbon::now()->format('Ymd') >= Carbon\Carbon::parse($caseList->fr_limit)->format('Ymd'))
+                                    {{ $exceed }}
+                                    @else
+                                    0
+                                    @endif
+                                    @else
+                                    Finish
+                                    @endif
+                                </td>
                                 @else
                                 @php
                                 $exceed = Carbon\Carbon::parse($caseList->pa_limit)->diff(Carbon\Carbon::now())->d
                                 @endphp
-                                <td>{{ $caseList->pa_status == 0 ? $exceed >= 0 ? $exceed : 0  . ' Days' : 'Finish' }}</td>
+                                <td>
+                                    @if($caseList->pa_status == 0)
+                                    @if(Carbon\Carbon::now()->format('Ymd') >= Carbon\Carbon::parse($caseList->pa_limit)->format('Ymd'))
+                                    {{ $exceed }}
+                                    @else
+                                    0
+                                    @endif
+                                    @else
+                                    Finish
+                                    @endif
+                                </td>
                                 @endif
                             </tr>
                             <tr>
@@ -1142,7 +1202,17 @@
                                 @php
                                 $exceed = Carbon\Carbon::parse($caseList->fr_limit)->diff(Carbon\Carbon::now())->d
                                 @endphp
-                                <td>{{ $caseList->fr_status == 0 ? $exceed >= 0 ? $exceed : 0  . ' Days' : 'Finish' }}</td>
+                                <td>
+                                    @if($caseList->fr_status == 0)
+                                    @if(Carbon\Carbon::now()->format('Ymd') >= Carbon\Carbon::parse($caseList->fr_limit)->format('Ymd'))
+                                    {{ $exceed }}
+                                    @else
+                                    0
+                                    @endif
+                                    @else
+                                    Finish
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
                                 <td>Date Uploaded</td>

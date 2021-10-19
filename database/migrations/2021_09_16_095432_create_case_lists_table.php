@@ -44,9 +44,9 @@ class CreateCaseListsTable extends Migration
             $table->integer('pr_status')->default(0);
             $table->integer('ir_status')->nullable();
             $table->date('ir_st_date')->nullable();
-            $table->interface('ir_st_limit')->nullable();
+            $table->integer('ir_st_limit')->nullable();
             $table->bigInteger('ir_st_amount')->nullable();
-            $table->interface('ir_st_status')->default(0);
+            $table->integer('ir_st_status')->default(0);
             $table->date('ir_nd_date')->nullable();
             $table->bigInteger('ir_nd_amount')->nullable();
             $table->integer('ir_nd_status')->nullable();
@@ -68,7 +68,7 @@ class CreateCaseListsTable extends Migration
             $table->bigInteger('is_ready')->default(0);
             $table->bigInteger('is_expense')->default(0);
             $table->bigInteger('is_transcript')->default(0);
-            $table->timestamps('deleted_at');
+            $table->timestamp('deleted_at');
             $table->timestamps();
         });
     }
