@@ -19,7 +19,7 @@
 </style>
 
 <body>
-    <img src="{{ public_path('asset/header.png') }}" alt="">
+    <img src="{{ asset('/asset/header.png') }}" alt="">
     <h5 class="text-center"><b> FINAL INVOICE {{ $invoice->caselist->file_no }} </b></h5>
     <div class="container-fluid">
         <div class="row">
