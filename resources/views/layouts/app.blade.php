@@ -118,6 +118,9 @@
                                 @can('bank-access')
                                 <a class="dropdown-item {{ request()->is('bank*') ? 'active' : '' }}" href="{{ route('bank.index') }}">Bank List</a>
                                 @endcan
+                                @can('category-expense-access')
+                                <a class="dropdown-item {{ request()->is('category-expense*') ? 'active' : '' }}" href="{{ route('category-expense.index') }}">Category Expense</a>
+                                @endcan
                             </div>
                         </li>
                         @endcan

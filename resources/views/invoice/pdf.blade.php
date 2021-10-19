@@ -19,7 +19,7 @@
 </style>
 
 <body>
-    <img src="{{ asset('asset/header.png') }}" alt="">
+    <img src="{{ public_path('asset/header.png') }}" alt="">
     <h5 class="text-center"><b> FINAL INVOICE {{ $invoice->caselist->file_no }} </b></h5>
     <div class="container-fluid">
         <div class="row">
@@ -181,8 +181,8 @@
                 </table>
             </div>
         </div>
-        <div class="row">
-            <div class="col" style="width: 300px;margin-left: 12%">
+        <div class="row" style="margin-top: 50px;">
+            <div class="col" style="width: 30%;margin-left: 12%">
                 <table>
                     <tr>
                         <th colspan="3">
