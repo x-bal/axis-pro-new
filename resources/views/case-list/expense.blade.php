@@ -9,7 +9,6 @@
     <meta name="author" content="yoriadiatma">
     <link rel="icon" href="">
     <title>Expense Case {{ $caseList->file_no }}</title>
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous"> -->
 
     <style>
         @page {
@@ -78,8 +77,8 @@
         .sheet.padding-5mm {
             padding-top: 1mm;
             padding-bottom: 1mm;
-            padding-left: 10mm;
-            padding-right: 10mm;
+            padding-left: 15mm;
+            padding-right: 15mm;
         }
 
         .sheet.padding-10mm {
@@ -137,43 +136,43 @@
 
 <body class="A4 sheet padding-5mm">
     <div class="container-fluid">
-        <h3 style="text-align: center;"><u>Work Order Detail</u></h3>
+        <h3 style="text-align: center;"><u>WORK ORDER DETAIL</u></h3>
 
-        <div>
+        <div style="line-height: 11px;">
             <table>
                 <tr>
                     <td>Work Order</td>
-                    <td> : </td>
+                    <td> :</td>
                     <td width="300px">{{ $caseList->file_no }}</td>
 
                     <td>DOL/Instruction</td>
-                    <td> : </td>
+                    <td> :</td>
                     <td>{{ Carbon\Carbon::parse($caseList->dol)->format('d/m/Y') }} - {{ Carbon\Carbon::parse($caseList->instruction_date)->format('d/m/Y') }}</td>
                 </tr>
 
                 <tr>
                     <td>Policy No</td>
-                    <td> : </td>
+                    <td> :</td>
                     <td width="300px">{{ $caseList->no_leader_policy }}</td>
 
                     <td>Currency</td>
-                    <td> : </td>
+                    <td> :</td>
                     <td>{{ $caseList->currency == 'RP' ? 'IDR' : 'USD' }}</td>
                 </tr>
 
                 <tr>
                     <td>Status</td>
-                    <td> : </td>
-                    <td width="300px">{{ $caseList->no_leader_policy }}</td>
+                    <td> :</td>
+                    <td width="300px">Active</td>
 
                     <td>Location</td>
-                    <td> : </td>
+                    <td> :</td>
                     <td style="text-transform: uppercase;">{{ $caseList->risk_location }}</td>
                 </tr>
 
                 <tr>
                     <td>Insured</td>
-                    <td> : </td>
+                    <td> :</td>
                     <td width="300px" style="text-transform: uppercase;">{{ $caseList->insured }}</td>
                 </tr>
             </table>
@@ -209,7 +208,7 @@
 
         <div style="margin-top: 20px;">
             <strong><u>Expenses :</u></strong><br>
-            <table style="margin-left: -4px;">
+            <table style="margin-left: -4px; margin-top: 5px;">
                 @foreach($adjuster as $adj)
                 <tr>
                     <td>
@@ -224,16 +223,16 @@
                                 <td width="70px">{{ Carbon\Carbon::parse($exp->tanggal)->format('d/m/Y') }}</td>
                                 <td width="100px"><b>{{ $exp->category_expense }}</b></td>
                                 <td width="350px">{{ $exp->name }}</td>
-                                <td style="text-align: right;">{{ number_format($exp->amount) }}</td>
+                                <td style="text-align: right;">{{ number_format($exp->amount,2,',','.') }}</td>
                             </tr>
                             @endforeach
                             <tr>
                                 <td colspan="4"></td>
-                                <td style="text-align: right;">______________</td>
+                                <td style="text-align: right;">________________</td>
                             </tr>
                             <tr>
                                 <td colspan="4"></td>
-                                <td style="text-align: right;"><b>{{ number_format($expense->sum('amount')) }}</b></td>
+                                <td style="text-align: right;"><b>{{ number_format($expense->sum('amount'),2,',','.') }}</b></td>
                             </tr>
                         </table>
                     </td>
@@ -244,11 +243,11 @@
                         <table width="100%" style="margin-top: -10px;">
                             <tr>
                                 <td colspan="4"></td>
-                                <td style="text-align: right;">______________</td>
+                                <td style="text-align: right;">________________</td>
                             </tr>
                             <tr>
                                 <td colspan="4"></td>
-                                <td style="text-align: right;"><b>{{ number_format($caseList->expense->sum('amount')) }}</b></td>
+                                <td style="text-align: right;"><b>{{ number_format($caseList->expense->sum('amount'),2,',','.') }}</b></td>
                             </tr>
                         </table>
                     </td>

@@ -129,7 +129,7 @@
                                     <td>AGING (DAY)</td>
                                     <td>:</td>
                                     <td>
-                                        {{ Carbon\Carbon::parse($caseList->instruction_date)->diff(Carbon\Carbon::now())->d  }}
+                                        {{ Carbon\Carbon::parse($caseList->instruction_date)->diff($caseList->file_status_id == 5 ? $caseList->now_update : Carbon\Carbon::now())->d  }}
                                     </td>
                                 </tr>
                             </tbody>
@@ -477,7 +477,7 @@
                                 <td> : </td>
                                 <td>
                                     {{ Carbon\Carbon::parse($caseList->ia_limit)->format('d/m/Y')}} (7 Days)
-                                    @if(Carbon\Carbon::now()->format('Ymd') >= Carbon\Carbon::parse($caseList->ia_limit)->addDay(1)->format('Ymd'))
+                                    @if($caseList->ia_status == 0 && Carbon\Carbon::now()->format('Ymd') >= Carbon\Carbon::parse($caseList->ia_limit)->addDay(1)->format('Ymd'))
                                     <small class="text-danger">*You Have Exceeded From Limit</small>
                                     @endif
                                 </td>
@@ -493,7 +493,7 @@
                                 @php
                                 $exceed = Carbon\Carbon::parse($caseList->ia_limit)->diff(Carbon\Carbon::now())->d
                                 @endphp
-                                <td>{{ $exceed >= 0 ? $exceed : 0 }} Days</td>
+                                <td>{{ $caseList->ia_status == 0 ? $exceed >= 0 ? $exceed : 0  . ' Days' : 'Finish' }}</td>
                             </tr>
                             <tr>
                                 <td>Date Uploaded</td>
@@ -607,7 +607,7 @@
                                 <td> : </td>
                                 <td>
                                     {{ Carbon\Carbon::parse($caseList->pr_limit)->format('d/m/Y')}} (14 Days)
-                                    @if(Carbon\Carbon::now()->format('Ymd') >= Carbon\Carbon::parse($caseList->pr_limit)->addDay(1)->format('Ymd'))
+                                    @if($caseList->pr_status == 0 && Carbon\Carbon::now()->format('Ymd') >= Carbon\Carbon::parse($caseList->pr_limit)->addDay(1)->format('Ymd'))
                                     <small class="text-danger">*You Have Exceeded From Limit</small>
                                     @endif
                                 </td>
@@ -623,7 +623,7 @@
                                 @php
                                 $exceed = Carbon\Carbon::parse($caseList->pr_limit)->diff(Carbon\Carbon::now())->d
                                 @endphp
-                                <td>{{ $exceed >= 0 ? $exceed : 0 }} Days</td>
+                                <td>{{ $caseList->pr_status == 0 ? $exceed >= 0 ? $exceed : 0  . ' Days' : 'Finish' }}</td>
                             </tr>
                             <tr>
                                 <td>Date Uploaded</td>
@@ -759,12 +759,12 @@
                                 <td>
                                     @if($caseList->ir_status == 0)
                                     {{ Carbon\Carbon::parse($caseList->pa_limit)->format('d/m/Y')}} (14 Days)
-                                    @if(Carbon\Carbon::now()->format('Ymd') >= Carbon\Carbon::parse($caseList->pa_limit)->format('Ymd'))
+                                    @if($caseList->pa_status == 0 && Carbon\Carbon::now()->format('Ymd') >= Carbon\Carbon::parse($caseList->pa_limit)->format('Ymd'))
                                     <small class="text-danger">*You Have Exceeded From Limit</small>
                                     @endif
                                     @else
                                     {{ Carbon\Carbon::parse($caseList->ir_st_limit)->format('d/m/Y')}} (14 Days)
-                                    @if(Carbon\Carbon::now()->format('Ymd') >= Carbon\Carbon::parse($caseList->ir_st_limit)->format('Ymd'))
+                                    @if($caseList->ir_st_status == 0 && Carbon\Carbon::now()->format('Ymd') >= Carbon\Carbon::parse($caseList->ir_st_limit)->format('Ymd'))
                                     <small class="text-danger">*You Have Exceeded From Limit</small>
                                     @endif
                                     @endif
@@ -782,12 +782,13 @@
                                 @php
                                 $exceed = Carbon\Carbon::parse($caseList->pa_limit)->diff(Carbon\Carbon::now())->d
                                 @endphp
+                                <td>{{ $caseList->pa_status == 0 ? $exceed >= 0 ? $exceed : 0  . ' Days' : 'Finish' }}</td>
                                 @else
                                 @php
                                 $exceed = Carbon\Carbon::parse($caseList->ir_st_limit)->diff(Carbon\Carbon::now())->d
                                 @endphp
+                                <td>{{ $caseList->ir_st_status == 0 ? $exceed >= 0 ? $exceed : 0  . ' Days' : 'Finish' }}</td>
                                 @endif
-                                <td>{{ $exceed >= 0 ? $exceed : 0 }} Days</td>
                             </tr>
                             <tr>
                                 <td>Date Uploaded</td>
@@ -949,12 +950,12 @@
                                 <td>
                                     @if($caseList->ir_status == 0)
                                     {{ Carbon\Carbon::parse($caseList->fr_limit)->format('d/m/Y')}} (7 Days)
-                                    @if((int)Carbon\Carbon::now()->format('Ymd') >= (int)Carbon\Carbon::parse($caseList->fr_limit)->addDay(1)->format('Ymd'))
+                                    @if($caseList->fr_status == 0 && (int)Carbon\Carbon::now()->format('Ymd') >= (int)Carbon\Carbon::parse($caseList->fr_limit)->addDay(1)->format('Ymd'))
                                     <small class="text-danger">*You Have Exceeded From Limit</small>
                                     @endif
                                     @else
                                     {{ Carbon\Carbon::parse($caseList->pa_limit)->format('d/m/Y')}} (7 Days)
-                                    @if((int)Carbon\Carbon::now()->format('Ymd') >= (int)Carbon\Carbon::parse($caseList->pa_limit)->addDay(1)->format('Ymd'))
+                                    @if($caseList->pa_status == 0 && (int)Carbon\Carbon::now()->format('Ymd') >= (int)Carbon\Carbon::parse($caseList->pa_limit)->addDay(1)->format('Ymd'))
                                     <small class="text-danger">*You Have Exceeded From Limit</small>
                                     @endif
                                     @endif
@@ -972,13 +973,13 @@
                                 @php
                                 $exceed = Carbon\Carbon::parse($caseList->fr_limit)->diff(Carbon\Carbon::now())->d
                                 @endphp
+                                <td>{{ $caseList->fr_status == 0 ? $exceed >= 0 ? $exceed : 0  . ' Days' : 'Finish' }}</td>
                                 @else
                                 @php
                                 $exceed = Carbon\Carbon::parse($caseList->pa_limit)->diff(Carbon\Carbon::now())->d
                                 @endphp
+                                <td>{{ $caseList->pa_status == 0 ? $exceed >= 0 ? $exceed : 0  . ' Days' : 'Finish' }}</td>
                                 @endif
-
-                                <td>{{ $exceed >= 0 ? $exceed : 0 }} Days</td>
                             </tr>
                             <tr>
                                 <td>Date Uploaded</td>
@@ -1125,7 +1126,7 @@
                                 <td> : </td>
                                 <td>
                                     {{ Carbon\Carbon::parse($caseList->fr_limit)->format('d/m/Y')}} (7 Days)
-                                    @if((int)Carbon\Carbon::now()->format('Ymd') >= (int)Carbon\Carbon::parse($caseList->fr_limit)->addDay(1)->format('Ymd'))
+                                    @if($caseList->fr_status == 0 && (int)Carbon\Carbon::now()->format('Ymd') >= (int)Carbon\Carbon::parse($caseList->fr_limit)->addDay(1)->format('Ymd'))
                                     <small class="text-danger">*You Have Exceeded From Limit</small>
                                     @endif
                                 </td>
@@ -1141,7 +1142,7 @@
                                 @php
                                 $exceed = Carbon\Carbon::parse($caseList->fr_limit)->diff(Carbon\Carbon::now())->d
                                 @endphp
-                                <td>{{ $exceed >= 0 ? $exceed : 0 }} Days</td>
+                                <td>{{ $caseList->fr_status == 0 ? $exceed >= 0 ? $exceed : 0  . ' Days' : 'Finish' }}</td>
                             </tr>
                             <tr>
                                 <td>Date Uploaded</td>
