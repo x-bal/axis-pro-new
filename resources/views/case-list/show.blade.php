@@ -297,7 +297,7 @@
                             </thead>
 
                             <tbody>
-                                @if($caseList->is_transcript != 2 && $messages != null)
+                                @if($caseList->is_transcript != 2 && $messages != null) 
                                 @foreach($messages as $message)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>

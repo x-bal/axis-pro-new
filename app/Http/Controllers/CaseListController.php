@@ -215,38 +215,32 @@ class CaseListController extends Controller
     {
         Gate::allows(abort_unless('case-list-show', 403));
 
-        $messages = $this->getEmail($caseList->file_no);
         $status = FileStatus::get();
         $gmails = [];
 
         if ($caseList->is_transcript == 0) {
             if (auth()->user()->hasRole('admin')) {
+                $message = [];
                 $gmails = [];
             } else {
+                $messages = $this->getEmail($caseList->file_no);
                 $gmails = [];
             }
         } elseif ($caseList->is_transcript == 1) {
             if (auth()->user()->hasRole('admin')) {
                 $gmails = Gmail::where('caselist_id', $caseList->id)->get();
             } else {
+                $messages = $this->getEmail($caseList->file_no);
                 $gmails = Gmail::where('adjuster_id', auth()->user()->id)->where('caselist_id', $caseList->id)->get();
             }
         } elseif ($caseList->is_transcript == 2) {
             if (auth()->user()->hasRole('admin')) {
                 $gmails = Gmail::where('caselist_id', $caseList->id)->get();
             } else {
+                $messages = $this->getEmail($caseList->file_no);
                 $gmails = Gmail::where('adjuster_id', auth()->user()->id)->where('caselist_id', $caseList->id)->get();
             }
         }
-
-        // if ($caseList->gmails() != NULL) {
-        //     if (auth()->user()->hasRole('admin')) {
-        //         $gmails = Gmail::where('caselist_id', $caseList->id)->get();
-        //     } else {
-        //         $gmails = Gmail::where('adjuster_id', auth()->user()->id)->where('caselist_id', $caseList->id)->get();
-        //     }
-        // }
-
 
         return view('case-list.show', compact('caseList', 'status', 'messages', 'gmails'));
     }
