@@ -35,7 +35,9 @@ class BankController extends Controller
         $attr = $this->validate($request, [
             'bank_name' => 'required',
             'no_account' => 'required',
-            'currency' => 'required'
+            'currency' => 'required',
+            'swift_code' => 'required',
+            'address' => 'required'
         ]);
 
         Bank::create($attr);
@@ -63,7 +65,9 @@ class BankController extends Controller
         $attr = $this->validate($request, [
             'bank_name' => 'required',
             'no_account' => 'required',
-            'currency' => 'required'
+            'currency' => 'required',
+            'swift_code' => 'required',
+            'address' => 'required'
         ]);
 
         $bank->update($attr);
