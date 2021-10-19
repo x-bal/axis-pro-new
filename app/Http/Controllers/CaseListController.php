@@ -187,7 +187,9 @@ class CaseListController extends Controller
                     'leader_claim_no' => $request->leader_claim_no,
                     'file_status_id' => 1,
                     'survey_date' => $request->survey_date,
-                    'ia_limit' => Carbon::parse($request->survey_date)->addDay(7)->format('Y-m-d')
+                    'ia_limit' => Carbon::parse($request->survey_date)->addDay(7)->format('Y-m-d'),
+                    'conveyance' => $request->conveyance,
+                    'location_of_loss' => $request->location_of_loss
                 ]);
                 for ($i = 1; $i <= count($request->member); $i++) {
                     MemberInsurance::create([
@@ -443,7 +445,9 @@ class CaseListController extends Controller
                 'end' => $request->end,
                 'dol' => $request->dol,
                 'category' => $request->category,
-                'survey_date' => $request->survey_date
+                'survey_date' => $request->survey_date,
+                'conveyance' => $request->conveyance,
+                'location_of_loss' => $request->location_of_loss
             ]);
             MemberInsurance::where('file_no_outstanding', $caseList->id)->delete();
             for ($i = 0; $i < count($request->member); $i++) {

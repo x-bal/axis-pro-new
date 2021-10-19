@@ -82,11 +82,20 @@
                         <th width="10">:</th>
                         <th>{{ $invoice->caselist->insured }}</th>
                     </tr>
+                    @if($caselist->category == 1)
                     <tr>
                         <th>Conveyance</th>
                         <th>:</th>
-                        <th>-</th>
+                        <th>{{ $caselist->conveyance }}</th>
                     </tr>
+                    @endif
+                    @if($caselist->category == 2)
+                    <tr>
+                        <th>Location Of Loss</th>
+                        <th>:</th>
+                        <th>{{ $caselist->location_of_loss }}</th>
+                    </tr>
+                    @endif
                     <tr>
                         <th>Date Of Loss</th>
                         <th>:</th>

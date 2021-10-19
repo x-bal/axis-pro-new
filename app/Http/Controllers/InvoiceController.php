@@ -186,7 +186,7 @@ class InvoiceController extends Controller
             'fee'=> $fee,
             'caselist' => $fee_based->caselist($invoice->caselist->id)->original['caselist'],
             'bank' => Bank::get()->unique('bank_name'),
-            'type' => Bank::get()
+            'type' => Bank::get(),
         ]);
         return $pdf->stream();
     }
