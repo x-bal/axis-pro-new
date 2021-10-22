@@ -21,6 +21,10 @@
         <div class="d-flex justify-content-center">
             <div>
                 <h1>Laporan Insurance</h1>
+                <div class="d-flex justify-content-between">
+                    <strong>{{ $from }}</strong>
+                    <strong>{{ $to }}</strong>
+                </div>
             </div>
         </div>
         <hr>
@@ -43,20 +47,38 @@
                                 <th>Usd</th>
                             </tr>
                         </thead>
+                        @php
+                            $total_idr = 0;
+                            $total_usd = 0;
+                        @endphp
                         <tbody>
                             @foreach($member as $data)
                             <tr>
+                                @if($data->caselist->currency == 'IDR')
+                                    @php $total_idr += $data->caselist->claim_amount @endphp
+                                @endif
+                                @if($data->caselist->currency == 'USD')
+                                    @php $total_usd += $data->caselist->claim_amount @endphp
+                                @endif
                                 <td>{{ $loop->iteration }}</td>
-                                <td class="text-center"><a href="{{ route('case-list.show', $data->caselist->id) }}">{{ $data->caselist->file_no ?? 'Kosong' }}</a></td>
-                                <td class="text-right">{{ $data->caselist->currency == 'IDR' ? number_format($data->caselist->claim_amount) : ''}}</td>
-                                <td class="text-right">{{ $data->caselist->currency == 'USD' ? number_format($data->caselist->claim_amount) : '' }}</td>
-                                <th class="text-center">{{ $data->is_leader ? 'Leader' : 'Member' }}</th>
-                                <td class="text-center">{{ $data->share }}%</td>
+                                <td><a href="{{ route('case-list.show', $data->caselist->id) }}">{{ $data->caselist->file_no ?? 'Kosong' }}</a></td>
+                                <td>{{ $data->caselist->currency == 'IDR' ? number_format($data->caselist->claim_amount) : ''}}</td>
+                                <td>{{ $data->caselist->currency == 'USD' ? number_format($data->caselist->claim_amount) : '' }}</td>
+                                <th>{{ $data->is_leader ? 'Leader' : 'Member' }}</th>
+                                <td>{{ $data->share }}%</td>
                                 <td>{{ $data->caselist->incident->type_incident ?? 'Kosong' }}</td>
                                 <th>{{ $data->caselist->instruction_date }}</th>
                             </tr>
                             @endforeach
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2">Total</td>
+                                <td>{{ number_format($total_idr) }}</td>
+                                <td>{{ number_format($total_usd) }}</td>
+                                <td colspan="4"></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
