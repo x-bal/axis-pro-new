@@ -6,64 +6,72 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">  
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="d-flex justify-content-center">
             <div>
-                <h1>Laporan Case List</h1>
+                <h1> Laporan Case List</h1>
+                <div class="d-flex justify-content-between">
+                    <strong>{{ $from }}</strong>
+                    <strong>{{ $to }}</strong>
+                </div>
             </div>
+
         </div>
         <hr>
         {{--<br>
         <form action="{{ route('caselist.excel') }}" method="post">
-            @csrf
-            <div class="card">
-                <div class="btn-group">
-                    <a href="{{ route('case-list.index') }}" class="btn btn-primary">Back</a>
-                    <button type="submit" class="btn btn-success">Excel</button>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="from">from</label>
-                                <input type="date" id="from" name="from" class="form-control" readonly value="{{ $from }}">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="to">to</label>
-                                <input type="date" id="to" name="to" value="{{ $to }}" readonly class="form-control">
-                            </div>
-                        </div>
-                        @if(auth()->user()->hasRole('admin'))
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="adjuster">adjuster</label>
-                                <input type="text" id="adjuster" name="adjuster" value="{{ $adjuster }}" readonly class="form-control">
-                            </div>
-                        </div>
-                        @else
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="status">status</label>
-                                <input type="text" id="status" name="status" value="{{ $status }}" readonly class="form-control">
-                            </div>
-                        </div>
-
-                        @endif
-                    </div>
-                </div>
-
+        @csrf
+        <div class="card">
+            <div class="btn-group">
+                <a href="{{ route('case-list.index') }}" class="btn btn-primary">Back</a>
+                <button type="submit" class="btn btn-success">Excel</button>
             </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="from">from</label>
+                            <input type="date" id="from" name="from" class="form-control" readonly value="{{ $from }}">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="to">to</label>
+                            <input type="date" id="to" name="to" value="{{ $to }}" readonly class="form-control">
+                        </div>
+                    </div>
+                    @if(auth()->user()->hasRole('admin'))
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="adjuster">adjuster</label>
+                            <input type="text" id="adjuster" name="adjuster" value="{{ $adjuster }}" readonly class="form-control">
+                        </div>
+                    </div>
+                    @else
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="status">status</label>
+                            <input type="text" id="status" name="status" value="{{ $status }}" readonly class="form-control">
+                        </div>
+                    </div>
+
+                    @endif
+                </div>
+            </div>
+
+        </div>
         </form>
         <br> --}}
         <div class="row">
@@ -84,6 +92,8 @@
                                 <th colspan="2">Claim Amount</th>
                                 <th colspan="2">Fee</th>
                                 <th colspan="2">Expense</th>
+                                <th colspan="2">PPN 10%</th>
+                                <th colspan="2">Total Invoice</th>
                                 <th rowspan="2">Instruction Date</th>
                                 <th rowspan="2">Survey Date</th>
                                 <th rowspan="2">Now Update</th>
@@ -116,11 +126,19 @@
                                 <th>USD</th>
                                 <th>IDR</th>
                                 <th>USD</th>
+                                <th>IDR</th>
+                                <th>USD</th>
+                                <th>IDR</th>
+                                <th>USD</th>
                             </tr>
                         </thead>
                         @php
                         $expense_idr = 0;
                         $expense_usd = 0;
+                        $ppn_idr = 0;
+                        $ppn_usd = 0;
+                        $invoice_idr = 0;
+                        $invoice_usd = 0;
                         @endphp
                         <tbody>
                             @foreach($case as $data)
@@ -140,6 +158,10 @@
                                 <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->fee_usd) }} @endif</td>
                                 <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format($data->expense->sum('amount')) }} @php $expense_idr += $data->expense->sum('amount') @endphp @endif</td>
                                 <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->expense->sum('amount')) }} @php $expense_usd += $data->expense->sum('amount') @endphp @endif</td>
+                                <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format($data->fee_idr + $data->expense->sum('amount') * 10 / 100) }} @php $ppn_idr += $data->fee_idr + $data->expense->sum('amount') * 10 / 100 @endphp @endif</td>
+                                <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->fee_usd + $data->expense->sum('amount') * 10 / 100) }} @php $ppn_usd += $data->fee_usd + $data->expense->sum('amount') * 10 / 100 @endphp @endif</td>
+                                <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format($data->claim_amount + $data->fee_idr + ($data->fee_idr + $data->expense->sum('amount') * 10 / 100)) }} @php $invoice_idr += $data->claim_amount + $data->fee_idr + ($data->fee_idr + $data->expense->sum('amount') * 10 / 100) @endphp @endif </td>
+                                <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->claim_amount + $data->fee_usd + ($data->fee_usd + $data->expense->sum('amount') * 10 / 100)) }} @php $invoice_usd += $data->claim_amount + $data->fee_usd + ($data->fee_usd + $data->expense->sum('amount') * 10 / 100) @endphp @endif</td>
                                 <td>{{ $data->instruction_date ? \Carbon\Carbon::parse($data->instruction_date)->format('d/m/Y') : '' }}</td>
                                 <td>{{ $data->survey_date ? \Carbon\Carbon::parse($data->survey_date)->format('d/m/Y') : '' }}</td>
                                 <td>{{ $data->now_update ? \Carbon\Carbon::parse($data->now_update)->format('d/m/Y') : '' }}</td>
@@ -168,8 +190,7 @@
                             @endforeach
                         </tbody>
                         <tfoot>
-
-                        <tr>
+                            <tr>
                                 <td colspan="9">total</td>
                                 <td>{{ number_format($claim_amount_idr) }}</td>
                                 <td>{{ number_format($claim_amount_usd) }}</td>
@@ -177,6 +198,10 @@
                                 <td>{{ number_format($fee_usd) }}</td>
                                 <td>{{ number_format($expense_idr) }}</td>
                                 <td>{{ number_format($expense_usd) }}</td>
+                                <td>{{ number_format($ppn_idr) }}</td>
+                                <td>{{ number_format($ppn_usd) }}</td>
+                                <td>{{ number_format($invoice_idr) }}</td>
+                                <td>{{ number_format($invoice_usd) }}</td>
                                 <td colspan="24"></td>
                             </tr>
                         </tfoot>
@@ -185,7 +210,7 @@
             </div>
         </div>
     </div>
-    
+
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
@@ -200,7 +225,7 @@
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
             ],
-            "paging": false,    
+            "paging": false,
             "ordering": false,
             "searching": false
         })
