@@ -54,7 +54,7 @@ class InvoiceController extends Controller
             $fee_based = str_replace(',', '', $request->fee_based);
             $fee_based = intval($fee_based);
             $caselist = CaseList::find($request->no_case);
-            if ($caselist->currency == 'RP') {
+            if ($caselist->currency == 'IDR') {
                 $caselist->update([
                     'fee_idr' => $fee_based,
                     'wip_idr' => $fee_based,
@@ -122,7 +122,7 @@ class InvoiceController extends Controller
         if ($request->status == 'all') {
 
             $rupiah = Invoice::whereHas('caselist', function ($qr) {
-                return $qr->where('currency', 'RP');
+                return $qr->where('currency', 'IDR');
             })->whereBetween('date_invoice', [$request->from, $request->to])->sum('grand_total');
 
             $usd = Invoice::whereHas('caselist', function ($qr) {
@@ -140,7 +140,7 @@ class InvoiceController extends Controller
             ]);
         } else {
             $rupiah = Invoice::whereHas('caselist', function ($qr) {
-                return $qr->where('currency', 'RP');
+                return $qr->where('currency', 'IDR');
             })->whereBetween('date_invoice', [$request->from, $request->to])->where('status_paid', $request->status)->sum('grand_total');
 
             $usd = Invoice::whereHas('caselist', function ($qr) {

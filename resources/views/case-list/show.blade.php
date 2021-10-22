@@ -132,6 +132,14 @@
                                         {{ Carbon\Carbon::parse($caseList->instruction_date)->diff($caseList->file_status_id == 5 ? $caseList->now_update : Carbon\Carbon::now())->d  }}
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>File Penunjukan</td>
+                                    <td>:</td>
+                                    <td><a href="{{ asset('/storage/'.$caseList->file_penunjukan) }}" target="_blank" class="btn btn-danger">File Penunjukan</a></td>
+                                    <td>Document Policy</td>
+                                    <td>:</td>
+                                    <td>{{ $caseList->document_policy }}</td>
+                                </tr>
                             </tbody>
                         </table>
 
@@ -254,7 +262,7 @@
                                     <td>{{ $expense->name }}</td>
                                     <td>{{ $expense->category_expense }}</td>
                                     <td>{{ Carbon\Carbon::parse($expense->tanggal)->format('d/m/Y') }}</td>
-                                    <td>{{ $caseList->currency == 'RP' ? 'Rp.' : '$' }} {{ number_format($expense->amount)  }}</td>
+                                    <td>{{ $caseList->currency == 'IDR' ? 'IDR.' : '$' }} {{ number_format($expense->amount)  }}</td>
 
                                     @if(auth()->user()->hasRole('admin'))
                                     <td>
@@ -274,7 +282,7 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="5">Total Amount : </td>
-                                    <td>{{ $caseList->currency == 'RP' ? 'Rp.' : '$' }} {{ number_format($amount) }}</td>
+                                    <td>{{ $caseList->currency == 'IDR' ? 'IDR.' : '$' }} {{ number_format($amount) }}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -544,7 +552,7 @@
                                     <td>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'RP' ? 'Rp' : '$' }}</span>
+                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
                                             </div>
                                             <input type="number" name="ia_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->ia_amount ?? '' }}">
                                         </div>
@@ -686,7 +694,7 @@
                                     <td>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'RP' ? 'Rp' : '$' }}</span>
+                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
                                             </div>
                                             <input type="number" name="pr_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->pr_amount ?? '' }}">
                                         </div>
@@ -877,7 +885,7 @@
                                         @if($caseList->ir_status == 1)
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'RP' ? 'Rp' : '$' }}</span>
+                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
                                             </div>
                                             <input type="number" name="ir_st_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->ir_st_amount ?? '' }}">
                                         </div>
@@ -889,7 +897,7 @@
 
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'RP' ? 'Rp' : '$' }}</span>
+                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
                                             </div>
                                             <input type="number" name="pa_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->pa_amount ?? '' }}">
                                         </div>
@@ -903,7 +911,7 @@
                                         @if($caseList->ir_status == 1)
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'RP' ? 'Rp' : '$' }}</span>
+                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
                                             </div>
                                             <input type="number" name="ir_nd_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->ir_st_amount ?? '' }}">
                                         </div>
@@ -1088,7 +1096,7 @@
                                         @if($caseList->ir_status == 1)
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'RP' ? 'Rp' : '$' }}</span>
+                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
                                             </div>
                                             <input type="number" name="pa_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->pa_amount ?? '' }}">
                                         </div>
@@ -1099,7 +1107,7 @@
                                         @else
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'RP' ? 'Rp' : '$' }}</span>
+                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
                                             </div>
                                             <input type="number" name="fr_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->fr_amount ?? '' }}">
                                         </div>
@@ -1113,7 +1121,7 @@
                                         @if($caseList->ir_status == 0)
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'RP' ? 'Rp' : '$' }}</span>
+                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
                                             </div>
                                             <input type="number" name="claim_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->claim_amount ?? '' }}">
                                         </div>
@@ -1256,7 +1264,7 @@
                                     <td>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'RP' ? 'Rp' : '$' }}</span>
+                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
                                             </div>
                                             <input type="number" name="fr_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->fr_amount ?? '' }}">
                                         </div>
@@ -1268,7 +1276,7 @@
                                     <td>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'RP' ? 'Rp' : '$' }}</span>
+                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
                                             </div>
                                             <input type="number" name="claim_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->claim_amount ?? '' }}">
                                         </div>

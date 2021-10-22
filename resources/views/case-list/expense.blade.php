@@ -157,7 +157,7 @@
 
                     <td>Currency</td>
                     <td> :</td>
-                    <td>{{ $caseList->currency == 'RP' ? 'IDR' : 'USD' }}</td>
+                    <td>{{ $caseList->currency == 'IDR' ? 'IDR' : 'USD' }}</td>
                 </tr>
 
                 <tr>
@@ -212,7 +212,7 @@
                 @foreach($adjuster as $adj)
                 <tr>
                     <td>
-                        <b><u>{{ $adj->adjuster }} ({{$caseList->currency == 'RP' ? 'IDR' : 'USD'}})</u></b>
+                        <b><u>{{ $adj->adjuster }} ({{$caseList->currency == 'IDR' ? 'IDR' : 'USD'}})</u></b>
                         <table width="100%">
                             @php
                             $expense = App\Models\Expense::where('case_list_id', $caseList->id)->where('adjuster', $adj->adjuster)->get()

@@ -20,7 +20,8 @@
                 <h1>Laporan Case List</h1>
             </div>
         </div>
-        <br>
+        <hr>
+        {{--<br>
         <form action="{{ route('caselist.excel') }}" method="post">
             @csrf
             <div class="card">
@@ -64,7 +65,7 @@
 
             </div>
         </form>
-        <br>
+        <br> --}}
         <div class="row">
             <div class="col-md-12">
                 <div class="table-responsive">
@@ -80,9 +81,9 @@
                                 <th rowspan="2">Policy</th>
                                 <th rowspan="2">Category</th>
                                 <th rowspan="2">Insured</th>
-                                <th colspan="2" class="text-center">Claim Amount</th>
-                                <th colspan="2" class="text-center">Fee</th>
-                                <th colspan="2" class="text-center">Expense</th>
+                                <th colspan="2">Claim Amount</th>
+                                <th colspan="2">Fee</th>
+                                <th colspan="2">Expense</th>
                                 <th rowspan="2">Instruction Date</th>
                                 <th rowspan="2">Survey Date</th>
                                 <th rowspan="2">Now Update</th>
@@ -116,7 +117,6 @@
                                 <th>IDR</th>
                                 <th>USD</th>
                             </tr>
-
                         </thead>
                         @php
                         $expense_idr = 0;
@@ -134,11 +134,11 @@
                                 <td>{{ $data->policy->type_policy }}</td>
                                 <td>@if($data->category == 1) Marine @else Non Marine @endif</td>
                                 <td>{{ $data->insured }}</td>
-                                <td>@if($data->currency == 'RP')<strong>Rp.</strong> {{ number_format($data->claim_amount) }} @endif</td>
+                                <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format($data->claim_amount) }} @endif</td>
                                 <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->claim_amount) }} @endif</td>
-                                <td>@if($data->currency == 'RP')<strong>Rp.</strong> {{ number_format($data->fee_idr) }} @endif</td>
+                                <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format($data->fee_idr) }} @endif</td>
                                 <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->fee_usd) }} @endif</td>
-                                <td>@if($data->currency == 'RP')<strong>Rp.</strong> {{ number_format($data->expense->sum('amount')) }} @php $expense_idr += $data->expense->sum('amount') @endphp @endif</td>
+                                <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format($data->expense->sum('amount')) }} @php $expense_idr += $data->expense->sum('amount') @endphp @endif</td>
                                 <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->expense->sum('amount')) }} @php $expense_usd += $data->expense->sum('amount') @endphp @endif</td>
                                 <td>{{ $data->instruction_date ? \Carbon\Carbon::parse($data->instruction_date)->format('d/m/Y') : '' }}</td>
                                 <td>{{ $data->survey_date ? \Carbon\Carbon::parse($data->survey_date)->format('d/m/Y') : '' }}</td>
@@ -166,7 +166,10 @@
                                 <td>{{ $data->status->nama_status }}</td>
                             </tr>
                             @endforeach
-                            <tr>
+                        </tbody>
+                        <tfoot>
+
+                        <tr>
                                 <td colspan="9">total</td>
                                 <td>{{ number_format($claim_amount_idr) }}</td>
                                 <td>{{ number_format($claim_amount_usd) }}</td>
@@ -174,39 +177,32 @@
                                 <td>{{ number_format($fee_usd) }}</td>
                                 <td>{{ number_format($expense_idr) }}</td>
                                 <td>{{ number_format($expense_usd) }}</td>
+                                <td colspan="24"></td>
                             </tr>
-                        </tbody>
+                        </tfoot>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
-
-    <script src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
-
-    <script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.6/js/responsive.bootstrap.min.js"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
     <script>
         $('#table').DataTable({
-            responsive: {
-                details: {
-                    type: 'column'
-                }
-            },
-            columnDefs: [{
-                className: 'dtr-control',
-                responsivePriority: 1,
-                targets: 0
-            }, {
-                responsivePriority: 2,
-                targets: 1
-            }],
-            orderable: false,
-            searchable: false,
-            searching: false,
-            paginate: false
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            "paging": false,    
+            "ordering": false,
+            "searching": false
         })
     </script>
 </body>

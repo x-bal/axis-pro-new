@@ -23,7 +23,6 @@
                 <h1>Laporan Expense</h1>
             </div>
         </div>
-        <a href="{{ url()->previous() }}" class="btn btn-info">Back</a>
         <hr>
         <div class="row">
             <div class="col-md-12">
