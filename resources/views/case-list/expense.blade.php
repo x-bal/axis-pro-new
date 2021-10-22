@@ -222,17 +222,19 @@
                                 <td>{{ $loop->iteration }}.</td>
                                 <td width="70px">{{ Carbon\Carbon::parse($exp->tanggal)->format('d/m/Y') }}</td>
                                 <td width="100px"><b>{{ $exp->category_expense }}</b></td>
-                                <td width="350px">{{ $exp->name }}</td>
+                                <td width="200px">{{ $exp->name }}</td>
+                                <td width="50px">{{ number_format($exp->qty,2,',','.') }}</td>
                                 <td style="text-align: right;">{{ number_format($exp->amount,2,',','.') }}</td>
+                                <td style="text-align: right;">{{ number_format($exp->total,2,',','.') }}</td>
                             </tr>
                             @endforeach
                             <tr>
-                                <td colspan="4"></td>
+                                <td colspan="6"></td>
                                 <td style="text-align: right;">________________</td>
                             </tr>
                             <tr>
-                                <td colspan="4"></td>
-                                <td style="text-align: right;"><b>{{ number_format($expense->sum('amount'),2,',','.') }}</b></td>
+                                <td colspan="6"></td>
+                                <td style="text-align: right;"><b>{{ number_format($expense->sum('total'),2,',','.') }}</b></td>
                             </tr>
                         </table>
                     </td>
@@ -242,12 +244,12 @@
                     <td>
                         <table width="100%" style="margin-top: -10px;">
                             <tr>
-                                <td colspan="4"></td>
+                                <td colspan="6"></td>
                                 <td style="text-align: right;">________________</td>
                             </tr>
                             <tr>
-                                <td colspan="4"></td>
-                                <td style="text-align: right;"><b>{{ number_format($caseList->expense->sum('amount'),2,',','.') }}</b></td>
+                                <td colspan="6"></td>
+                                <td style="text-align: right;"><b>{{ number_format($caseList->expense->sum('total'),2,',','.') }}</b></td>
                             </tr>
                         </table>
                     </td>

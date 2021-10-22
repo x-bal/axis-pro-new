@@ -749,6 +749,7 @@ class ComposerStaticInit10645b4da27b501ad83b2bbb67868b9d
         'App\\Http\\Controllers\\BankController' => __DIR__ . '/../..' . '/app/Http/Controllers/BankController.php',
         'App\\Http\\Controllers\\BrokerController' => __DIR__ . '/../..' . '/app/Http/Controllers/BrokerController.php',
         'App\\Http\\Controllers\\CaseListController' => __DIR__ . '/../..' . '/app/Http/Controllers/CaseListController.php',
+        'App\\Http\\Controllers\\CategoryExpenseController' => __DIR__ . '/../..' . '/app/Http/Controllers/CategoryExpenseController.php',
         'App\\Http\\Controllers\\ClaimDocumentController' => __DIR__ . '/../..' . '/app/Http/Controllers/ClaimDocumentController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\ExpenseController' => __DIR__ . '/../..' . '/app/Http/Controllers/ExpenseController.php',

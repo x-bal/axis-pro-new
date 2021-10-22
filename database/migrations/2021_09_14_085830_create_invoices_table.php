@@ -17,11 +17,14 @@ class CreateInvoicesTable extends Migration
             $table->id();
             $table->foreignId('bank_id')->nullable();
             $table->foreignId('case_list_id');
-            $table->foreignId('no_invoice_id');
-            $table->integer('kuantiti');
-            $table->integer('total');
+            $table->foreignId('member_id');
+            $table->string('no_invoice');
+            $table->date('due_date');
+            $table->date('date_invoice');
             $table->integer('grand_total');
+            $table->integer('status_paid')->default(0);
             $table->integer('is_active');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

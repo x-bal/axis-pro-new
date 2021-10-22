@@ -24,9 +24,11 @@ class ExpenseImport implements ToModel, WithHeadingRow
             'case_list_id' => $this->case_list_id,
             'adjuster' => $row['adjuster'],
             'name' => $row['nama'],
+            'qty' => $row['qty'],
             'amount' => $row['amount'],
             'category_expense' => $row['category'],
-            'tanggal' => gmdate('Y-m-d', ($row['tanggal'] - 25569) * 86400),
+            'tanggal' => Carbon::createFromFormat('d/m/Y', $row['tanggal'])->format('Y-m-d'),
+            'total' => $row['amount'] * $row['qty'],
         ]);
     }
 }

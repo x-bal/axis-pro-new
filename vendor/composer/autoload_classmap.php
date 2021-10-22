@@ -25,6 +25,7 @@ return array(
     'App\\Http\\Controllers\\BankController' => $baseDir . '/app/Http/Controllers/BankController.php',
     'App\\Http\\Controllers\\BrokerController' => $baseDir . '/app/Http/Controllers/BrokerController.php',
     'App\\Http\\Controllers\\CaseListController' => $baseDir . '/app/Http/Controllers/CaseListController.php',
+    'App\\Http\\Controllers\\CategoryExpenseController' => $baseDir . '/app/Http/Controllers/CategoryExpenseController.php',
     'App\\Http\\Controllers\\ClaimDocumentController' => $baseDir . '/app/Http/Controllers/ClaimDocumentController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\ExpenseController' => $baseDir . '/app/Http/Controllers/ExpenseController.php',

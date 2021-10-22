@@ -46,7 +46,7 @@ class CaseListController extends Controller
                 })
                 ->editColumn('is_leader', function ($row) {
                     $html = '
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample' . $row->id . '"
+                    <button class="btn btn-sm btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample' . $row->id . '"
                       aria-expanded="false" aria-controls="collapseExample' . $row->id . '">
                       &plus;
                     </button>
@@ -55,7 +55,7 @@ class CaseListController extends Controller
                         <ul class="list-unstyled">
                         ';
                     foreach ($row->member as $data) {
-                        $html .= '<li>' . $data->client->brand . '-' . '(' . $data->share . ')' . '-' . '<strong>' . $data->is_leader . '</strong>' . '<li>';
+                        $html .= '<li>' . $data->client->brand . '-' . '(' . $data->share . ')' . '-' . '<strong>' . $data->is_leader  . '</strong>' . '<li>';
                     };
                     $html .= '
                         </ul>

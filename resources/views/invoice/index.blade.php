@@ -106,7 +106,7 @@
                                 <td>{{ $inv->date_invoice }}</td>
                                 <td>{{ $inv->due_date }}</td>
                                 <td>{{ $inv->bank->bank_name ?? 'Kosong' }}</td>
-                                <td>@if($inv->caselist->currency == 'RP') <strong>Rp.</strong> @else <i class="fas fa-dollar-sign"></i> @endif{{ number_format($inv->grand_total) }}</td>
+                                <td>@if($inv->caselist->currency == 'RP') <strong>Rp.</strong> @else <i class="fas fa-dollar-sign"></i> @endif {{ number_format($inv->grand_total) }}</td>
                                 <td>
                                     <span class="badge badge-{{ $inv->status_paid == 1 ? 'success' : 'danger' }} p-1">{{ $inv->status_paid == 1 ? 'Paid' : 'Unpaid' }}</span>
                                 </td>
