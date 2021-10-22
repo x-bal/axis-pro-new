@@ -58,6 +58,7 @@ class CreateCaseListsTable extends Migration
             $table->integer('fr_limit')->nullable();
             $table->bigInteger('fr_amount')->nullable();
             $table->integer('fr_status')->default(0);
+            $table->date('date_complete')->nullable();
             $table->bigInteger('claim_amount')->nullable();
             $table->bigInteger('fee_idr')->nullable();
             $table->bigInteger('fee_usd')->nullable();

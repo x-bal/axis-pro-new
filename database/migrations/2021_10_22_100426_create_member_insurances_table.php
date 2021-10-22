@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExpensesTable extends Migration
+class CreateMemberInsurancesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateExpensesTable extends Migration
      */
     public function up()
     {
-        Schema::create('expenses', function (Blueprint $table) {
+        Schema::create('member_insurances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('case_list_id');
-            $table->string('name');
-            $table->bigInteger('amount');
-            $table->foreignId('category_expense_id');
+            $table->bigInteger('file_no_outstanding');
+            $table->bigInteger('member_insurance');
+            $table->string('share');
+            $table->integer('is_leader');
+            $table->string('invoice_leader');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateExpensesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expenses');
+        Schema::dropIfExists('member_insurances');
     }
 }

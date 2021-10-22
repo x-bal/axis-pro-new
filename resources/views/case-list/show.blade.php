@@ -238,13 +238,16 @@
                                     <td width="15%">Name</td>
                                     <td width="9%">Category</td>
                                     <td width="10%">Date</td>
-                                    <td width="43%">Amount</td>
+                                    <td width="10%">Qty</td>
+                                    <td width="20%">Amount</td>
+                                    <td width="33%">Total</td>
                                     @if(auth()->user()->hasRole('admin'))
                                     <td width="10%">Action</td>
                                     @endif
                                 </tr>
                                 @php
                                 $amount = 0;
+                                $total = 0;
                                 @endphp
 
                                 @foreach($caseList->expense as $expense)
@@ -254,7 +257,9 @@
                                     <td>{{ $expense->name }}</td>
                                     <td>{{ $expense->category_expense }}</td>
                                     <td>{{ Carbon\Carbon::parse($expense->tanggal)->format('d/m/Y') }}</td>
-                                    <td>{{ $caseList->currency == 'RP' ? 'Rp.' : '$' }} {{ number_format($expense->amount)  }}</td>
+                                    <td>{{ $expense->qty }}</td>
+                                    <td>{{ $caseList->currency == 'RP' ? 'Rp.' : '$' }} {{ number_format($expense->amount, 2)  }}</td>
+                                    <td>{{ $caseList->currency == 'RP' ? 'Rp.' : '$' }} {{ number_format($expense->total, 2)  }}</td>
 
                                     @if(auth()->user()->hasRole('admin'))
                                     <td>
@@ -267,14 +272,16 @@
                                     @endif
                                 </tr>
                                 @php
-                                $amount += $expense->amount
+                                $amount += $expense->amount;
+                                $total += $expense->total;
                                 @endphp
                                 @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="5">Total Amount : </td>
-                                    <td>{{ $caseList->currency == 'RP' ? 'Rp.' : '$' }} {{ number_format($amount) }}</td>
+                                    <td colspan="6">Total Amount : </td>
+                                    <td>{{ $caseList->currency == 'RP' ? 'Rp.' : '$' }} {{ number_format($amount, 2) }}</td>
+                                    <td>{{ $caseList->currency == 'RP' ? 'Rp.' : '$' }} {{ number_format($total, 2) }}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -1324,7 +1331,7 @@
                 </div>
 
                 <div class="button mt-3">
-                    @if($caseList->fr_status == 1 && $caseList->ir_status == 0)
+                    @if($caseList->fr_status == 1 && $caseList->ir_status == 0 && $caseList->is_ready == 0)
                     @if(request()->get('page') == "nav-report-4" )
                     <form action="{{ route('case-list.invoice', $caseList->id) }}" method="post">
                         @csrf
@@ -1334,7 +1341,7 @@
                     @endif
                     @endif
 
-                    @if($caseList->ir_status == 1 && $caseList->fr_status == 1)
+                    @if($caseList->ir_status == 1 && $caseList->fr_status == 1 && $caseList->is_ready == 0)
                     @if(request()->get('page') == "nav-report-5")
                     <form action="{{ route('case-list.invoice', $caseList->id) }}" method="post">
                         @csrf
