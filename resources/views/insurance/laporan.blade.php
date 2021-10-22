@@ -23,7 +23,6 @@
                 <h1>Laporan Insurance</h1>
             </div>
         </div>
-        <a href="{{ url()->previous() }}" class="btn btn-info">Back</a>
         <hr>
         <div class="row">
             <div class="col-md-12">
@@ -49,7 +48,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td class="text-center"><a href="{{ route('case-list.show', $data->caselist->id) }}">{{ $data->caselist->file_no ?? 'Kosong' }}</a></td>
-                                <td class="text-right">{{ $data->caselist->currency == 'RP' ? number_format($data->caselist->claim_amount) : ''}}</td>
+                                <td class="text-right">{{ $data->caselist->currency == 'IDR' ? number_format($data->caselist->claim_amount) : ''}}</td>
                                 <td class="text-right">{{ $data->caselist->currency == 'USD' ? number_format($data->caselist->claim_amount) : '' }}</td>
                                 <th class="text-center">{{ $data->is_leader ? 'Leader' : 'Member' }}</th>
                                 <td class="text-center">{{ $data->share }}%</td>

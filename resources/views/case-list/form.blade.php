@@ -112,7 +112,7 @@
             <label for="currency">Currency</label>
             <select class="form-control @error('currency') is-invalid @enderror" name="currency" id="currency">
                 <option disabled selected>Select Currency</option>
-                <option @if($caseList->currency == 'RP') selected @endif value="RP">RP</option>
+                <option @if($caseList->currency == 'IDR') selected @endif value="IDR">IDR</option>
                 <option @if($caseList->currency == 'USD') selected @endif value="USD">USD</option>
             </select>
             @error('currency')
@@ -247,9 +247,9 @@
     </div>
     <div class="col-md-3">
         <div class="form-group">
-            <label for="conveyance">Conveyance</label>
-            <input class="form-control @error('conveyance') is-invalid @enderror" value="{{ $caseList->conveyance ?? old('conveyance') }}" name="conveyance" id="conveyance" type="text">
-            @error('conveyance')
+            <label for="file_penunjukan">File Penunjukan</label>
+            <input type="file" class="form-control @error('file_penunjukan') is-invalid @enderror" id="file_penunjukan" name="file_penunjukan">
+            @error('file_penunjukan')
             <div class="invalid-feedback">
                 {{ $message }}
             </div>
@@ -258,6 +258,26 @@
     </div>
     <div class="col-md-3">
         <div class="form-group">
+            <label for="document_policy">Document Policy</label>
+            <input type="text" class="form-control @error('document_policy') is-invalid @enderror" id="document_policy" value="{{ $caseList->document_policy ?? old('document_policy') }}" name="document_policy">
+            @error('document_policy')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group d-none" id="cyc">
+            <label for="conveyance">Conveyance</label>
+            <input class="form-control @error('conveyance') is-invalid @enderror" value="{{ $caseList->conveyance ?? old('conveyance') }}" name="conveyance" id="conveyance" type="text">
+            @error('conveyance')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+        <div class="form-group d-none" id="lol">
             <label for="location_of_loss">Location Of Loss</label>
             <input class="form-control @error('location_of_loss') is-invalid @enderror" value="{{ $caseList->location_of_loss ?? old('location_of_loss') }}" name="location_of_loss" id="location_of_loss" type="text">
             @error('location_of_loss')
@@ -267,6 +287,7 @@
             @enderror
         </div>
     </div>
+
 </div>
 @if($errors->any())
 <div class="alert alert-danger">
@@ -346,6 +367,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
+    $('#category').on('change', function() {
+        if ($(this).val() == 1) {
+            $('#cyc').removeClass('d-none')
+            $('#lol').addClass('d-none')
+        }
+        if ($(this).val() == 2) {
+            $('#lol').removeClass('d-none')
+            $('#cyc').addClass('d-none')
+        }
+    })
     async function GetTheLastOfCaseList() {
         try {
             let data = await fetch('/api/caselist/file_no/last').then(data => {

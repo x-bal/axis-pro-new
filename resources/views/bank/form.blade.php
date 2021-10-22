@@ -26,7 +26,7 @@
             <label for="currency">Currency</label>
             <select name="currency" id="currency" class="form-control @error('currency') is-invalid @enderror">
                 <option disabled selected>Select Currency</option>
-                <option value="RP" {{ $bank->currency == 'RP' ? 'selected' : '' }}>RP</option>
+                <option value="IDR" {{ $bank->currency == 'IDR' ? 'selected' : '' }}>IDR</option>
                 <option value="USD " {{ $bank->currency == 'USD' ? 'selected' : '' }}>USD</option>
             </select>
             @error('currency')

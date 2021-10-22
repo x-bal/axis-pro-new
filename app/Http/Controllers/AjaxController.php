@@ -44,7 +44,7 @@ class AjaxController extends Controller
             // 1
             if ($caselist->category == 1) {
                 $feebased = FeeBased::where('category_fee', 1)->get();
-                if ($caselist->currency == 'RP') {
+                if ($caselist->currency == 'IDR') {
                     $max = FeeBased::where('category_fee', 1)->max('adjusted_idr');
                     foreach ($feebased as $data) {
                         if ($caselist->claim_amount <= $data->adjusted_idr) {
@@ -88,7 +88,7 @@ class AjaxController extends Controller
             // 2
             if ($caselist->category == 2) {
                 $feebased = FeeBased::where('category_fee', 2)->get();
-                if ($caselist->currency == 'RP') {
+                if ($caselist->currency == 'IDR') {
                     $max = FeeBased::where('category_fee', 2)->max('adjusted_idr');
                     foreach ($feebased as $data) {
                         if ($caselist->claim_amount <= $data->adjusted_idr) {

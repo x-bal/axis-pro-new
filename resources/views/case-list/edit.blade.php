@@ -9,7 +9,7 @@
                 <a href="{{ route('case-list.index') }}" class="btn btn-primary float-right"><i class="fas fa-arrow-left"></i> Back</a>
             </div>
             <div class="card-body">
-                <form action="{{ route('case-list.update', $caseList->id) }}" method="post">
+                <form action="{{ route('case-list.update', $caseList->id) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
                     @include('case-list.form')

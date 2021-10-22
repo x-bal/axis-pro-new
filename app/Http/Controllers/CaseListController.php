@@ -132,7 +132,6 @@ class CaseListController extends Controller
     public function store(Request $request)
     {
         Gate::allows(abort_unless('case-list-create', 403));
-
         $this->validate($request, [
             'file_no' => 'required|unique:case_lists',
             'risk_location' => 'required',
@@ -154,19 +153,23 @@ class CaseListController extends Controller
             'survey_date' => 'required',
             'member' => 'required|array|min:1',
             'percent' => 'required|array|min:1',
-            'status' => 'required|array|min:1'
+            'status' => 'required|array|min:1',
+            'document_policy' => 'required',
+            'file_penunjukan' => 'required|mimes:pdf,docx'
         ]);
         if (!(array_sum($request->percent) <= 100 and array_sum($request->percent) >= 100)) {
             $error = \Illuminate\Validation\ValidationException::withMessages([
-                'percent' => ['Total Member Share Harus 100, Total Yang Di Input : ' . array_sum($request->percent)],
+                'percent' => ['the total member share must fit 100%, not less or more, your member share input : ' . array_sum($request->percent) . '%'],
             ]);
             throw $error;
         }
         // $amount = str_replace(',', '', $request->amount);
         // $claim_amount = str_replace(',', '', $request->claim_amount);
         if (strlen($request->file_no) == 6) {
+            DB::beginTransaction();
             try {
-                DB::beginTransaction();
+                $name_file_penunjukan = Carbon::now()->format('YmdHis') . '_' . $request->file('file_penunjukan')->getClientOriginalName();
+                $path_file_penunjukan = $request->file('file_penunjukan')->storeAs('/file/penunjukan', $name_file_penunjukan);
                 $caselist = Caselist::create([
                     'file_no' => $request->file_no . '-JAK',
                     'insurance_id' => $request->insurance,
@@ -189,7 +192,9 @@ class CaseListController extends Controller
                     'survey_date' => $request->survey_date,
                     'ia_limit' => Carbon::parse($request->survey_date)->addDay(7)->format('Y-m-d'),
                     'conveyance' => $request->conveyance,
-                    'location_of_loss' => $request->location_of_loss
+                    'location_of_loss' => $request->location_of_loss,
+                    'document_policy' => $request->document_policy,
+                    'file_penunjukan' => $path_file_penunjukan
                 ]);
                 for ($i = 1; $i <= count($request->member); $i++) {
                     MemberInsurance::create([
@@ -203,6 +208,7 @@ class CaseListController extends Controller
                 DB::commit();
                 return back()->with('success', 'Berhasil Membuat Data');
             } catch (Exception $th) {
+                Storage::delete($path_file_penunjukan);
                 DB::rollBack();
                 return back()->with('error', $th->getMessage());
             }
@@ -359,13 +365,31 @@ class CaseListController extends Controller
     {
         Gate::allows(abort_unless('case-list-edit', 403));
 
+        if ($request->file('file_penunjukan')) {
+            $this->validate($request, [
+                'file_penunjukan' => 'required|mimes:pdf,docx'
+            ]);
+            try {
+                DB::beginTransaction();
+                $name_file_penunjukan = Carbon::now()->format('YmdHis') . '_' . $request->file('file_penunjukan')->getClientOriginalName();
+                $path_file_penunjukan = $request->file('file_penunjukan')->storeAs('/file/penunjukan', $name_file_penunjukan);
+                Storage::delete($caseList->file_penunjukan);
+                $caseList->update([
+                    'file_penunjukan' => $path_file_penunjukan
+                ]);
+                DB::commit();
+            } catch (\Exception $error) {
+                DB::rollBack();
+                Storage::delete($path_file_penunjukan);
+                return back()->with('error', $error->getMessage());
+            }
+        }
         if ($request->currency != $caseList->currency) {
-
             $currency = Currency::get()->firstOrFail();
             try {
                 DB::beginTransaction();
                 $caseList =  CaseList::where('id', $caseList->id)->first();
-                if ($request->currency == 'RP') {
+                if ($request->currency == 'IDR') {
                     if ($caseList->ir_status == 1) {
                         $caseList->update([
                             'ia_amount' => strval(round($caseList->ia_amount * $currency->kurs)),
@@ -384,14 +408,12 @@ class CaseListController extends Controller
                             'claim_amount' => strval(round($caseList->claim_amount * $currency->kurs))
                         ]);
                     }
-
                     foreach ($caseList->expense as $data) {
                         Expense::where('case_list_id', $caseList->id)->update([
                             'amount' => strval(round($data->amount * $currency->kurs))
                         ]);
                     }
                 }
-
                 if ($request->currency == 'USD') {
                     if ($caseList->ir_status == 1) {
                         $caseList->update([
@@ -448,7 +470,8 @@ class CaseListController extends Controller
                 'category' => $request->category,
                 'survey_date' => $request->survey_date,
                 'conveyance' => $request->conveyance,
-                'location_of_loss' => $request->location_of_loss
+                'location_of_loss' => $request->location_of_loss,
+                'document_policy' => $request->document_policy,
             ]);
             MemberInsurance::where('file_no_outstanding', $caseList->id)->delete();
             for ($i = 0; $i < count($request->member); $i++) {
@@ -531,17 +554,17 @@ class CaseListController extends Controller
             $case = CaseList::whereBetween('instruction_date', [$request->from, $request->to])->where('adjuster_id', $request->adjuster)->get();
 
 
-            $claim_amount_idr = $case->where('currency', 'RP')->sum('claim_amount');
+            $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
             $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
-            $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');
+            $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
             $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
 
             if ($request->adjuster == "All") {
 
                 $case =  CaseList::whereBetween('instruction_date', [$request->from, $request->to])->get();
-                $claim_amount_idr = $case->where('currency', 'RP')->sum('claim_amount');
+                $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
                 $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
-                $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');
+                $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
                 $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
             }
             return view('case-list.laporan', [
@@ -558,17 +581,17 @@ class CaseListController extends Controller
             $case = CaseList::whereBetween('instruction_date', [$request->from, $request->to])->where('file_status_id', $request->status)->where('adjuster_id', auth()->user()->id)->get();
 
 
-            $claim_amount_idr = $case->where('currency', 'RP')->sum('claim_amount');
+            $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
             $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
-            $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');
+            $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
             $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
 
             if ($request->status == "All") {
                 $case =  CaseList::whereBetween('instruction_date', [$request->from, $request->to])->where('adjuster_id', auth()->user()->id)->get();
 
-                $claim_amount_idr = $case->where('currency', 'RP')->sum('claim_amount');
+                $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
                 $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
-                $fee_idr = $case->where('currency', 'RP')->sum('fee_idr');
+                $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
                 $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
             }
             return view('case-list.laporan', [
