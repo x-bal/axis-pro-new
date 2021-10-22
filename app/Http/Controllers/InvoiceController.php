@@ -178,12 +178,12 @@ class InvoiceController extends Controller
         // ob_end_clean();
         // ob_start();
         // test
-        $share = $invoice->caselist->member->where('member_insurance',$invoice->member_id)->first()->share;
+        $share = $invoice->caselist->member->where('member_insurance', $invoice->member_id)->first()->share;
         $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadview('invoice.pdf', [
             'invoice' => $invoice,
             'inv' => Invoice::findOrFail($id),
             'share' => $share,
-            'fee'=> $fee,
+            'fee' => $fee,
             'caselist' => $fee_based->caselist($invoice->caselist->id)->original['caselist'],
             'bank' => Bank::get()->unique('bank_name'),
             'type' => Bank::get(),

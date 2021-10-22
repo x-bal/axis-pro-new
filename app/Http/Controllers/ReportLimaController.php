@@ -41,72 +41,79 @@ class ReportLimaController extends Controller
      */
     public function store(Request $request)
     {
-        $attr = $request->validate([
-            'case_list_id' => 'required',
-            'file_upload' => 'required|max:10240',
-            'time_upload' => 'required',
-        ]);
+        try {
+            //code...
 
-        if ($request->hasFile('file_upload')) {
-            $files = $request->file('file_upload');
-            foreach ($files as $file) {
-                $name = date('dmYHis')  . '-' . $file->getClientOriginalName();
-                $filename = 'files/report-lima/' . $name;
-                $path = 'files/report-lima/' . $name;
+            $request->validate([
+                'case_list_id' => 'required',
+                'file_upload' => 'required|max:10240',
+                'file_upload.*' => 'max:10240|mimes:xlsx,xls,docx,doc,pdf,mp4',
+                'time_upload' => 'required',
+            ]);
 
-                if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
-                    \Image::make($file)->resize(480, 360)->save($path, 90);
-                } else {
-                    $file->storeAs('files/report-lima/', $name);
+            if ($request->hasFile('file_upload')) {
+                $files = $request->file('file_upload');
+                foreach ($files as $file) {
+                    $name = date('dmYHis')  . '-' . $file->getClientOriginalName();
+                    $filename = 'files/report-lima/' . $name;
+                    $path = 'files/report-lima/' . $name;
+
+                    if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
+                        \Image::make($file)->resize(480, 360)->save($path, 90);
+                    } else {
+                        $file->storeAs('files/report-lima/', $name);
+                    }
+
+                    ReportLima::create([
+                        'case_list_id' => $request->case_list_id,
+                        'file_upload' => $filename,
+                        'time_upload' => Carbon::now()
+                    ]);
                 }
-
-                ReportLima::create([
-                    'case_list_id' => $request->case_list_id,
-                    'file_upload' => $filename,
-                    'time_upload' => Carbon::now()
-                ]);
             }
+
+            $caseList = CaseList::find($request->case_list_id);
+
+            $caseList->update([
+                'fr_amount' => $request->fr_amount,
+                'claim_amount' => $request->claim_amount,
+                'fr_status' => 1,
+                'fr_date' => Carbon::now(),
+                'now_update' => Carbon::now(),
+                'file_status_id' => 5
+            ]);
+
+            if (\LaravelGmail::check()) {
+                $messages = \LaravelGmail::message()->in($box = $caseList->file_no)->preload()->all();
+
+                foreach ($messages as $message) {
+                    $label = $message->getLabels();
+
+                    $gmail = Gmail::create([
+                        'adjuster_id' => $caseList->adjuster_id,
+                        'caselist_id' => $caseList->id,
+                        'message_id' => $message->getId(),
+                        'subject' => $message->getSubject(),
+                        'label' => $label[0],
+                        'content' => $message->getHtmlBody()
+                    ]);
+
+                    foreach ($message->getAttachments() as $attachment) {
+                        $attachment->saveAttachmentTo($path = 'attachment', $filename = $attachment->filename, $disk = 'public');
+
+                        Attachment::create([
+                            'gmail_id' => $gmail->id,
+                            'filename' => $attachment->filename,
+                            'file_url' => 'attachment/' . $attachment->filename
+                        ]);
+                    }
+                }
+            }
+
+            return back()->with('success', 'Report lima has been uploaded');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
         }
-
-        $caseList = CaseList::find($request->case_list_id);
-
-        $caseList->update([
-            'fr_amount' => $request->fr_amount,
-            'claim_amount' => $request->claim_amount,
-            'fr_status' => 1,
-            'fr_date' => Carbon::now(),
-            'now_update' => Carbon::now(),
-            'file_status_id' => 5
-        ]);
-
-        // if (\LaravelGmail::check()) {
-        //     $messages = \LaravelGmail::message()->in($box = $caseList->file_no)->preload()->all();
-
-        //     foreach ($messages as $message) {
-        //         $label = $message->getLabels();
-
-        //         $gmail = Gmail::create([
-        //             'adjuster_id' => $caseList->adjuster_id,
-        //             'caselist_id' => $caseList->id,
-        //             'message_id' => $message->getId(),
-        //             'subject' => $message->getSubject(),
-        //             'label' => $label[0],
-        //             'content' => $message->getHtmlBody()
-        //         ]);
-
-        //         foreach ($message->getAttachments() as $attachment) {
-        //             $attachment->saveAttachmentTo($path = 'attachment', $filename = $attachment->filename, $disk = 'public');
-
-        //             Attachment::create([
-        //                 'gmail_id' => $gmail->id,
-        //                 'filename' => $attachment->filename,
-        //                 'file_url' => 'attachment/' . $attachment->filename
-        //             ]);
-        //         }
-        //     }
-        // }
-
-        return back()->with('success', 'Report lima has been uploaded');
     }
 
     /**

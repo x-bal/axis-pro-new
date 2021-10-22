@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CaseList;
 use App\Models\FileSurvey;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
@@ -16,39 +17,41 @@ class FileSurveyController extends Controller
     public function store(Request $request)
     {
 
-        $attr = $request->validate([
-            'case_list_id' => 'required',
-            'file_upload' => 'required|max:10240',
-            'time_upload' => 'required',
-        ]);
+        try {
+            $request->validate([
+                'case_list_id' => 'required',
+                'file_upload' => 'required',
+                'file_upload.*' => 'max:10240|mimes:xlsx,xls,docx,doc,pdf,mp4',
+                'time_upload' => 'required',
+            ]);
 
-        if ($request->hasFile('file_upload')) {
-            $files = $request->file('file_upload');
-            foreach ($files as $file) {
-                $name = date('dmYHis')  . '-' . $file->getClientOriginalName();
-                $filename = 'files/file-survey/' . $name;
-                $path = 'files/file-survey/' . $name;
+            if ($request->hasFile('file_upload')) {
+                $files = $request->file('file_upload');
+                foreach ($files as $file) {
+                    $name = date('dmYHis')  . '-' . $file->getClientOriginalName();
+                    $filename = 'files/file-survey/' . $name;
+                    $path = 'files/file-survey/' . $name;
 
-                if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
-                    \Image::make($file)->resize(480, 360)->save($path, 90);
-                } else {
-                    $file->storeAs('files/file-survey/', $name);
+                    if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
+                        \Image::make($file)->resize(480, 360)->save($path, 90);
+                    } else {
+                        $file->storeAs('files/file-survey/', $name);
+                    }
+
+                    FileSurvey::create([
+                        'case_list_id' => $request->case_list_id,
+                        'file_upload' => $filename,
+                        'time_upload' => Carbon::now()
+                    ]);
                 }
-
-                FileSurvey::create([
-                    'case_list_id' => $request->case_list_id,
-                    'file_upload' => $filename,
-                    'time_upload' => Carbon::now()
-                ]);
             }
+
+            CaseList::find($request->case_list_id);
+
+            return back()->with('success', 'File survey has been uploaded');
+        } catch (Exception $ex) {
+            return back()->with('error', $ex->getMessage());
         }
-
-        $caseList = CaseList::find($request->case_list_id);
-        // if ($caseList->survey_date == NULL) {
-        //     $caseList->update(['survey_date' => Carbon::now(), 'ia_limit' => Carbon::now()->addDay(7)]);
-        // }
-
-        return back()->with('success', 'File survey has been uploaded');
     }
 
     public function show(FileSurvey $fileSurvey)

@@ -38,34 +38,38 @@ class ClaimDocumentController extends Controller
      */
     public function store(Request $request)
     {
-        $attr = $request->validate([
-            'case_list_id' => 'required',
-            'file_upload' => 'required|max:10240',
-            'time_upload' => 'required',
-        ]);
+        try {
+            $request->validate([
+                'case_list_id' => 'required',
+                'file_upload' => 'required',
+                'file_upload.*' => 'max:10240|mimes:xlsx,xls,docx,doc,pdf,mp4',
+                'time_upload' => 'required',
+            ]);
 
-        if ($request->hasFile('file_upload')) {
-            $files = $request->file('file_upload');
-            foreach ($files as $file) {
-                $name = date('dmYHis')  . '-' . $file->getClientOriginalName();
-                $filename = 'files/claim-document/' . $name;
-                $path = 'files/claim-document/' . $name;
+            if ($request->hasFile('file_upload')) {
+                $files = $request->file('file_upload');
+                foreach ($files as $file) {
+                    $name = date('dmYHis')  . '-' . $file->getClientOriginalName();
+                    $filename = 'files/claim-document/' . $name;
+                    $path = 'files/claim-document/' . $name;
 
-                if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
-                    \Image::make($file)->resize(480, 360)->save($path, 90);
-                } else {
-                    $file->storeAs('files/claim-document', $name);
+                    if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
+                        \Image::make($file)->resize(480, 360)->save($path, 90);
+                    } else {
+                        $file->storeAs('files/claim-document', $name);
+                    }
+
+                    ClaimDocument::create([
+                        'case_list_id' => $request->case_list_id,
+                        'file_upload' => $filename,
+                        'time_upload' => Carbon::now()
+                    ]);
                 }
-
-                ClaimDocument::create([
-                    'case_list_id' => $request->case_list_id,
-                    'file_upload' => $filename,
-                    'time_upload' => Carbon::now()
-                ]);
             }
+            return back()->with('success', 'Claim document has been uploaded');
+        } catch (\Exception $ex) {
+            return back()->with('error', $ex->getMessage());
         }
-
-        return back()->with('success', 'Claim document has been uploaded');
     }
 
     /**
