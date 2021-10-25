@@ -369,7 +369,7 @@ class CaseListController extends Controller
 
         if ($request->file('file_penunjukan')) {
             $this->validate($request, [
-                'file_penunjukan' => 'required|mimes:pdf,docx'
+                'file_penunjukan' => 'mimes:pdf,docx'
             ]);
             try {
                 DB::beginTransaction();
@@ -647,7 +647,7 @@ class CaseListController extends Controller
 
         if ($amount > 0) {
             $case->update([
-                'is_ready' => 1
+                'is_ready' => request('is_ready')
             ]);
 
             return back()->with('success', 'Your case is ready to generate invoice');

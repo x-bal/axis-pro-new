@@ -43,7 +43,7 @@
                         <a class="nav-link nav-tab {{ request()->get('page') == 'nav-report-4' ? 'active bg-primary text-white' : '' }} {{ $caseList->pa_status == 1 || $caseList->ir_st_status == 1 ? '' : 'disabled' }}" href="{{ $caseList->pa_status == 1 || $caseList->ir_st_status == 1 ? '?page=nav-report-4' : '#' }}">Report 4</a>
                     </li>
                     @endif
-                    @if($caseList->ir_status == 1)
+                    @if($caseList->ir_status == 1 && $caseList->pa_status == 1)
                     <li class="nav-item">
                         <a class="nav-link nav-tab r5 {{ request()->get('page') == 'nav-report-5' ? 'active bg-primary text-white' : '' }} {{ $caseList->pa_status == 1 ? '' : 'disabled' }}" href="{{ $caseList->pa_status == 1 ? '?page=nav-report-5' : '#' }}">Report 5</a>
                     </li>
@@ -279,8 +279,8 @@
                                     <td>{{ $expense->category_expense }}</td>
                                     <td>{{ Carbon\Carbon::parse($expense->tanggal)->format('d/m/Y') }}</td>
                                     <td>{{ $expense->qty }}</td>
-                                    <td>{{ $caseList->currency == 'RP' ? 'Rp.' : '$' }} {{ number_format($expense->amount, 2)  }}</td>
-                                    <td>{{ $caseList->currency == 'RP' ? 'Rp.' : '$' }} {{ number_format($expense->total, 2)  }}</td>
+                                    <td>{{ $caseList->currency == 'IDR' ? 'Rp.' : '$' }} {{ number_format($expense->amount, 2)  }}</td>
+                                    <td>{{ $caseList->currency == 'IDR' ? 'Rp.' : '$' }} {{ number_format($expense->total, 2)  }}</td>
 
                                     @if(auth()->user()->hasRole('admin'))
                                     <td>
@@ -301,8 +301,8 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="6">Total Amount : </td>
-                                    <td>{{ $caseList->currency == 'RP' ? 'Rp.' : '$' }} {{ number_format($amount, 2) }}</td>
-                                    <td>{{ $caseList->currency == 'RP' ? 'Rp.' : '$' }} {{ number_format($total, 2) }}</td>
+                                    <td>{{ $caseList->currency == 'IDR' ? 'Rp.' : '$' }} {{ number_format($amount, 2) }}</td>
+                                    <td>{{ $caseList->currency == 'IDR' ? 'Rp.' : '$' }} {{ number_format($total, 2) }}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -1351,23 +1351,34 @@
                     @endif
                 </div>
 
-                <div class="button mt-3">
-                    @if($caseList->fr_status == 1 && $caseList->ir_status == 0 && $caseList->is_ready == 0)
+                <div class="button mt-3 d-flex">
+                    <a href="{{ route('case-list.index') }}" class="btn btn-success mr-2">Kembali</a>
+                    @if($caseList->fr_status == 1 && $caseList->ir_status == 0 && $caseList->is_ready == 1)
                     @if(request()->get('page') == "nav-report-4" )
                     <form action="{{ route('case-list.invoice', $caseList->id) }}" method="post">
                         @csrf
-                        <a href="{{ route('case-list.index') }}" class="btn btn-success">Kembali</a>
+                        <input type="hidden" name="is_ready" value="3">
                         <button type="submit" class="btn btn-primary">Cetak Invoice</button>
                     </form>
                     @endif
                     @endif
 
-                    @if($caseList->ir_status == 1 && $caseList->fr_status == 1 && $caseList->is_ready == 0)
+                    @if($caseList->ir_status == 1 && $caseList->fr_status == 1 && $caseList->is_ready == 1)
                     @if(request()->get('page') == "nav-report-5")
                     <form action="{{ route('case-list.invoice', $caseList->id) }}" method="post">
                         @csrf
-                        <a href="{{ route('case-list.index') }}" class="btn btn-success">Kembali</a>
+                        <input type="hidden" name="is_ready" value="2">
                         <button type="submit" class="btn btn-primary">Cetak Invoice</button>
+                    </form>
+                    @endif
+                    @endif
+
+                    @if($caseList->ir_status == 1 && $caseList->ir_st_status == 1)
+                    @if(request()->get('page') == "nav-report-3")
+                    <form action="{{ route('case-list.invoice', $caseList->id) }}" method="post">
+                        @csrf
+                        <input type="hidden" name="is_ready" value="1">
+                        <button type="submit" class="btn btn-primary">Interim Invoice</button>
                     </form>
                     @endif
                     @endif

@@ -19,8 +19,18 @@
 </style>
 
 <body>
-    <img src="{{ asset('asset/header.PNG') }}" alt="">
-    <h5 class="text-center"><b> FINAL INVOICE</b></h5>
+    <img src="{{ asset('/asset/header.png') }}" alt="">
+    <h5 class="text-center"><b>
+            @if($invoice->type_invoice == 1)
+            INTERIM INVOICE
+            @endif
+            @if($invoice->type_invoice == 2)
+            PERFORMA INVOICE
+            @endif
+            @if($invoice->type_invoice == 3)
+            FINAL INVOICE
+            @endif
+        </b></h5>
     <br>
     <div class="container-fluid">
         <div class="row">

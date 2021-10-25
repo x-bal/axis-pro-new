@@ -22,7 +22,7 @@ class AjaxController extends Controller
     public function TheAutoCompleteFunc(Request $request)
     {
         $data = [];
-        $caseList = CaseList::where('file_no', 'like', '%' . $request->q . '%')->where('is_ready', 1)->get();
+        $caseList = CaseList::where('file_no', 'like', '%' . $request->q . '%')->where('is_ready', 2)->get();
         foreach ($caseList as $row) {
             $data[] = ['id' => $row->id, 'text' => $row->file_no];
         }

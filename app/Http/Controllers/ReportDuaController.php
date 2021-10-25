@@ -39,58 +39,63 @@ class ReportDuaController extends Controller
      */
     public function store(Request $request)
     {
-        $attr = $request->validate([
-            'case_list_id' => 'required',
-            'file_upload' => 'max:10240',
-            'time_upload' => 'required',
-            'pr_amount' => 'required',
-            'ir_status' => 'required',
-        ]);
+        try {
+            $request->validate([
+                'case_list_id' => 'required',
+                'file_upload' => 'required',
+                'file_upload.*' => 'max:10240|mimes:xlsx,xls,docx,doc,pdf,mp4',
+                'time_upload' => 'required',
+                'pr_amount' => 'required',
+                'ir_status' => 'required',
+            ]);
 
-        if ($request->hasFile('file_upload')) {
-            $files = $request->file('file_upload');
-            foreach ($files as $file) {
-                $name = date('dmYHis')  . '-' . $file->getClientOriginalName();
-                $filename = 'files/report-dua/' . $name;
-                $path = 'files/report-dua/' . $name;
+            if ($request->hasFile('file_upload')) {
+                $files = $request->file('file_upload');
+                foreach ($files as $file) {
+                    $name = date('dmYHis')  . '-' . $file->getClientOriginalName();
+                    $filename = 'files/report-dua/' . $name;
+                    $path = 'files/report-dua/' . $name;
 
-                if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
-                    \Image::make($file)->resize(480, 360)->save($path, 90);
-                } else {
-                    $file->storeAs('files/report-dua/', $name);
+                    if (in_array($file->extension(), ['jpeg', 'jpg', 'png'])) {
+                        \Image::make($file)->resize(480, 360)->save($path, 90);
+                    } else {
+                        $file->storeAs('files/report-dua/', $name);
+                    }
+
+                    ReportDua::create([
+                        'case_list_id' => $request->case_list_id,
+                        'file_upload' => $filename,
+                        'time_upload' => Carbon::now()
+                    ]);
                 }
-
-                ReportDua::create([
-                    'case_list_id' => $request->case_list_id,
-                    'file_upload' => $filename,
-                    'time_upload' => Carbon::now()
-                ]);
             }
-        }
 
-        $caseList = CaseList::find($request->case_list_id);
-        $update = [
-            'pr_amount' => $request->pr_amount,
-            'pr_status' => 1,
-            'pr_date' => Carbon::now(),
-            'now_update' => Carbon::now(),
-            'ir_status' => $request->ir_status,
-            'file_status_id' => 4
-        ];
+            $caseList = CaseList::find($request->case_list_id);
+            $update = [
+                'pr_amount' => $request->pr_amount,
+                'pr_status' => 1,
+                'pr_date' => Carbon::now(),
+                'now_update' => Carbon::now(),
+                'ir_status' => $request->ir_status,
+                'file_status_id' => 4
+            ];
 
-        if ($caseList->pr_status == 0) {
-            if ($request->ir_status == 0) {
-                $update['pa_limit'] = Carbon::now()->addDay(14);
-                $caseList->update($update);
+            if ($caseList->pr_status == 0) {
+                if ($request->ir_status == 0) {
+                    $update['pa_limit'] = Carbon::now()->addDay(14);
+                    $caseList->update($update);
+                } else {
+                    $update['ir_st_limit'] = Carbon::now()->addDay(14);
+                    $caseList->update($update);
+                }
             } else {
-                $update['ir_st_limit'] = Carbon::now()->addDay(14);
-                $caseList->update($update);
+                $caseList->update(['pr_amount' => $request->pr_amount, 'date_complete' => $request->date_complete]);
             }
-        } else {
-            $caseList->update(['pr_amount' => $request->pr_amount, 'date_complete' => $request->date_complete]);
-        }
 
-        return back()->with('success', 'Report dua has been uploaded');
+            return back()->with('success', 'Report dua has been uploaded');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 
     /**

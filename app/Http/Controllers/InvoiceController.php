@@ -21,11 +21,9 @@ class InvoiceController extends Controller
     public function index()
     {
         return view('invoice.index', [
-            'invoice' => Invoice::whereHas('caselist', function ($case) {
-                return $case->where('is_ready', 2);
-            })->get(),
+            'invoice' => Invoice::whereHas('caselist')->get(),
             'member' => MemberInsurance::get(),
-            'caselist' => CaseList::where('is_ready', 1)->get(),
+            'caselist' => CaseList::get(),
             'bank' => Bank::get()
         ]);
     }
@@ -41,7 +39,8 @@ class InvoiceController extends Controller
             'total' => 'required',
             'fee_based' => 'required',
             'date_invoice' => 'required',
-            'no_invoice.*' => 'required'
+            'no_invoice.*' => 'required',
+            'type_invoice' => 'required',
         ]);
         if ($request->no_invoice == null) {
             return back()->with('error', 'Member Invoice Does not Exists');
@@ -77,10 +76,15 @@ class InvoiceController extends Controller
                     'due_date' => Carbon::parse($request->date_invoice)->addDays(30)->format('Y-m-d'),
                     'status_paid' => 0,
                     'is_active' => 1,
+                    'type_invoice' => $request->type_invoice,
                     'grand_total' => $total * $data->share / 100
                 ]);
             }
-            $caselist->update(['is_ready' => 2]);
+            if ($request->type_invoice == 2) {
+                $caselist->update(['is_ready' => 3]);
+            } else {
+                $caselist->update(['is_ready' => 4]);
+            }
             DB::commit();
             return back()->with('success', 'Success create Invoice');
         } catch (Exception $err) {
@@ -178,12 +182,12 @@ class InvoiceController extends Controller
         // ob_end_clean();
         // ob_start();
         // test
-        $share = $invoice->caselist->member->where('member_insurance',$invoice->member_id)->first()->share;
+        $share = $invoice->caselist->member->where('member_insurance', $invoice->member_id)->first()->share;
         $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadview('invoice.pdf', [
             'invoice' => $invoice,
             'inv' => Invoice::findOrFail($id),
             'share' => $share,
-            'fee'=> $fee,
+            'fee' => $fee,
             'caselist' => $fee_based->caselist($invoice->caselist->id)->original['caselist'],
             'bank' => Bank::where('id',$invoice->bank_id)->get()->unique('bank_name'),
             'type' => Bank::get(),

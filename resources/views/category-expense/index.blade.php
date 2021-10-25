@@ -12,8 +12,8 @@
                         <a href="{{ route('category-expense.create') }}" class="btn btn-outline-info">Create</a>
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-striped">
+                <div class="table-responsive-xl">
+                    <table class="table table-striped table-bordered" width="100%">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -29,14 +29,12 @@
                                 <td>{{ $data->nama_kategory }}</td>
                                 <td>{{ $data->desc }}</td>
                                 <td>
-                                    <div class="btn-group">
-                                        <a href="{{ route('category-expense.edit', $data->id) }}" class="btn btn-outline-warning">Edit</a>
-                                        <form action="{{ route('category-expense.destroy', $data->id) }}" method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <button onclick="return confirm('anda yakin ingin menghapus kategori')" class="btn btn-outline-danger">Delete</button>
-                                        </form>
-                                    </div>
+                                    <a href="{{ route('category-expense.edit', $data->id) }}" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                                    <form action="{{ route('category-expense.destroy', $data->id) }}" method="post" style="display: inline;">
+                                        @csrf
+                                        @method('delete')
+                                        <button onclick="return confirm('anda yakin ingin menghapus kategori')" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                    </form>
                                 </td>
                             </tr>
                             @endforeach

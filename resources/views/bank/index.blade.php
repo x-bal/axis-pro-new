@@ -26,43 +26,45 @@
                         <button class="btn btn-primary" onclick="TheAjaxFunc()">Update Kurs</button>
                     </div>
                 </div>
-                <table class="table table-striped table-bordered" width="100%">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Bank Name</th>
-                            <th>No Account</th>
-                            <th>Currency</th>
-                            <th>Swift Code</th>
-                            <th>Address</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($banks as $bank)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $bank->bank_name }}</td>
-                            <td>{{ $bank->no_account }}</td>
-                            <td>{{ $bank->currency }}</td>
-                            <td>{{ $bank->swift_code }}</td>
-                            <td>{{ $bank->address }}</td>
-                            <td>
-                                @can('bank-edit')
-                                <a href="{{ route('bank.edit', $bank->id) }}" class="btn btn-success"><i class="fas fa-edit"></i></a>
-                                @endcan
-                                @can('bank-delete')
-                                <form action="{{ route('bank.destroy', $bank->id) }}" method="post" style="display: inline;" onclick="return confirm('Delete data?')">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
-                                </form>
-                                @endcan
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <div class="table-responsive-xl">
+                    <table class="table table-striped table-bordered" width="100%">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Bank Name</th>
+                                <th>No Account</th>
+                                <th>Currency</th>
+                                <th>Swift Code</th>
+                                <th>Address</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($banks as $bank)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $bank->bank_name }}</td>
+                                <td>{{ $bank->no_account }}</td>
+                                <td>{{ $bank->currency }}</td>
+                                <td>{{ $bank->swift_code }}</td>
+                                <td>{{ $bank->address }}</td>
+                                <td>
+                                    @can('bank-edit')
+                                    <a href="{{ route('bank.edit', $bank->id) }}" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                                    @endcan
+                                    @can('bank-delete')
+                                    <form action="{{ route('bank.destroy', $bank->id) }}" method="post" style="display: inline;" onclick="return confirm('Delete data?')">
+                                        @csrf
+                                        @method('delete')
+                                        <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                    @endcan
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -81,13 +83,13 @@
             method: 'post',
             success: function(response) {
                 console.log(response)
-                if(response.kurs != null){
+                if (response.kurs != null) {
                     iziToast.error({
-                    title: 'Error',
-                    message: response.kurs[0],
-                    position: 'topRight',
-                });
-                }else{
+                        title: 'Error',
+                        message: response.kurs[0],
+                        position: 'topRight',
+                    });
+                } else {
                     $('#kurs').val(response)
                     iziToast.success({
                         title: 'Success',

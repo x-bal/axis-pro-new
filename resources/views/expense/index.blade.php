@@ -41,30 +41,32 @@
                             </div>
                         </div>
                     </form>
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>File No</th>
-                                <th>Adjuster</th>
-                                <th>Description</th>
-                                <th>Date</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($expense as $data)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td><a href="{{ route('case-list.show',$data->caselist->id) }}">{{ $data->caselist->file_no }}</a></td>
-                                <td>{{ $data->adjuster }}</td>
-                                <td>{{ $data->name }}</td>
-                                <td>{{ Carbon\Carbon::parse($data->tanggal)->format('d/m/Y') }}</td>
-                                <th class="text-right">{{ number_format($data->amount) }}</th>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <div class="table-responsvie-lg">
+                        <table class="table table-striped table-bordered" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>File No</th>
+                                    <th>Adjuster</th>
+                                    <th>Description</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($expense as $data)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td><a href="{{ route('case-list.show',$data->caselist->id) }}">{{ $data->caselist->file_no }}</a></td>
+                                    <td>{{ $data->adjuster }}</td>
+                                    <td>{{ $data->name }}</td>
+                                    <td>{{ Carbon\Carbon::parse($data->tanggal)->format('d/m/Y') }}</td>
+                                    <th class="text-right">{{ number_format($data->amount) }}</th>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
             </div>

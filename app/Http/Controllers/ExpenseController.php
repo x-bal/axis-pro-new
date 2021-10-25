@@ -41,18 +41,25 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'file_upload' => 'required'
-        ]);
+        try {
+            //code...
 
-        $case = CaseList::find($request->case_list_id);
+            $request->validate([
+                'file_upload' => 'required',
+                'file_upload.*' => 'max:10240|mimes:xlsx,xls',
+            ]);
 
-        $case->update([
-            'is_expense' => 1
-        ]);
+            $case = CaseList::find($request->case_list_id);
 
-        Excel::import(new ExpenseImport($request->case_list_id), $request->file('file_upload'));
-        return back()->with('success', 'Import expense successfully');
+            $case->update([
+                'is_expense' => 1
+            ]);
+
+            Excel::import(new ExpenseImport($request->case_list_id), $request->file('file_upload'));
+            return back()->with('success', 'Import expense successfully');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 
     /**

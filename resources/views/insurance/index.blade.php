@@ -12,7 +12,7 @@
                     <a href="{{ route('insurance.create') }}" class="btn btn-primary"><i class="fas fa-pen"></i> Create</a>
                     @endcan
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive-lg">
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
