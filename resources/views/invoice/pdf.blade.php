@@ -19,7 +19,7 @@
 </style>
 
 <body>
-    <img src="{{ asset('/asset/header.png') }}" alt="">
+    <!-- <img src="{{ asset('/asset/header.png') }}" alt=""> -->
     <h5 class="text-center"><b>
             @if($invoice->type_invoice == 1)
             INTERIM INVOICE
@@ -139,10 +139,10 @@
                                     <th>Total</th>
                                 </tr>
                                 <tr>
-                                    <th>{{ number_format($fee) }}</th>
-                                    <th>{{ $share }}</th>
+                                    <th>{{ $invoice->type_invoice != 1 ? number_format($fee) : 0 }}</th>
+                                    <th>{{ $invoice->type_invoice != 1 ? $share : 0 }}</th>
                                     <th>
-                                        <p>{{ $caselist->currency .'.'. number_format($fee * $share / 100) }}</p>
+                                        <p>{{ $invoice->type_invoice != 1 ? $caselist->currency .'.'. number_format($fee * $share / 100) : 0 }}</p>
                                     </th>
                                 </tr>
                             </table>
@@ -241,7 +241,7 @@
                     </tr>
                 </table>
             </div>
-        </div> 
+        </div>
         <div class="row">
             <div class="col" style="width: 30%;margin-left: 12%;">
                 @foreach($bank as $data)
