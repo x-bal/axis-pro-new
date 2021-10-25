@@ -130,10 +130,15 @@ class AjaxController extends Controller
                     }
                 }
             }
+            $interim = 0;
+            if($caselist->ir_status){
+                $interim = $caselist->invoice->where('type_invoice', 1)->sum('grand_total');
+            }
             $response = [
                 'caselist' => CaseList::with('member', 'expense', 'insurance')->where('id', $id)->firstOrFail(),
-                'expense' => $caselist->expense()->sum('total'),
-                'sum' => $array
+                'expense' => $caselist->expense()->sum('total'  ),
+                'sum' => $array,
+                'interim' => $interim
             ];
 
             return response()->json($response);

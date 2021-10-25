@@ -18,17 +18,18 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::get('currency', [AjaxController::class, 'currency']);
-Route::get('caselist/{id}', [AjaxController::class, 'caselist']);
-Route::get('insurance/{id}', [AjaxController::class, 'insurance']);
-Route::get('autocomplete', [AjaxController::class, 'TheAutoCompleteFunc']);
-Route::get('autocomplete/interim', [AjaxController::class, 'TheAutoCompleteFuncIterim']);
-Route::get('/chart/caselist', [AjaxController::class, 'ChartCaseList']);
-Route::get('/chart/line/caselist/{id}', [AjaxController::class, 'ChartLineCaseList']);
-Route::get('/count/{id}', [AjaxController::class, 'count']);
-Route::post('/invoice/post', [AjaxController::class, 'invoice']);
-Route::post('/update/kurs', [AjaxController::class, 'kurs']);
-Route::get('/caselist/file_no/last', [AjaxController::class, 'CaseListFileNoLast']);
-Route::get('/caselist/file_no/edit/{id}', [AjaxController::class, 'CaseListFileNoEdit']);
-Route::get('/interim/{id}', [AjaxController::class, 'GetInterimResource']);
+route::middleware('ApiRequest')->group(function () {
+    Route::get('currency', [AjaxController::class, 'currency']);
+    Route::get('caselist/{id}', [AjaxController::class, 'caselist']);
+    Route::get('insurance/{id}', [AjaxController::class, 'insurance']);
+    Route::get('autocomplete', [AjaxController::class, 'TheAutoCompleteFunc']);
+    Route::get('autocomplete/interim', [AjaxController::class, 'TheAutoCompleteFuncIterim']);
+    Route::get('/chart/caselist', [AjaxController::class, 'ChartCaseList']);
+    Route::get('/chart/line/caselist/{id}', [AjaxController::class, 'ChartLineCaseList']);
+    Route::get('/count/{id}', [AjaxController::class, 'count']);
+    Route::post('/invoice/post', [AjaxController::class, 'invoice']);
+    Route::post('/update/kurs', [AjaxController::class, 'kurs']);
+    Route::get('/caselist/file_no/last', [AjaxController::class, 'CaseListFileNoLast']);
+    Route::get('/caselist/file_no/edit/{id}', [AjaxController::class, 'CaseListFileNoEdit']);
+    Route::get('/interim/{id}', [AjaxController::class, 'GetInterimResource']);
+});
