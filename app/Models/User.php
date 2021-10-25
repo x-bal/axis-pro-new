@@ -38,4 +38,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Expense::class, 'kode_adjuster');
     }
+    public function history()
+    {
+        return $this->hasMany(CaseList::class, 'history_id');
+    }
 }
