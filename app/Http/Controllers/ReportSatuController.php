@@ -86,7 +86,6 @@ class ReportSatuController extends Controller
                 ]);
             }
 
-
             return back()->with('success', 'Report satu has been uploaded');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());

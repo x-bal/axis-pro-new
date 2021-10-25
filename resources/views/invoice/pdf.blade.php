@@ -19,7 +19,7 @@
 </style>
 
 <body>
-    <!-- <img src="{{ asset('/asset/header.png') }}" alt=""> -->
+    <img src="{{ asset('/asset/header.PNG') }}" alt="">
     <h5 class="text-center"><b>
             @if($invoice->type_invoice == 1)
             INTERIM INVOICE
@@ -53,7 +53,7 @@
                     <tr>
                         <th>Date</th>
                         <th width="100">:</th>
-                        <td>{{ Carbon\Carbon::parse($invoice->date_invoice)->format('d M Y') }}</td>
+                        <td>{{ Carbon\Carbon::parse($invoice->date_invoice)->format('d F Y') }}</td>
                     </tr>
                 </table>
             </div>
@@ -77,7 +77,7 @@
                 </table>
             </div>
         </div>
-        <hr style="border : 2px double black">
+        <hr style="border : 2px double black; margin-top: -15px;">
         <div class="row">
             <div class="col">
                 <table cellpadding="5">
@@ -207,7 +207,7 @@
                 </table>
             </div>
         </div>
-        <hr>
+        <hr style="margin-bottom: 40px;">
         <div class="row">
             <div class="col">
                 <table>
@@ -231,7 +231,7 @@
                 </table>
             </div>
         </div>
-        <div class="row">`
+        <div class="row">
             <div class="col" style="width: 30%;margin-left: 12%;">
                 <table>
                     <tr>
@@ -253,15 +253,19 @@
                         </th>
                     </tr>
                     <tr>
-                        <th>Swift Code</th>
+                        <th width="100px">Swift Code</th>
                         <th>:</th>
-                        <th>{{ $data->swift_code }}</th>
+                        <th width="350px">{{ $data->swift_code }}</th>
+
+                        <th><u>Febrizal</u></th>
                     </tr>
                     @foreach($type->where('bank_name',$data->bank_name) as $row)
                     <tr>
                         <th>Account No.{{ $row->currency }}</th>
                         <th>:</th>
                         <th>{{ $row->no_account }}</th>
+
+                        <th>Director</th>
                     </tr>
                     @endforeach
                 </table>
@@ -270,7 +274,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col" style="margin-left: 80%;margin-top:-100px">
+            <!-- <div class="col" style="margin-left: 80%;margin-top:-10px">
                 <table>
                     <tr>
                         <th>
@@ -279,7 +283,7 @@
                         </th>
                     </tr>
                 </table>
-            </div>
+            </div> -->
         </div>
         <div class="row" style="clear: both;position: relative;height: 200px;margin-top: -100px;">
             <div class="col" style="margin-left: 60%;">

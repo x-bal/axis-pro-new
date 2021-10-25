@@ -268,7 +268,7 @@ class AjaxController extends Controller
     public function GetInterimResource($id)
     {
         $caselist = CaseList::with('insurance')->find($id);
-        try{
+        try {
             $response = [
                 'caselist' => CaseList::with('member', 'expense', 'insurance')->where('id', $id)->firstOrFail(),
                 'expense' => $caselist->expense()->sum('total')

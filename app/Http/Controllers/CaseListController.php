@@ -132,6 +132,7 @@ class CaseListController extends Controller
     public function store(Request $request)
     {
         Gate::allows(abort_unless('case-list-create', 403));
+
         $this->validate($request, [
             'file_no' => 'required|unique:case_lists',
             'risk_location' => 'required',
@@ -268,48 +269,57 @@ class CaseListController extends Controller
 
     public function transcript(CaseList $caseList)
     {
-        if ($caseList->is_transcript == 0 && $caseList->file_status_id != 5) {
-            if (\LaravelGmail::check()) {
-                $this->insertGmail($caseList);
+        try {
+            if ($caseList->is_transcript == 0 && $caseList->file_status_id != 5) {
+                if (\LaravelGmail::check()) {
+                    $this->insertGmail($caseList);
 
-                $caseList->update(['is_transcript' => 1]);
-            }
-        } elseif ($caseList->is_transcript == 1 && $caseList->file_status_id != 5) {
-            if (\LaravelGmail::check()) {
-                $gmails = Gmail::with('attachments')->where('caselist_id', $caseList->id)->get();
-                foreach ($gmails as $gm) {
-                    $gm->delete();
-                    foreach ($gm->attachments  as $attachment) {
-                        Storage::delete($attachment->file_url);
-                        $attachment->delete();
-                    }
+                    $caseList->update(['is_transcript' => 1]);
                 }
-
-                $this->insertGmail($caseList);
             }
-        } elseif ($caseList->is_transcript == 1 && $caseList->file_status_id == 5) {
-            if (\LaravelGmail::check()) {
-                $gmails = Gmail::with('attachments')->where('caselist_id', $caseList->id)->get();
-                foreach ($gmails as $gm) {
-                    $gm->delete();
-                    foreach ($gm->attachments  as $attachment) {
-                        Storage::delete($attachment->file_url);
-                        $attachment->delete();
+
+            if ($caseList->is_transcript == 1 && $caseList->file_status_id != 5) {
+                if (\LaravelGmail::check()) {
+                    $gmails = Gmail::with('attachments')->where('caselist_id', $caseList->id)->get();
+                    foreach ($gmails as $gm) {
+                        $gm->delete();
+                        foreach ($gm->attachments  as $attachment) {
+                            Storage::delete($attachment->file_url);
+                            $attachment->delete();
+                        }
                     }
+
+                    $this->insertGmail($caseList);
                 }
-
-                $this->insertGmail($caseList);
-                $caseList->update(['is_transcript' => 2]);
             }
-        } elseif ($caseList->is_transcript == 0 && $caseList->file_status_id == 5) {
-            if (\LaravelGmail::check()) {
-                $this->insertGmail($caseList);
+            if ($caseList->is_transcript == 1 && $caseList->file_status_id == 5) {
+                if (\LaravelGmail::check()) {
+                    $gmails = Gmail::with('attachments')->where('caselist_id', $caseList->id)->get();
+                    foreach ($gmails as $gm) {
+                        $gm->delete();
+                        foreach ($gm->attachments  as $attachment) {
+                            Storage::delete($attachment->file_url);
+                            $attachment->delete();
+                        }
+                    }
 
-                $caseList->update(['is_transcript' => 1]);
+                    $this->insertGmail($caseList);
+                    $caseList->update(['is_transcript' => 2]);
+                }
             }
+
+            if ($caseList->is_transcript == 0 && $caseList->file_status_id == 5) {
+                if (\LaravelGmail::check()) {
+                    $this->insertGmail($caseList);
+
+                    $caseList->update(['is_transcript' => 1]);
+                }
+            }
+
+            return back()->with('success', 'Transcript has been successfully');
+        } catch (\Throwable $th) {
+            //throw $th;
         }
-
-        return back()->with('success', 'Transcript has been successfully');
     }
 
     public function insertGmail($caseList)
@@ -470,6 +480,7 @@ class CaseListController extends Controller
                 'end' => $request->end,
                 'dol' => $request->dol,
                 'category' => $request->category,
+                'no_leader_policy' => $request->no_leader_policy,
                 'survey_date' => $request->survey_date,
                 'conveyance' => $request->conveyance,
                 'location_of_loss' => $request->location_of_loss,

@@ -107,7 +107,7 @@
                                 <td>{{ $inv->member->name }}</td>
                                 <td>{{ $inv->caselist->file_no }}</td>
                                 <td>{{ $inv->no_invoice }}</td>
-                                <td>{{ $inv->type_invoice == 1 ? 'Interim Invoice' : '' }}{{ $inv->type_invoice == 2 ? 'Performa Invoice' : '' }}{{ $inv->type_invoice == 1 ? 'Final Invoice' : '' }}</td>
+                                <td>{{ $inv->type_invoice == 1 ? 'Interim Invoice' : '' }}{{ $inv->type_invoice == 2 ? 'Performa Invoice' : '' }} {{ $inv->type_invoice == 3 ? 'Final Invoice' : '' }}</td>
                                 <td>{{ $inv->date_invoice }}</td>
                                 <td>{{ $inv->due_date }}</td>
                                 <td>{{ $inv->bank->bank_name ?? 'Kosong' }}</td>
