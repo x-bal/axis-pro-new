@@ -163,7 +163,7 @@ class AjaxController extends Controller
         $response = Invoice::find($attr['id'])->update([
             'bank_id' => $attr['bank'],
             'status_paid' => $attr['status'],
-
+            'tanggal_invoice' => $attr['tanggal_invoice']
         ]);
         return response()->json($response);
     }

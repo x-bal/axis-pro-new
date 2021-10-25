@@ -93,6 +93,7 @@
                                 <th>Tanggal Invoice</th>
                                 <th>Tanggal Jatuh Invoice</th>
                                 <th>Bank</th>
+                                <th>Tanggal Bayar</th>
                                 <th>Amount</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -110,6 +111,7 @@
                                 <td>{{ $inv->date_invoice }}</td>
                                 <td>{{ $inv->due_date }}</td>
                                 <td>{{ $inv->bank->bank_name ?? 'Kosong' }}</td>
+                                <td>{{ $inv->tanggal_invoice }}</td>
                                 <td>@if($inv->caselist->currency == 'IDR') <strong>IDR.</strong> @else <i class="fas fa-dollar-sign"></i> @endif {{ number_format($inv->grand_total) }}</td>
                                 <td>
                                     <span class="badge badge-{{ $inv->status_paid == 1 ? 'success' : 'danger' }} p-1">{{ $inv->status_paid == 1 ? 'Paid' : 'Unpaid' }}</span>
@@ -150,8 +152,9 @@
                         <form action="" id="TheFormConfirm" method="post"></form>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="">Id</label>
-                                <input type="text" class="form-control" readonly name="id_invoice" id="id_invoice">
+                                <label for="">Tanggal Invoice</label>
+                                <input type="date" value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" class="form-control" name="tanggal_invoice" id='tanggal_invoice'>
+                                <input type="hidden" class="form-control" readonly name="id_invoice" id="id_invoice">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -410,7 +413,8 @@
             data: {
                 id: $('#id_invoice').val(),
                 bank: $('#bank').val(),
-                status: $('#status_invoice').val()
+                status: $('#status_invoice').val(),
+                tanggal_invoice: $('#tanggal_invoice').val()
             },
             method: 'post',
             success: function(data) {
