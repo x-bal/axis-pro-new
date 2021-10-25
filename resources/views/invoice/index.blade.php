@@ -319,7 +319,7 @@
             <div class="modal-body">
                 <div class="container-fluid">
 
-                    <form action="{{ route('invoice.store') }}" method="post" id="TheHolyForm">
+                    <form action="{{ route('invoice.storeInterim') }}" method="post" id="TheHolyForm">
                         @csrf
                         <div class="row">
                             <div class="col-md-6">
