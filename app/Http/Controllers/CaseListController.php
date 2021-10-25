@@ -194,7 +194,9 @@ class CaseListController extends Controller
                     'conveyance' => $request->conveyance,
                     'location_of_loss' => $request->location_of_loss,
                     'document_policy' => $request->document_policy,
-                    'file_penunjukan' => $path_file_penunjukan
+                    'file_penunjukan' => $path_file_penunjukan,
+                    'history_id' => auth()->user()->id,
+                    'history_date' => Carbon::now()->format('Y-m-d H:i:s')
                 ]);
                 for ($i = 1; $i <= count($request->member); $i++) {
                     MemberInsurance::create([
@@ -472,6 +474,8 @@ class CaseListController extends Controller
                 'conveyance' => $request->conveyance,
                 'location_of_loss' => $request->location_of_loss,
                 'document_policy' => $request->document_policy,
+                'history_id' => auth()->user()->id,
+                'history_date' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
             MemberInsurance::where('file_no_outstanding', $caseList->id)->delete();
             for ($i = 0; $i < count($request->member); $i++) {
@@ -493,6 +497,10 @@ class CaseListController extends Controller
 
     public function destroy(CaseList $caseList)
     {
+        $caseList->update([
+            'history_id' => auth()->user()->id,
+            'history_date' => Carbon::now()->format('Y-m-d H:i:s')
+        ]);
         Invoice::where('case_list_id', $caseList->id)->delete();
         $caseList->delete();
         return back()->with('success', "Delete Successfull");

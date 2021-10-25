@@ -54,7 +54,20 @@
                     @if(request()->get('page') == "nav-assigment" || !request()->get('page'))
                     <div class="tab-pane fade show active mt-3" id="nav-assigmnet" aria-labelledby="nav-assigmnet-tab">
                         <h5 class="mb-3">Assigment info</h5>
-
+                        <table class="mb-3">
+                            <tbody>
+                                <tr>
+                                    <th><small>History Last Update</small></th>
+                                    <th>:</th>
+                                    <th><small>{{ $caseList->history->nama_lengkap ?? 'null' }} - {{ $caseList->history->email ?? 'null' }}</small></th>
+                                </tr>
+                                <tr>
+                                    <th><small>History Date</small></th>
+                                    <th>:</th>
+                                    <th><small>{{ $caseList->history_date }} - {{ Carbon\Carbon::parse($caseList->history_date)->diffForHumans() }}</small></th>
+                                </tr>
+                            </tbody>
+                        </table>
                         <table width="200" border="1" class="table table-bordered hurufkecil table-striped" style="font-size: 12px;">
                             <tbody>
 

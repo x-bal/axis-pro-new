@@ -92,4 +92,8 @@ class CaseList extends Model
     {
         return $this->hasMany(Gmail::class);
     }
+    public function history()
+    {
+        return $this->belongsTo(User::class, 'history_id');
+    }
 }
