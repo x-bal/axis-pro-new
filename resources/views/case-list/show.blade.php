@@ -1338,23 +1338,34 @@
                     @endif
                 </div>
 
-                <div class="button mt-3">
-                    @if($caseList->fr_status == 1 && $caseList->ir_status == 0 && $caseList->is_ready == 0)
+                <div class="button mt-3 d-flex">
+                    <a href="{{ route('case-list.index') }}" class="btn btn-success mr-2">Kembali</a>
+                    @if($caseList->fr_status == 1 && $caseList->ir_status == 0 && $caseList->is_ready == 1)
                     @if(request()->get('page') == "nav-report-4" )
                     <form action="{{ route('case-list.invoice', $caseList->id) }}" method="post">
                         @csrf
-                        <a href="{{ route('case-list.index') }}" class="btn btn-success">Kembali</a>
+                        <input type="hidden" name="is_ready" value="3">
                         <button type="submit" class="btn btn-primary">Cetak Invoice</button>
                     </form>
                     @endif
                     @endif
 
-                    @if($caseList->ir_status == 1 && $caseList->fr_status == 1 && $caseList->is_ready == 0)
+                    @if($caseList->ir_status == 1 && $caseList->fr_status == 1 && $caseList->is_ready == 1)
                     @if(request()->get('page') == "nav-report-5")
                     <form action="{{ route('case-list.invoice', $caseList->id) }}" method="post">
                         @csrf
-                        <a href="{{ route('case-list.index') }}" class="btn btn-success">Kembali</a>
+                        <input type="hidden" name="is_ready" value="2">
                         <button type="submit" class="btn btn-primary">Cetak Invoice</button>
+                    </form>
+                    @endif
+                    @endif
+
+                    @if($caseList->ir_status == 1 && $caseList->ir_st_status == 1)
+                    @if(request()->get('page') == "nav-report-3")
+                    <form action="{{ route('case-list.invoice', $caseList->id) }}" method="post">
+                        @csrf
+                        <input type="hidden" name="is_ready" value="1">
+                        <button type="submit" class="btn btn-primary">Interim Invoice</button>
                     </form>
                     @endif
                     @endif

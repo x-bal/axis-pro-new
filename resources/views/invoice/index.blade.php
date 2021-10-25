@@ -25,7 +25,9 @@
                     <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pen"> Create
                     </button> -->
                     <div>
-                        <span class="btn btn-success">Ready to generate : {{ $caselist->count() }}</span>
+                        <span class="btn btn-warning">Interim Invoice : {{ $caselist->where('is_ready', 1)->count() }}</span>
+                        <span class="btn btn-info">Performa Invoice : {{ $caselist->where('is_ready', 2)->count() }}</span>
+                        <span class="btn btn-success">Final Invoice : {{ $caselist->where('is_ready', 3)->count() }}</span>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable"><i class="fas fa-pen"></i> Create</button>
                     </div>
 
@@ -87,6 +89,7 @@
                                 <th>Insurance</th>
                                 <th>Case</th>
                                 <th>No Invoice</th>
+                                <th>Type Invoice</th>
                                 <th>Tanggal Invoice</th>
                                 <th>Tanggal Jatuh Invoice</th>
                                 <th>Bank</th>
@@ -103,10 +106,11 @@
                                 <td>{{ $inv->member->name }}</td>
                                 <td>{{ $inv->caselist->file_no }}</td>
                                 <td>{{ $inv->no_invoice }}</td>
+                                <td>{{ $inv->type_invoice == 1 ? 'Interim Invoice' : '' }}{{ $inv->type_invoice == 2 ? 'Performa Invoice' : '' }}{{ $inv->type_invoice == 1 ? 'Final Invoice' : '' }}</td>
                                 <td>{{ $inv->date_invoice }}</td>
                                 <td>{{ $inv->due_date }}</td>
                                 <td>{{ $inv->bank->bank_name ?? 'Kosong' }}</td>
-                                <td>@if($inv->caselist->currency == 'RP') <strong>Rp.</strong> @else <i class="fas fa-dollar-sign"></i> @endif {{ number_format($inv->grand_total) }}</td>
+                                <td>@if($inv->caselist->currency == 'IDR') <strong>Rp.</strong> @else <i class="fas fa-dollar-sign"></i> @endif {{ number_format($inv->grand_total) }}</td>
                                 <td>
                                     <span class="badge badge-{{ $inv->status_paid == 1 ? 'success' : 'danger' }} p-1">{{ $inv->status_paid == 1 ? 'Paid' : 'Unpaid' }}</span>
                                 </td>
@@ -258,6 +262,16 @@
                                     <input type="date" id="date_invoice" class="form-control" name="date_invoice">
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Type Invoice</label>
+                                    <select name="type_invoice" id="type" class="form-control">
+                                        <option disabled selected>-- Choose Invoice --</option>
+                                        <option value="2">Performa Invoice</option>
+                                        <option value="3">Final Invoice</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
                         <hr>
@@ -281,9 +295,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-danger" onclick="Currency()">Currency</button>
+                <!-- <button class="btn btn-danger" onclick="Currency()">Currency</button> -->
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" onclick="FormSubmit()" class="btn btn-primary" data-primary>Save changes</button>
+                <button type="button" onclick="FormSubmit()" class="btn btn-primary" data-primary>Create</button>
             </div>
         </div>
     </div>
