@@ -81,7 +81,7 @@ class InvoiceController extends Controller
                 ]);
             }
             if ($request->type_invoice == 2) {
-                $caselist->update(['is_ready' => 3]);
+                $caselist->update(['is_ready' => 2]);
             } else {
                 $caselist->update(['is_ready' => 4]);
             }
@@ -112,7 +112,7 @@ class InvoiceController extends Controller
     {
         Invoice::where('case_list_id', $invoice->case_list_id)->delete();
         Invoice::onlyTrashed()->forceDelete();
-        CaseList::find($invoice->case_list_id)->update(['is_ready' => 1]);
+        CaseList::find($invoice->case_list_id)->update(['is_ready' => 3]);
 
         return back()->with('success', 'Delete Successfull');
     }
@@ -189,7 +189,7 @@ class InvoiceController extends Controller
             'share' => $share,
             'fee' => $fee,
             'caselist' => $fee_based->caselist($invoice->caselist->id)->original['caselist'],
-            'bank' => Bank::where('id',$invoice->bank_id)->get()->unique('bank_name'),
+            'bank' => Bank::where('id', $invoice->bank_id)->get()->unique('bank_name'),
             'type' => Bank::get(),
         ]);
         return $pdf->stream();

@@ -107,7 +107,7 @@
                                 <td>{{ $inv->member->name }}</td>
                                 <td>{{ $inv->caselist->file_no }}</td>
                                 <td>{{ $inv->no_invoice }}</td>
-                                <td>{{ $inv->type_invoice == 1 ? 'Interim Invoice' : '' }}{{ $inv->type_invoice == 2 ? 'Performa Invoice' : '' }}{{ $inv->type_invoice == 1 ? 'Final Invoice' : '' }}</td>
+                                <td>{{ $inv->type_invoice == 1 ? 'Interim Invoice' : '' }}{{ $inv->type_invoice == 2 ? 'Performa Invoice' : '' }} {{ $inv->type_invoice == 3 ? 'Final Invoice' : '' }}</td>
                                 <td>{{ $inv->date_invoice }}</td>
                                 <td>{{ $inv->due_date }}</td>
                                 <td>{{ $inv->bank->bank_name ?? 'Kosong' }}</td>
@@ -435,7 +435,7 @@
             cache: true
         }
     });
-    
+
     $(`#no_case_interim`).select2({
         placeholder: 'Select File No',
         ajax: {
@@ -448,7 +448,7 @@
             cache: true
         }
     });
-    
+
     async function GetTheCaseList() {
         let resource = await fetch('/api/autocomplete').then(data => data.json())
         return resource
@@ -514,17 +514,16 @@
                 return data.json()
             })
     }
-    const GetResourceInterim = function(id){
+    const GetResourceInterim = function(id) {
         return fetch(`/api/interim/${id}`)
             .then((data) => {
-                if(!data.ok){
+                if (!data.ok) {
                     throw data.statusText;
                 }
                 return data.json()
             })
     }
-    const OnSelectInterim = async function(q)
-    {
+    const OnSelectInterim = async function(q) {
         try {
             let data = await GetResourceInterim($(q).val())
             if (data.caselist.category == 1) {

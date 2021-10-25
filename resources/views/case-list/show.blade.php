@@ -57,14 +57,14 @@
                         <table class="mb-3">
                             <tbody>
                                 <tr>
-                                    <th><small>History Last Update</small></th>
-                                    <th>:</th>
-                                    <th><small>{{ $caseList->history->nama_lengkap ?? 'null' }} - {{ $caseList->history->email ?? 'null' }}</small></th>
+                                    <td width="200px">History Last Update</td>
+                                    <td>:</td>
+                                    <td>{{ $caseList->history->nama_lengkap ?? 'null' }} - {{ $caseList->history->email ?? 'null' }}</td>
                                 </tr>
                                 <tr>
-                                    <th><small>History Date</small></th>
-                                    <th>:</th>
-                                    <th><small>{{ $caseList->history_date }} - {{ Carbon\Carbon::parse($caseList->history_date)->diffForHumans() }}</small></th>
+                                    <td>History Date</td>
+                                    <td>:</td>
+                                    <td>{{ Carbon\Carbon::parse($caseList->history_date)->format('d/m/y H:i:s') }} - {{ Carbon\Carbon::parse($caseList->history_date)->diffForHumans() }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1353,11 +1353,11 @@
 
                 <div class="button mt-3 d-flex">
                     <a href="{{ route('case-list.index') }}" class="btn btn-success mr-2">Kembali</a>
-                    @if($caseList->fr_status == 1 && $caseList->ir_status == 0 && $caseList->is_ready == 1)
+                    @if($caseList->fr_status == 1 && $caseList->ir_status == 0 && $caseList->is_ready == 0)
                     @if(request()->get('page') == "nav-report-4" )
                     <form action="{{ route('case-list.invoice', $caseList->id) }}" method="post">
                         @csrf
-                        <input type="hidden" name="is_ready" value="3">
+                        <input type="hidden" name="is_ready" value="2">
                         <button type="submit" class="btn btn-primary">Cetak Invoice</button>
                     </form>
                     @endif
