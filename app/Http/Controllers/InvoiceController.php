@@ -185,7 +185,7 @@ class InvoiceController extends Controller
             'share' => $share,
             'fee'=> $fee,
             'caselist' => $fee_based->caselist($invoice->caselist->id)->original['caselist'],
-            'bank' => Bank::get()->unique('bank_name'),
+            'bank' => Bank::where('id',$invoice->bank_id)->get()->unique('bank_name'),
             'type' => Bank::get(),
         ]);
         return $pdf->stream();

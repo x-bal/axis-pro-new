@@ -19,7 +19,7 @@
 </style>
 
 <body>
-    <img src="{{ asset('/asset/header.png') }}" alt="">
+    <img src="{{ asset('asset/header.PNG') }}" alt="">
     <h5 class="text-center"><b> FINAL INVOICE</b></h5>
     <br>
     <div class="container-fluid">
@@ -131,29 +131,33 @@
                                 <tr>
                                     <th>{{ number_format($fee) }}</th>
                                     <th>{{ $share }}</th>
-                                    <th><p>{{ $caselist->currency .'.'. number_format($fee * $share / 100) }}</p></th>
+                                    <th>
+                                        <p>{{ $caselist->currency .'.'. number_format($fee * $share / 100) }}</p>
+                                    </th>
                                 </tr>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <th><u>Expenses</u></th>
-                        <tr>
-                            <td>
-                                <table>
-                                    <tr>
-                                        <th width="150px">Others</th>
-                                        <th width="300px">Your Share</th>
-                                        <th></th>
-                                    </tr>
-                                    <tr>
-                                        <th>{{ number_format($inv->caselist->expense->sum('amount')) }}</th>
-                                        <th>{{ $share }}</th>
-                                        <th><p>{{ $caselist->currency.'.'.number_format($inv->caselist->expense->sum('amount') * $share / 100) }}</p></th>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <th width="150px">Others</th>
+                                    <th width="300px">Your Share</th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>{{ number_format($inv->caselist->expense->sum('amount')) }}</th>
+                                    <th>{{ $share }}</th>
+                                    <th>
+                                        <p>{{ $caselist->currency.'.'.number_format($inv->caselist->expense->sum('amount') * $share / 100) }}</p>
+                                    </th>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
                     </tr>
                     <tr>
                         <td>
@@ -161,7 +165,9 @@
                                 <tr>
                                     <th width="150px">Sub Total</th>
                                     <th width="300px"></th>
-                                    <th><p>{{ $caselist->currency .'.'. number_format(($fee * $share / 100) + ($inv->caselist->expense->sum('amount') * $share / 100)) }}</p></th>
+                                    <th>
+                                        <p>{{ $caselist->currency .'.'. number_format(($fee * $share / 100) + ($inv->caselist->expense->sum('amount') * $share / 100)) }}</p>
+                                    </th>
                                 </tr>
                             </table>
                         </td>
@@ -215,7 +221,7 @@
                 </table>
             </div>
         </div>
-        <div class="row">
+        <div class="row">`
             <div class="col" style="width: 30%;margin-left: 12%;">
                 <table>
                     <tr>
@@ -224,15 +230,10 @@
                         </th>
                     </tr>
                 </table>
-                <table style="margin-left: 450px;margin-top: 80px;">
-                    <tr>
-                        <th>
-                            <br>
-                            <h5><u>Febrizal</u></h5>
-                            <h5>Director</h5>
-                        </th>
-                    </tr>
-                </table>
+            </div>
+        </div> 
+        <div class="row">
+            <div class="col" style="width: 30%;margin-left: 12%;">
                 @foreach($bank as $data)
                 <table>
                     <tr>
@@ -259,6 +260,18 @@
             </div>
         </div>
         <div class="row">
+            <div class="col" style="margin-left: 80%;margin-top:-100px">
+                <table>
+                    <tr>
+                        <th>
+                            <u>Febrizal</u><br>
+                            Director
+                        </th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="clear: both;position: relative;height: 200px;margin-top: -100px;">
             <div class="col" style="margin-left: 60%;">
                 <table style="font-size: 8px;">
                     <tr>
