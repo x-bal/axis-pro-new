@@ -110,7 +110,7 @@
                                 <td>{{ $inv->date_invoice }}</td>
                                 <td>{{ $inv->due_date }}</td>
                                 <td>{{ $inv->bank->bank_name ?? 'Kosong' }}</td>
-                                <td>@if($inv->caselist->currency == 'IDR') <strong>Rp.</strong> @else <i class="fas fa-dollar-sign"></i> @endif {{ number_format($inv->grand_total) }}</td>
+                                <td>@if($inv->caselist->currency == 'IDR') <strong>IDR.</strong> @else <i class="fas fa-dollar-sign"></i> @endif {{ number_format($inv->grand_total) }}</td>
                                 <td>
                                     <span class="badge badge-{{ $inv->status_paid == 1 ? 'success' : 'danger' }} p-1">{{ $inv->status_paid == 1 ? 'Paid' : 'Unpaid' }}</span>
                                 </td>
@@ -358,17 +358,17 @@
         claim_amount = parseInt(shedString(claim_amount, ','))
         expense = parseInt(shedString(expense, ','))
         console.log(claim_amount, expense)
-        if ($('#ForAdjusted').html() == 'RP') {
-            console.log('RP')
+        if ($('#ForAdjusted').html() == 'IDR') {
+            console.log('IDR')
             console.info(claim_amount * resource.kurs, expense / resource.kurs)
-            $('#claim_amount_badge').html(`Rp. ${formatter(claim_amount)} -> $ ${formatter(claim_amount / resource.kurs)}`)
-            $('#expense_badge').html(`Rp. ${formatter(expense)} -> $ ${formatter(expense / resource.kurs)}`)
+            $('#claim_amount_badge').html(`IDR. ${formatter(claim_amount)} -> $ ${formatter(claim_amount / resource.kurs)}`)
+            $('#expense_badge').html(`IDR. ${formatter(expense)} -> $ ${formatter(expense / resource.kurs)}`)
         }
         if ($('#ForAdjusted').html() == 'USD') {
             console.log('USD')
             console.info(claim_amount * resource.kurs, expense * resource.kurs)
-            $('#claim_amount_badge').html(`$ ${formatter(claim_amount)} -> Rp. ${formatter(claim_amount * resource.kurs)}`)
-            $('#expense_badge').html(`$ ${formatter(expense)} -> Rp. ${formatter(expense * resource.kurs)}`)
+            $('#claim_amount_badge').html(`$ ${formatter(claim_amount)} -> IDR. ${formatter(claim_amount * resource.kurs)}`)
+            $('#expense_badge').html(`$ ${formatter(expense)} -> IDR. ${formatter(expense * resource.kurs)}`)
         }
     }
     const FormSubmit = function() {
