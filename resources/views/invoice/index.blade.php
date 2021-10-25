@@ -25,7 +25,7 @@
                     <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pen"> Create
                     </button> -->
                     <div>
-                        <span class="btn btn-warning">Interim Invoice : {{ $caselist->where('is_ready', 1)->count() }}</span>
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalInterim">Interim Invoice : {{ $caselist->where('is_ready', 1)->count() }}</button>
                         <span class="btn btn-info">Performa Invoice : {{ $caselist->where('is_ready', 2)->count() }}</span>
                         <span class="btn btn-success">Final Invoice : {{ $caselist->where('is_ready', 3)->count() }}</span>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable"><i class="fas fa-pen"></i> Create</button>
@@ -183,6 +183,7 @@
         </div>
     </div>
 </div>
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModalScrollable" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" style="overflow: auto;" role="document">
@@ -270,6 +271,94 @@
                                         <option value="2">Performa Invoice</option>
                                         <option value="3">Final Invoice</option>
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered">
+                                    <thead class="bg-primary text-light">
+                                        <tr>
+                                            <th>Member</th>
+                                            <th>Member Share</th>
+                                            <th>No Invoice</th>
+                                            <th>Nominal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="forLoop">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button class="btn btn-danger" onclick="Currency()">Currency</button> -->
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" onclick="FormSubmit()" class="btn btn-primary" data-primary>Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalInterim" role="dialog" aria-labelledby="modalInterimTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" style="overflow: auto;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalInterimTitle">Create Interim Invoice</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+
+                    <form action="{{ route('invoice.store') }}" method="post" id="TheHolyForm">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="no_case">No Case</label>
+                                    <br>
+                                    <select name="no_case" id="no_case" class="form-control" onchange="OnSelect(this)">
+                                        {{-- <option selected disabled>-- Select Case --</option>
+                                            @foreach($caselist as $data)
+                                            <option value="{{ $data->id }}">{{ $data->file_no }}</option>
+                                        @endforeach --}}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Date Invoice</label>
+                                    <input type="date" id="date_invoice" class="form-control" name="date_invoice">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Expense</label>
+                                    <input type="text" required id="expense" class="form-control" readonly>
+                                    <span class="badge badge-info text-light" id="expense_badge"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">PPN</label>
+                                    <input type="text" required id="share" class="form-control" readonly>
+                                    <span class="badge badge-primary" id="ForPercent"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Total</label>
+                                    <input type="text" required id="total" class="form-control" name="total" readonly>
                                 </div>
                             </div>
                         </div>
