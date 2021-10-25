@@ -323,7 +323,7 @@
                                 <div class="form-group">
                                     <label for="no_case">No Case</label>
                                     <br>
-                                    <select name="no_case" id="no_case" class="form-control" onchange="OnSelect(this)">
+                                    <select name="no_case_interim" id="no_case_interim" class="form-control" onchange="OnSelectInterim(this)">
                                         {{-- <option selected disabled>-- Select Case --</option>
                                             @foreach($caselist as $data)
                                             <option value="{{ $data->id }}">{{ $data->file_no }}</option>
@@ -344,21 +344,21 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Expense</label>
-                                    <input type="text" required id="expense" class="form-control" readonly>
+                                    <input type="text" required id="expense_interim" class="form-control" readonly>
                                     <span class="badge badge-info text-light" id="expense_badge"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">PPN</label>
-                                    <input type="text" required id="share" class="form-control" readonly>
+                                    <input type="text" required id="share_interim" class="form-control" readonly>
                                     <span class="badge badge-primary" id="ForPercent"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Total</label>
-                                    <input type="text" required id="total" class="form-control" name="total" readonly>
+                                    <input type="text" required id="total_interim" class="form-control" name="total" readonly>
                                 </div>
                             </div>
                         </div>
@@ -375,7 +375,7 @@
                                             <th>Nominal</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="forLoop">
+                                    <tbody id="forLoopInterim">
                                     </tbody>
                                 </table>
                             </div>
@@ -431,6 +431,20 @@
             cache: true
         }
     });
+    
+    $(`#no_case_interim`).select2({
+        placeholder: 'Select File No',
+        ajax: {
+            url: `/api/autocomplete/interim`,
+            processResults: function(data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        }
+    });
+    
     async function GetTheCaseList() {
         let resource = await fetch('/api/autocomplete').then(data => data.json())
         return resource
@@ -495,6 +509,49 @@
                 }
                 return data.json()
             })
+    }
+    const GetResourceInterim = function(id){
+        return fetch(`/api/interim/${id}`)
+            .then((data) => {
+                if(!data.ok){
+                    throw data.statusText;
+                }
+                return data.json()
+            })
+    }
+    const OnSelectInterim = async function(q)
+    {
+        try {
+            let data = await GetResourceInterim($(q).val())
+            if (data.caselist.category == 1) {
+                $('#ForCategory').html('Marine')
+            } else {
+                $('#ForCategory').html('Non Marine')
+            }
+            console.log(data.caselist)
+            let expense = $('#expense_interim').val(formatter(data.expense));
+            let persen = parseInt(data.expense) * parseInt(data.caselist.insurance.ppn) / 100
+            let total = parseInt(persen) + parseInt(data.expense)
+            $('#share_interim').val(formatter(persen))
+            $('#total_interim').val(formatter(total))
+            // $('#forLoop').html('')
+
+            $.each(data.caselist.member, function() {
+                $('#forLoopInterim').append(`<tr>` +
+                    `<td id=` + this.member_insurance + `_dom>` + TheAjaxFunc(this.member_insurance) + `</td>` +
+                    `<td>` + this.share + `</td>` +
+                    `<td>` + `<input class="form-control" required name="no_invoice[]">` + `</td>` +
+                    `<td>` + formatter(total * parseInt(this.share) / 100) + `</td>` +
+                    `</tr>`)
+            })
+        } catch (err) {
+            console.info(err)
+            iziToast.error({
+                title: 'Error',
+                message: `${err}`,
+                position: 'topRight',
+            });
+        }
     }
     const OnSelect = async function(q) {
         $('#claim_amount').val('')

@@ -132,7 +132,7 @@ class AjaxController extends Controller
             }
             $response = [
                 'caselist' => CaseList::with('member', 'expense', 'insurance')->where('id', $id)->firstOrFail(),
-                'expense' => $caselist->expense()->sum('amount'),
+                'expense' => $caselist->expense()->sum('total'),
                 'sum' => $array
             ];
 
@@ -246,6 +246,28 @@ class AjaxController extends Controller
             $response =  $case->file_no;
             $response = str_replace('-JAK', '', $response);
             $response = str_pad($response, 6, '0', STR_PAD_LEFT);
+            return response()->json($response);
+        } catch (Exception $err) {
+            return response()->json($err->getMessage());
+        }
+    }
+    public function TheAutoCompleteFuncIterim(Request $request)
+    {
+        $data = [];
+        $caseList = CaseList::where('file_no', 'like', '%' . $request->q . '%')->where('is_ready', 1)->get();
+        foreach ($caseList as $row) {
+            $data[] = ['id' => $row->id, 'text' => $row->file_no];
+        }
+        return response()->json($data);
+    }
+    public function GetInterimResource($id)
+    {
+        $caselist = CaseList::with('insurance')->find($id);
+        try{
+            $response = [
+                'caselist' => CaseList::with('member', 'expense', 'insurance')->where('id', $id)->firstOrFail(),
+                'expense' => $caselist->expense()->sum('total')
+            ];
             return response()->json($response);
         } catch (Exception $err) {
             return response()->json($err->getMessage());
