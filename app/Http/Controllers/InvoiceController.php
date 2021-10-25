@@ -105,8 +105,11 @@ class InvoiceController extends Controller
             return back()->with('error', 'Member Invoice Does not Exists');
         }
         if (CaseList::find($request->no_case)->hasInvoice()) {
-            return back()->with('error', 'invoiced is already exists');
+            if(CaseList::find($request->no_case)->invoice->whereIn('type_invoice',[2,3])->count() != 0){
+                return back()->with('error', 'invoiced is already exists');
+            }
         }
+        // dd(CaseList::find($request->no_case)->invoice->where('type_invoice',1)->count());
         try {
             DB::beginTransaction();
             $fee_based = str_replace(',', '', $request->fee_based);

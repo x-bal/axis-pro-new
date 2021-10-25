@@ -233,7 +233,6 @@
                             </div>
                         </div>
                         <div class="row">
-
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="fee_based">Fee Based</label>
@@ -254,6 +253,22 @@
                                     <span class="badge badge-primary" id="ForPercent"></span>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row" id="TheInterim">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Sub Total</label>
+                                    <input type="text" id="TotalBeforeInterim" readonly class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Interim</label>
+                                    <input type="text" id="TheInterimField" readonly class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Total</label>
@@ -277,7 +292,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <hr>
                         <div class="row">
                             <div class="col-md-12">
@@ -568,11 +582,14 @@
         $('#expense_badge').html('')
         try {
             let data = await GetResource($(q).val())
+            console.log(data)
             if (data.caselist.category == 1) {
                 $('#ForCategory').html('Marine')
             } else {
                 $('#ForCategory').html('Non Marine')
             }
+
+
             $('#claim_amount').val(formatter(data.sum.claim_amount))
             $('#adjusted').val(formatter(data.sum.adjusted))
             $('#fee_based').val(formatter(data.sum.fee))
@@ -583,10 +600,16 @@
             $('#ForPercent').html(`${data.caselist.insurance.name} - ${data.caselist.insurance.ppn}%`)
             $('#ForAdjusted').html(`${data.caselist.currency}`)
             $('#share').val(formatter(persen))
-            let total = parseInt(sub_total) + parseInt(persen)
+            let total = (parseInt(sub_total) + parseInt(persen)) - data.interim
             $('#total').val(formatter(total))
             // $('#forLoop').html('')
-
+            if (data.interim == 0) {
+                $('#TheInterim').addClass('d-none')
+            } else {
+                $('#TheInterim').removeClass('d-none')
+                $('#TotalBeforeInterim').val(formatter(total + data.interim))
+                $('#TheInterimField').val(formatter(data.interim))
+            }
 
             $.each(data.caselist.member, function() {
                 $('#forLoop').append(`<tr>` +
@@ -597,7 +620,7 @@
                     `</tr>`)
             })
         } catch (err) {
-            console.info(err)
+            console.info(err.message)
             iziToast.error({
                 title: 'Error',
                 message: `${err}`,
