@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Imports\ExpenseImport;
 use App\Models\CaseList;
 use App\Models\Expense;
+use App\Models\Log;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Excel;
 use Illuminate\Support\Facades\Response;
@@ -92,7 +94,18 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, Expense $expense)
     {
-        //
+        $expense = Expense::find($request->id);
+        Log::create([
+            'nama' => auth()->user()->nama_lengkap,
+            'old' => $expense->amount,
+            'new' => $request->nominal,
+            'datetime' => Carbon::now()->format('Y-m-d H:i:s'),
+            'expense_id' => $request->id
+        ]);
+        $expense->update([
+            'amount' => $request->nominal
+        ]);
+        return back()->with('success', 'Berhasil Update Amount');
     }
 
     /**

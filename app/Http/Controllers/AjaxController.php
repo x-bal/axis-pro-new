@@ -8,8 +8,10 @@ use App\Models\Client;
 use App\Models\FeeBased;
 use App\Http\Controllers\Controller;
 use App\Models\Currency;
+use App\Models\Expense;
 use App\Models\User;
 use App\Models\Invoice;
+use App\Models\Log;
 use App\Models\Policy;
 use Dotenv\Validator;
 use Exception;
@@ -286,5 +288,10 @@ class AjaxController extends Controller
             array_push($array,$data->caselist->count());
         }
         return $array;
-    } 
+    }
+    public function ExpenseLog($id)
+    {
+        $data = Expense::find($id)->logs;
+        return datatables()->of($data)->make(true);
+    }
 }
