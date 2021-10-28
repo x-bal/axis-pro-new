@@ -19,7 +19,7 @@
 </style>
 
 <body>
-    <img src="{{ asset('/asset/header.PNG') }}" alt="">
+    <img src="https://i.postimg.cc/LhK2mN8f/header.png" alt="">
     <h5 class="text-center"><b>
             @if($invoice->type_invoice == 1)
             INTERIM INVOICE
@@ -58,6 +58,7 @@
                 </table>
             </div>
         </div>
+
         <div class="row">
             <div class="col">
                 <table cellpadding="5">
@@ -77,7 +78,9 @@
                 </table>
             </div>
         </div>
+
         <hr style="border : 2px double black; margin-top: -15px;">
+
         <div class="row">
             <div class="col">
                 <table cellpadding="5">
@@ -125,81 +128,134 @@
                 </table>
             </div>
         </div>
+
         <div class="row">
             <div class="col" style="margin-left:10%;">
                 <table>
                     <tr>
                         <th><u>Professional Services</u></th>
+                    </tr>
                     <tr>
                         <td>
-                            <table>
+                            <table style="margin-left: 20px; margin-bottom: 10px;">
                                 <tr>
-                                    <th width="150px">Adjusters Fee</th>
-                                    <th width="300px">Your Share</th>
-                                    <th>Total</th>
+                                    <td width="150px">Adjusters Fee</td>
+                                    <td width="250px">Your Share</td>
+                                    <td width="50px">&nbsp;</td>
+                                    <td>&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ $invoice->type_invoice != 1 ? number_format($fee) : 0 }}</th>
-                                    <th>{{ $invoice->type_invoice != 1 ? $share : 0 }}</th>
-                                    <th>
-                                        <p>{{ $invoice->type_invoice != 1 ? $caselist->currency .'.'. number_format($fee * $share / 100) : 0 }}</p>
-                                    </th>
+                                    <td>{{ $invoice->type_invoice != 1 ? number_format($fee, 2) : number_format(0, 2) }}</td>
+                                    <td>{{ $invoice->type_invoice != 1 ? number_format($share, 2) : number_format(0, 2) }}%</td>
+                                    <td>{{ $caselist->currency }}</td>
+                                    <td width="100px" class="text-right">
+                                        {{ $invoice->type_invoice != 1 ? number_format($fee * $share / 100, 2) : number_format(0, 2) }}
+                                    </td>
                                 </tr>
                             </table>
                         </td>
                     </tr>
+
                     <tr>
                         <th><u>Expenses</u></th>
+                    </tr>
                     <tr>
                         <td>
-                            <table>
+                            <table style="margin-left: 20px; margin-bottom: 10px;">
                                 <tr>
-                                    <th width="150px">Others</th>
-                                    <th width="300px">Your Share</th>
-                                    <th></th>
+                                    <td width="150px">Others</td>
+                                    <td width="250px">Your Share</td>
+                                    <td width="50px">&nbsp;</td>
+                                    <td>&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ number_format($inv->caselist->expense->sum('amount')) }}</th>
-                                    <th>{{ $share }}</th>
-                                    <th>
-                                        <p>{{ $caselist->currency.'.'.number_format($inv->caselist->expense->sum('amount') * $share / 100) }}</p>
+                                    <td>
+                                        @if($inv->type_invoice == 1)
+                                        {{ number_format($inv->caselist->expense->where('is_active', 1)->sum('total'), 2) }}
+                                        @else
+                                        {{ number_format($inv->caselist->expense->where('is_active', 2)->sum('total'), 2) }}
+                                        @endif
+                                    </td>
+                                    <td>{{ number_format($share, 2) }}%</td>
+                                    <td>{{ $caselist->currency }}</td>
+                                    <td width="100px" class="text-right">
+                                        @if($inv->type_invoice == 1)
+                                        {{ number_format($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100, 2) }}
+                                        @else
+                                        {{ number_format($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100, 2) }}
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td colspan="2" style="border-bottom: 1px solid black;"></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <table style=" margin-bottom: 10px;">
+                                <tr>
+                                    <td width="150px">Sub Total</td>
+                                    <td width="270px"></td>
+                                    <td width="50px">{{ $caselist->currency }}</td>
+                                    <td width="100px" class="text-right">
+                                        @if($inv->type_invoice == 1)
+                                        {{number_format($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100, 2) }}
+                                        @else
+                                        {{number_format(($fee * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100), 2) }}
+                                        @endif
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <table style="margin-left: 20px;  margin-bottom: 10px;">
+                                <tr>
+                                    <th width="150px">
+                                        PPN 10%
                                     </th>
+                                    <td width="250px"></td>
+                                    <td width="50px">{{ $caselist->currency }}</td>
+                                    <td width="100px" class="text-right">
+                                        @if($inv->type_invoice == 1)
+                                        {{ number_format(($inv->caselist->expense->where('is_active', 1)->sum('total') * 10 / 100) * $share / 100, 2) }}
+                                        @else
+                                        {{ number_format((($fee * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100)) * 10 / 100, 2) }}
+                                        @endif
+                                    </td>
                                 </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    </tr>
-                    <tr>
-                        <td>
-                            <table>
                                 <tr>
-                                    <th width="150px">Sub Total</th>
-                                    <th width="300px"></th>
-                                    <th>
-                                        <p>{{ $caselist->currency .'.'. number_format(($fee * $share / 100) + ($inv->caselist->expense->sum('amount') * $share / 100)) }}</p>
-                                    </th>
+                                    <td colspan="2"></td>
+                                    <td colspan="2" style="border-bottom: 1px solid black;"></td>
                                 </tr>
                             </table>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <table>
-                                <tr>
-                                    <th width="150px">PPN 10%</th>
-                                    <th width="300px"></th>
-                                    <th>{{ $caselist->currency }}. {{ number_format((($fee * $share / 100) + ($inv->caselist->expense->sum('amount') * $share / 100)) * 10 / 100) }}</th>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
+
                     <tr>
                         <td>
                             <table>
                                 <tr>
                                     <th width="150px">TOTAL AMOUNT DUE</th>
-                                    <th width="300px"></th>
-                                    <th>{{ $caselist->currency }}. {{ number_format(((($fee * $share / 100) + ($inv->caselist->expense->sum('amount') * $share / 100)) * 10 / 100) + ($fee * $share / 100) + ($inv->caselist->expense->sum('amount') * $share / 100)) }}</th>
+                                    <th width="270px"></th>
+                                    <th width="50px">{{ $caselist->currency }}</th>
+                                    <th width="100px" class="text-right">
+                                        @if($inv->type_invoice == 1)
+                                        {{ number_format(($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($inv->caselist->expense->where('is_active', 1)->sum('total') * 10 / 100) * $share / 100, 2)  }}
+                                        @else
+                                        {{ number_format(((($fee * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100)) * 10 / 100) + ($fee * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100), 2) }}
+                                        @endif
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td colspan="2" style="border-bottom: 2px double black;"></td>
                                 </tr>
                             </table>
                         </td>
@@ -207,74 +263,79 @@
                 </table>
             </div>
         </div>
-        <hr style="margin-bottom: 40px;">
-        <div class="row">
-            <div class="col">
-                <table>
-                    <tr>
-                        <th width="82px">Terms</th>
-                        <th>Invoice Payment Upon Receipt. NPWP: 01.310.501.0-018.000</th>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col" style="width: 550px;">
-                <table>
-                    <tr>
-                        <th>Payments</th>
-                        <td style="white-space: pre-line;">
-                            Please make payment <strong>no later than 30 days after receipt of this invoice,
-                            </strong> and please mail Bank Slip Trasnfer to <strong>finance@axis-adjusters.com</strong>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col" style="width: 30%;margin-left: 12%;">
-                <table>
-                    <tr>
-                        <th>
-                            PT AXIS INTERNASIONAL INDONESIA
-                        </th>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col" style="width: 30%;margin-left: 12%;">
-                @foreach($bank as $data)
-                <table>
-                    <tr>
-                        <th colspan="3">
-                            <strong>{{ $data->bank_name }}</strong>
-                            <p>{{ $data->address }}</p>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th width="100px">Swift Code</th>
-                        <th>:</th>
-                        <th width="350px">{{ $data->swift_code }}</th>
 
-                        <th><u>Febrizal</u></th>
-                    </tr>
-                    @foreach($type->where('bank_name',$data->bank_name) as $row)
-                    <tr>
-                        <th>Account No.{{ $row->currency }}</th>
-                        <th>:</th>
-                        <th>{{ $row->no_account }}</th>
+        <div style="margin-top: 70px;">
+            <div class="row">
+                <div class="col">
+                    <table>
+                        <tr>
+                            <th width="82px">Terms</th>
+                            <th>Invoice Payment Upon Receipt. NPWP: 01.310.501.0-018.000</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
 
-                        <th>Director</th>
-                    </tr>
+            <div class="row">
+                <div class="col" style="width: 550px;">
+                    <table>
+                        <tr>
+                            <th>Payments</th>
+                            <td style="white-space: pre-line;">
+                                Please make payment <strong>no later than 30 days after receipt of this invoice,
+                                </strong> and please mail Bank Slip Trasnfer to <strong>finance@axis-adjusters.com</strong>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col" style="width: 30%;margin-left: 12%;">
+                    <table>
+                        <tr>
+                            <th>
+                                PT AXIS INTERNASIONAL INDONESIA
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col" style="width: 30%;margin-left: 12%;">
+                    @foreach($bank as $data)
+                    <table>
+                        <tr>
+                            <th colspan="3">
+                                <strong>{{ $data->bank_name }}</strong>
+                                <p>{{ $data->address }}</p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th width="100px">Swift Code</th>
+                            <th>:</th>
+                            <th width="350px">{{ $data->swift_code }}</th>
+
+                            <th><u>Febrizal</u></th>
+                        </tr>
+                        @foreach($type->where('bank_name',$data->bank_name) as $row)
+                        <tr>
+                            <th>Account No.{{ $row->currency }}</th>
+                            <th>:</th>
+                            <th>{{ $row->no_account }}</th>
+
+                            <th>Director</th>
+                        </tr>
+                        @endforeach
+                    </table>
+                    <hr>
                     @endforeach
-                </table>
-                <hr>
-                @endforeach
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <!-- <div class="col" style="margin-left: 80%;margin-top:-10px">
+
+            <div class="row">
+                <!-- <div class="col" style="margin-left: 80%;margin-top:-10px">
                 <table>
                     <tr>
                         <th>
@@ -284,8 +345,10 @@
                     </tr>
                 </table>
             </div> -->
+            </div>
         </div>
-        <div class="row" style="clear: both;position: relative;height: 200px;margin-top: -100px;">
+
+        <div class="row" style="clear: both; position: relative;height: 200px; margin-top: -100px;">
             <div class="col" style="margin-left: 60%;">
                 <table style="font-size: 8px;">
                     <tr>

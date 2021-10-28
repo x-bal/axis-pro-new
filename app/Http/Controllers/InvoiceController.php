@@ -6,6 +6,7 @@ use App\Exports\InvoiceExport;
 use App\Models\Bank;
 use App\Models\CaseList;
 use App\Models\Client;
+use App\Models\Expense;
 use App\Models\Invoice;
 use App\Models\MemberInsurance;
 use App\Models\NoInvoice;
@@ -40,36 +41,28 @@ class InvoiceController extends Controller
             'date_invoice' => 'required',
             'no_invoice.*' => 'required',
         ]);
-        if ($request->no_invoice == null) {
-            return back()->with('error', 'Member Invoice Does not Exists');
-        }
-        if (CaseList::find($request->no_case)->hasInvoice()) {
-            return back()->with('error', 'invoiced is already exists');
-        }
+
         try {
+
+            if ($request->no_invoice == null) {
+                return back()->with('error', 'Member Invoice Does not Exists');
+            }
+
+            if (CaseList::find($request->no_case_interim)->hasInvoice()) {
+                return back()->with('error', 'invoiced is already exists');
+            }
+
             DB::beginTransaction();
             $fee_based = str_replace(',', '', $request->fee_based);
             $fee_based = intval($fee_based);
-            $caselist = CaseList::find($request->no_case);
-
-            if ($caselist->currency == 'IDR') {
-                $caselist->update([
-                    'fee_idr' => $fee_based,
-                    'wip_idr' => $fee_based,
-                ]);
-            }
-            if ($caselist->currency == 'USD') {
-                $caselist->update([
-                    'fee_usd' => $fee_based,
-                    'wip_usd' => $fee_based,
-                ]);
-            }
+            $caselist = CaseList::find($request->no_case_interim);
 
             $total = str_replace(',', '', $request->total);
             $total = intval($total);
-            foreach (CaseList::find($request->no_case)->member as $key => $data) {
+
+            foreach (CaseList::find($request->no_case_interim)->member as $key => $data) {
                 Invoice::create([
-                    'case_list_id' => $request->no_case,
+                    'case_list_id' => $request->no_case_interim,
                     'member_id' => $data->member_insurance,
                     'no_invoice' => $request->no_invoice[$key],
                     'date_invoice' => $request->date_invoice,
@@ -79,6 +72,12 @@ class InvoiceController extends Controller
                     'type_invoice' => 1,
                     'grand_total' => $total * $data->share / 100
                 ]);
+            }
+
+            $expenses = Expense::where('case_list_id', $caselist->id)->get();
+
+            foreach ($expenses as $expense) {
+                $expense->update(['is_active' => 1]);
             }
 
             // $caselist->update(['is_ready' => 2]);
@@ -105,7 +104,7 @@ class InvoiceController extends Controller
             return back()->with('error', 'Member Invoice Does not Exists');
         }
         if (CaseList::find($request->no_case)->hasInvoice()) {
-            if(CaseList::find($request->no_case)->invoice->whereIn('type_invoice',[2,3])->count() != 0){
+            if (CaseList::find($request->no_case)->invoice->whereIn('type_invoice', [2, 3])->count() != 0) {
                 return back()->with('error', 'invoiced is already exists');
             }
         }
@@ -142,8 +141,14 @@ class InvoiceController extends Controller
                     'grand_total' => $total * $data->share / 100
                 ]);
             }
+            $expenses = Expense::where('case_list_id', $caselist->id)->where('is_active', 0)->get();
+
+            foreach ($expenses as $expense) {
+                $expense->update(['is_active' => 2]);
+            }
+
             if ($request->type_invoice == 2) {
-                $caselist->update(['is_ready' => 2]);
+                $caselist->update(['is_ready' => 3]);
             } else {
                 $caselist->update(['is_ready' => 4]);
             }
@@ -245,11 +250,18 @@ class InvoiceController extends Controller
         // ob_start();
         // test
         $share = $invoice->caselist->member->where('member_insurance', $invoice->member_id)->first()->share;
+        // $interim = 0;
+        // $case = CaseList::find($invoice->case_list_id);
+        // if ($case->ir_status == 1) {
+        //     $interim = intval(Invoice::where('case_list_id', $invoice->case_list_id)->where('type_invoice', 1)->where('is_active', 1)->sum('grand_total'));
+        // }
+
         $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadview('invoice.pdf', [
             'invoice' => $invoice,
             'inv' => Invoice::findOrFail($id),
             'share' => $share,
             'fee' => $fee,
+            // 'interim' => $interim,
             'caselist' => $fee_based->caselist($invoice->caselist->id)->original['caselist'],
             'bank' => Bank::where('id', $invoice->bank_id)->get()->unique('bank_name'),
             'type' => Bank::get(),

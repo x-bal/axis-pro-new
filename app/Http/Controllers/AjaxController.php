@@ -22,7 +22,7 @@ class AjaxController extends Controller
     public function TheAutoCompleteFunc(Request $request)
     {
         $data = [];
-        $caseList = CaseList::where('file_no', 'like', '%' . $request->q . '%')->where('is_ready', 2)->get();
+        $caseList = CaseList::where('file_no', 'like', '%' . $request->q . '%')->where('is_ready', 2)->where('is_ready', 3)->get();
         foreach ($caseList as $row) {
             $data[] = ['id' => $row->id, 'text' => $row->file_no];
         }
@@ -131,12 +131,12 @@ class AjaxController extends Controller
                 }
             }
             $interim = 0;
-            if($caselist->ir_status){
+            if ($caselist->ir_status) {
                 $interim = $caselist->invoice->where('type_invoice', 1)->sum('grand_total');
             }
             $response = [
                 'caselist' => CaseList::with('member', 'expense', 'insurance')->where('id', $id)->firstOrFail(),
-                'expense' => $caselist->expense()->sum('total'  ),
+                'expense' => $caselist->expense()->where('is_active', 0)->sum('total'),
                 'sum' => $array,
                 'interim' => $interim
             ];

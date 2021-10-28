@@ -254,7 +254,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" id="TheInterim">
+                        <!-- <div class="row" id="TheInterim">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Sub Total</label>
@@ -267,7 +267,7 @@
                                     <input type="text" id="TheInterimField" readonly class="form-control">
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -332,8 +332,7 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-
-                    <form action="{{ route('invoice.storeInterim') }}" method="post" id="TheHolyForm">
+                    <form action="{{ route('invoice.storeInterim') }}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-md-6">
@@ -397,14 +396,14 @@
                                 </table>
                             </div>
                         </div>
-                    </form>
                 </div>
             </div>
             <div class="modal-footer">
                 <!-- <button class="btn btn-danger" onclick="Currency()">Currency</button> -->
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" onclick="FormSubmit()" class="btn btn-primary" data-primary>Create</button>
+                <button type="submit" class="btn btn-primary" data-primary>Create</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -547,7 +546,7 @@
             }
             console.log(data.caselist)
             let expense = $('#expense_interim').val(formatter(data.expense));
-            let persen = parseInt(data.expense) * parseInt(data.caselist.insurance.ppn) / 100
+            let persen = parseInt(data.expense) * 10 / 100
             let total = parseInt(persen) + parseInt(data.expense)
             $('#share_interim').val(formatter(persen))
             $('#total_interim').val(formatter(total))
@@ -595,12 +594,14 @@
             $('#fee_based').val(formatter(data.sum.fee))
             $('#expense').val(formatter(data.expense))
             // $('#share').val(formatter(parseInt(data.sum.fee) + parseInt(data.caselist.expense.amount)))
-            let sub_total = parseInt(data.sum.claim_amount) + parseInt(data.sum.fee) + parseInt(data.expense)
-            let persen = parseInt(sub_total) * parseInt(data.caselist.insurance.ppn) / 100
-            $('#ForPercent').html(`${data.caselist.insurance.name} - ${data.caselist.insurance.ppn}%`)
+            // parseInt(data.sum.claim_amount) +
+            let sub_total = parseInt(data.sum.fee) + parseInt(data.expense)
+            // let persen = parseInt(sub_total) * parseInt(data.caselist.insurance.ppn) / 100
+            let persen = parseInt(sub_total) * 10 / 100
+            // $('#ForPercent').html(`${data.caselist.insurance.name} - ${data.caselist.insurance.ppn}%`)
             $('#ForAdjusted').html(`${data.caselist.currency}`)
             $('#share').val(formatter(persen))
-            let total = (parseInt(sub_total) + parseInt(persen)) - data.interim
+            let total = (parseInt(sub_total) + parseInt(persen))
             $('#total').val(formatter(total))
             // $('#forLoop').html('')
             if (data.interim == 0) {

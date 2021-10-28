@@ -251,21 +251,25 @@
                         <a href="{{ route('caselist.expense', $caseList->id) }}" class="btn btn-primary my-3"><i class="fas fa-file-pdf"></i> Download</a>
                         @endif
 
-                        <table width="100%" height="52" border="0" class="table tabelbelang table-bordered table-striped table-hover" style="font-size:12px;">
-                            <tbody>
+                        <table id="table-expense" width="100%" class="table table-bordered table-striped table-hover" style="font-size:12px;">
+                            <thead>
                                 <tr>
-                                    <td width="3%">No</td>
-                                    <td width="15%">Adjuster</td>
-                                    <td width="15%">Name</td>
-                                    <td width="9%">Category</td>
-                                    <td width="10%">Date</td>
-                                    <td width="10%">Qty</td>
-                                    <td width="20%">Amount</td>
-                                    <td width="33%">Total</td>
+                                    <td>No</td>
+                                    <td>Adjuster</td>
+                                    <td>Name</td>
+                                    <td>Category</td>
+                                    <td>Date</td>
+                                    <td>Qty</td>
+                                    <td>Amount</td>
+                                    <td>Total</td>
+                                    <td>Type Invoice</td>
                                     @if(auth()->user()->hasRole('admin'))
-                                    <td width="10%">Action</td>
+                                    <td>Action</td>
                                     @endif
                                 </tr>
+                            </thead>
+
+                            <tbody>
                                 @php
                                 $amount = 0;
                                 $total = 0;
@@ -281,7 +285,10 @@
                                     <td>{{ $expense->qty }}</td>
                                     <td>{{ $caseList->currency == 'IDR' ? 'Rp.' : '$' }} {{ number_format($expense->amount, 2)  }}</td>
                                     <td>{{ $caseList->currency == 'IDR' ? 'Rp.' : '$' }} {{ number_format($expense->total, 2)  }}</td>
-
+                                    <td>{{ $expense->is_active == 0 ? '-' : '' }}
+                                        {{ $expense->is_active == 1 ? 'Interim' : '' }}
+                                        {{ $expense->is_active == 2 ? 'Final' : '' }}
+                                    </td>
                                     @if(auth()->user()->hasRole('admin'))
                                     <td>
                                         <form action="{{ route('expense.destroy', $expense->id) }}" method="post" onclick="return confirm('Are you sure to delete this expense ?')" style="display: inline;">
@@ -298,11 +305,14 @@
                                 @endphp
                                 @endforeach
                             </tbody>
+
                             <tfoot>
                                 <tr>
                                     <td colspan="6">Total Amount : </td>
                                     <td>{{ $caseList->currency == 'IDR' ? 'Rp.' : '$' }} {{ number_format($amount, 2) }}</td>
                                     <td>{{ $caseList->currency == 'IDR' ? 'Rp.' : '$' }} {{ number_format($total, 2) }}</td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -1393,7 +1403,11 @@
 
 @section('footer')
 <script src="https://code.jquery.com/jquery-1.7.2.min.js" integrity="sha256-R7aNzoy2gFrVs+pNJ6+SokH04ppcEqJ0yFLkNGoFALQ=" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
 
+<script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.6/js/responsive.bootstrap.min.js"></script>
 <script>
     $(document).ready(function() {
         let tr = `<tr>
@@ -1512,6 +1526,7 @@
         //         }
         //     })
         // })
+        $('#table-expense').DataTable()
     })
 </script>
 @stop
