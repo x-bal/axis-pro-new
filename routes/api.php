@@ -33,4 +33,5 @@ route::middleware('ApiRequest')->group(function () {
     Route::get('/caselist/file_no/edit/{id}', [AjaxController::class, 'CaseListFileNoEdit']);
     Route::get('/interim/{id}', [AjaxController::class, 'GetInterimResource']);
     Route::get('/count/all/policy', [AjaxController::class, 'CountAllPolicy']);
+    Route::get('/admin/expense/log/{id}',[AjaxController::class, 'ExpenseLog']);
 });

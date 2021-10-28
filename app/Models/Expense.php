@@ -24,4 +24,8 @@ class Expense extends Model
     {
         return $this->belongsTo(User::class, 'adjuster');
     }
+    public function logs()
+    {
+        return $this->hasMany(Log::class);
+    }
 }
