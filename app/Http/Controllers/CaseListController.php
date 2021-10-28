@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\CaseListExport;
-use App\Models\{Attachment, CaseList, User, Broker, Incident, Policy, Client, Currency, Expense, FileStatus, Invoice, MemberInsurance};
+use App\Models\{Attachment, CaseList, User, Broker, Incident, Policy, Client, Currency, Expense, FileStatus, History, Invoice, MemberInsurance};
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Exception;
@@ -198,6 +198,11 @@ class CaseListController extends Controller
                     'file_penunjukan' => $path_file_penunjukan,
                     'history_id' => auth()->user()->id,
                     'history_date' => Carbon::now()->format('Y-m-d H:i:s')
+                ]);
+                History::create([
+                    'name' => auth()->user()->nama_lengkap,
+                    'type' => 'Case List Create : '.$request->file_no . '-JAK',
+                    'datetime' => Carbon::now()->format('Y-m-d H:i:s')
                 ]);
                 for ($i = 1; $i <= count($request->member); $i++) {
                     MemberInsurance::create([
@@ -488,6 +493,11 @@ class CaseListController extends Controller
                 'history_id' => auth()->user()->id,
                 'history_date' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
+            History::create([
+                'name' => auth()->user()->nama_lengkap,
+                'type' => 'Case List Edit : '.$request->file_no . '-JAK',
+                'datetime' => Carbon::now()->format('Y-m-d H:i:s')
+            ]);
             MemberInsurance::where('file_no_outstanding', $caseList->id)->delete();
             for ($i = 0; $i < count($request->member); $i++) {
                 MemberInsurance::create([
@@ -511,6 +521,11 @@ class CaseListController extends Controller
         $caseList->update([
             'history_id' => auth()->user()->id,
             'history_date' => Carbon::now()->format('Y-m-d H:i:s')
+        ]);
+        History::create([
+            'name' => auth()->user()->nama_lengkap,
+            'type' => 'Case List Delete : '.$caseList->file_no,
+            'datetime' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         Invoice::where('case_list_id', $caseList->id)->delete();
         $caseList->delete();
@@ -586,6 +601,11 @@ class CaseListController extends Controller
                 $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
                 $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
             }
+            History::create([
+                'name' => auth()->user()->nama_lengkap,
+                'type' => 'Case List Laporan Admin',
+                'datetime' => Carbon::now()->format('Y-m-d H:i:s')
+            ]);
             return view('case-list.laporan', [
                 'from' => $request->from,
                 'to' => $request->to,
@@ -613,6 +633,11 @@ class CaseListController extends Controller
                 $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
                 $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
             }
+            History::create([
+                'name' => auth()->user()->nama_lengkap,
+                'type' => 'Case List Laporan Adjuster',
+                'datetime' => Carbon::now()->format('Y-m-d H:i:s')
+            ]);
             return view('case-list.laporan', [
                 'from' => $request->from,
                 'to' => $request->to,
@@ -671,6 +696,11 @@ class CaseListController extends Controller
     {
         Invoice::onlyTrashed()->restore();
         CaseList::onlyTrashed()->restore();
+        History::create([
+            'name' => auth()->user()->nama_lengkap,
+            'type' => 'Case List Restore',
+            'datetime' => Carbon::now()->format('Y-m-d H:i:s')
+        ]);
         return back()->with('success', 'Restore Successfull');
     }
 }
