@@ -127,36 +127,35 @@
     $(document).ready(function() {
         $.ajax({
             url: '/api/chart/caselist',
-            success: function(resource) {
+            success: async function(resource) {
                 let label = [];
                 let value = [];
                 $.each(resource.policy, function() {
                     label.push(this.type_policy)
                     value.push(this.type_policy)
                 })
-                $.each(resource.caselist, async function() {
-                    if (label.includes(this.policy.type_policy)) {
-                        value[this.policy.id - 1] = await fetch(`/api/count/${this.policy.id}`).then(data => data.json())
+                total = await fetch('/api/count/all/policy').then(data => data.json()) 
+                // $.each(resource.caselist, async function() {
+                //     if (label.includes(this.policy.type_policy)) {
+                //         value[this.policy.id - 1] = await fetch(`/api/count/${this.policy.id}`).then(data => data.json())
+                //     }
+                //     total = value
+                // })
+                $('#spinner').addClass('d-none')
+                var ctx = document.getElementById('myChart1').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: label,
+                        datasets: [{
+                            label: 'Type Policy',
+                            backgroundColor: 'rgb(225, 116, 101)',
+                            borderColor: 'rgb(255, 255, 255)',
+                            data: total
+                        }],
+                        borderWidth: 10
                     }
-                    total = value
                 })
-                setTimeout(function() {
-                    $('#spinner').addClass('d-none')
-                    var ctx = document.getElementById('myChart1').getContext('2d');
-                    var chart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: label,
-                            datasets: [{
-                                label: 'Type Policy',
-                                backgroundColor: 'rgb(225, 116, 101)',
-                                borderColor: 'rgb(255, 255, 255)',
-                                data: total
-                            }],
-                            borderWidth: 10
-                        }
-                    })
-                }, 1000)
             }
         })
         $.ajax({

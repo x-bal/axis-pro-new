@@ -259,7 +259,7 @@
     </div>
     <div class="col-md-3">
         <div class="form-group">
-            <label for="document_policy">Document Policy</label>
+            <label for="document_policy">Copy Polis</label>
             <input type="text" class="form-control @error('document_policy') is-invalid @enderror" id="document_policy" value="{{ $caseList->document_policy ?? old('document_policy') }}" name="document_policy">
             @error('document_policy')
             <div class="invalid-feedback">

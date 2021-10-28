@@ -94,7 +94,7 @@
                                     <td rowspan="2" class="border">Insured</td>
                                     <td rowspan="2" class="border">DOL</td>
                                     <td rowspan="2" class="border">Risk Location / Project</td>
-                                    <td rowspan="2" class="border">Cause of Lost</td>
+                                    <td rowspan="2" class="border">Cause of Loss</td>
                                     <!-- <td rowspan="2" class="border">Claim of Amount</td>
                             <td rowspan="2" class="border">Instruction Date</td> -->
                                     <td rowspan="2" class="border">Status</td>

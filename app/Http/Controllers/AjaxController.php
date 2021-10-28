@@ -278,4 +278,13 @@ class AjaxController extends Controller
             return response()->json($err->getMessage());
         }
     }
+    public function CountAllPolicy()
+    {
+        $array = [];
+        $policies = Policy::get();
+        foreach($policies as $data){
+            array_push($array,$data->caselist->count());
+        }
+        return $array;
+    } 
 }
