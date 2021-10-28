@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::post('expense/laporan', [ExpenseController::class, 'laporan'])->name('expense.laporan');
     Route::delete('expenses/{expense:id}', [ExpenseController::class, 'destroy'])->name('expense.destroy');
     Route::get('/expenses', [ExpenseController::class, 'index'])->name('expense.index');
+    Route::put('/expense/edit/', [ExpenseController::class, 'update'])->name('expense.update');
     Route::resource('/category-expense', CategoryExpenseController::class);
     Route::resource('/case-list', CaseListController::class);
     Route::resource('/cause-of-loss', IncidentController::class);

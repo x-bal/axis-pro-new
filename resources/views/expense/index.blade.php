@@ -51,6 +51,7 @@
                                     <th>Description</th>
                                     <th>Date</th>
                                     <th>Amount</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -62,6 +63,12 @@
                                     <td>{{ $data->name }}</td>
                                     <td>{{ Carbon\Carbon::parse($data->tanggal)->format('d/m/Y') }}</td>
                                     <th class="text-right">{{ number_format($data->amount) }}</th>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-warning" onclick="expenseedit(this)" data-id="{{ $data->id }}" data-toggle="modal" data-target="#exampleModalCenter">Edit</button>
+                                            <button type="button" class="btn btn-primary" onclick="expenselog(this)" data-id="{{ $data->id }}" data-toggle="modal" data-target="#exampleModalLong">Log</button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -73,10 +80,101 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('expense.update') }}" method="post">
+                <div class="modal-body">
+                    @csrf
+                    @method('put')
+                    <input type="hidden" name="id" id="id_expense">
+                    <div class="form-group">
+                        <label for="">Nominal</label>
+                        <input type="number" class="form-control" id="nominal" name="nominal">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped" id="logtable">
+                    <thead>
+                        <th>Id</th>
+                        <th>Nama</th>
+                        <th>Old</th>
+                        <th>New</th>
+                        <th>Datetime</th>
+                    </thead>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('footer')
 <script>
+    function expenseedit(qr) {
+        $('#id_expense').val($(qr).attr('data-id'))
+    }
+
+    function expenselog(qr) {
+        let id = $(qr).attr('data-id')
+        $('#logtable').DataTable({
+            serverSide: true,
+            processing: true,
+            destroy: true,
+            ajax: `/api/admin/expense/log/${id}`,
+            columns: [
+                {
+                    data: 'id',
+                    name: 'id'
+                },
+                {
+                    data: 'nama',
+                    name: 'nama'
+                },
+                {
+                    data: 'old',
+                    name: 'old'
+                },
+                {
+                    data: 'new',
+                    name: 'new'
+                },
+                {
+                    data: 'datetime',
+                    name: 'datetime'
+                },
+            ]
+        })
+
+    }
     $('.table').DataTable()
 </script>
 @stop
