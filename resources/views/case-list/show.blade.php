@@ -149,9 +149,9 @@
                                     <td>File Penunjukan</td>
                                     <td>:</td>
                                     <td><a href="{{ asset('/storage/'.$caseList->file_penunjukan) }}" target="_blank" class="btn btn-danger">File Penunjukan</a></td>
-                                    <td>Document Policy</td>
+                                    <td>Copy Polis</td>
                                     <td>:</td>
-                                    <td>{{ $caseList->document_policy }}</td>
+                                    <td><a href="{{ asset('/storage/'.$caseList->copy_polis) }}" target="_blank" class="btn btn-info">Copy Polis</a></td>
                                 </tr>
                             </tbody>
                         </table>

@@ -259,9 +259,9 @@
     </div>
     <div class="col-md-3">
         <div class="form-group">
-            <label for="document_policy">Copy Polis</label>
-            <input type="text" class="form-control @error('document_policy') is-invalid @enderror" id="document_policy" value="{{ $caseList->document_policy ?? old('document_policy') }}" name="document_policy">
-            @error('document_policy')
+            <label for="copy_polis">Copy Polis</label>
+            <input type="file" class="form-control @error('copy_polis') is-invalid @enderror" id="copy_polis" value="{{ $caseList->copy_polis ?? old('copy_polis') }}" name="copy_polis">
+            @error('copy_polis')
             <div class="invalid-feedback">
                 {{ $message }}
             </div>

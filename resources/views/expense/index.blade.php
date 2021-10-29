@@ -51,6 +51,7 @@
                                     <th>Description</th>
                                     <th>Date</th>
                                     <th>Amount</th>
+                                    <th>Total</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -63,10 +64,16 @@
                                     <td>{{ $data->name }}</td>
                                     <td>{{ Carbon\Carbon::parse($data->tanggal)->format('d/m/Y') }}</td>
                                     <th class="text-right">{{ number_format($data->amount) }}</th>
+                                    <th class="text-right">{{ number_format($data->total) }}</th>
                                     <td class="text-center">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-warning" onclick="expenseedit(this)" data-id="{{ $data->id }}" data-toggle="modal" data-target="#exampleModalCenter">Edit</button>
                                             <button type="button" class="btn btn-primary" onclick="expenselog(this)" data-id="{{ $data->id }}" data-toggle="modal" data-target="#exampleModalLong">Log</button>
+                                            <form action="{{ route('expense.destroy',$data->id) }}" method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <button class="btn btn-danger" onclick="return confirm('Anda Yakin Ingin Menghapus Expense')">Delete</button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -85,7 +92,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit Expense</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -95,6 +102,14 @@
                     @csrf
                     @method('put')
                     <input type="hidden" name="id" id="id_expense">
+                    <div class="form-group">
+                        <label for="">Name</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="">qty</label>
+                        <input type="number" class="form-control" name="qty" id="qty">
+                    </div>
                     <div class="form-group">
                         <label for="">Nominal</label>
                         <input type="number" class="form-control" id="nominal" name="nominal">
@@ -112,7 +127,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Log Expense</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -149,6 +164,7 @@
             serverSide: true,
             processing: true,
             destroy: true,
+            order: [[4,'desc']],
             ajax: `/api/admin/expense/log/${id}`,
             columns: [
                 {
