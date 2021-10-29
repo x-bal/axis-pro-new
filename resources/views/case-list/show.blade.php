@@ -1363,6 +1363,10 @@
 
                 <div class="button mt-3 d-flex">
                     <a href="{{ route('case-list.index') }}" class="btn btn-success mr-2">Kembali</a>
+                    @if(request()->get('page') == "nav-assigment" || !request()->get('page'))
+                    <a href="{{ route('caselist.assigment', $caseList->id) }}" class="btn btn-info">Cetak Assigment</a>
+                    @endif
+
                     @if($caseList->fr_status == 1 && $caseList->ir_status == 0 && $caseList->is_ready == 0)
                     @if(request()->get('page') == "nav-report-4" )
                     <form action="{{ route('case-list.invoice', $caseList->id) }}" method="post">

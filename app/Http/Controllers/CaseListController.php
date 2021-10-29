@@ -724,4 +724,9 @@ class CaseListController extends Controller
         ]);
         return back()->with('success', 'Restore Successfull');
     }
+
+    public function assigment(CaseList $caseList)
+    {
+        return view('case-list.assigment', compact('caseList'));
+    }
 }

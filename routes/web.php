@@ -59,6 +59,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/case-list/{caseList:id}/expense', [CaseListController::class, 'expense'])->name('caselist.expense');
     Route::get('/case-list/{caseList:id}/transcript', [CaseListController::class, 'transcript'])->name('caselist.transcript');
     Route::get('/case-list/restore', [CaseListController::class, 'restore'])->name('caselist.restore');
+    Route::get('/case-list/{caseList:id}/assigment', [CaseListController::class, 'assigment'])->name('caselist.assigment');
     Route::post('expense/laporan', [ExpenseController::class, 'laporan'])->name('expense.laporan');
     Route::delete('expenses/{expense:id}', [ExpenseController::class, 'destroy'])->name('expense.destroy');
     Route::get('/expenses', [ExpenseController::class, 'index'])->name('expense.index');
