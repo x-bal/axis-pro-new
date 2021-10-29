@@ -20,10 +20,13 @@
             @enderror
         </div>
     </div>
+</div>
+<hr>
+<div class="row">
 
     <div class="col-md-3">
         <div class="form-group">
-            <label for="insurance">Insurance</label>
+            <label for="insurance">Insurance <strong class="text-danger">*</strong></label>
             <select name="insurance" autocomplete="on" id="insurance" class="form-control @error('insurance') is-invalid @enderror">
                 <option disabled selected>Select Insurance</option>
                 @foreach($client as $data)
@@ -41,7 +44,7 @@
 
     <div class="col-md-3">
         <div class="form-group">
-            <label for="adjuster">Adjuster</label>
+            <label for="adjuster">Adjuster <strong class="text-danger">*</strong></label>
             <select name="adjuster" id="adjuster" class="form-control @error('adjuster') is-invalid @enderror">
                 <option disabled selected>Select Adjuster</option>
                 @foreach($user as $data)
@@ -58,7 +61,7 @@
 
     <div class="col-md-3">
         <div class="form-group">
-            <label for="category">Category</label>
+            <label for="category">Category <strong class="text-danger">*</strong></label>
             <select name="category" id="category" type="text" class="form-control @error('category') is-invalid @enderror">
                 <option disabled selected>Select Category</option>
                 <option {{ $caseList->category == 1 ? 'selected' : '' }} value="1">Marine</option>
@@ -71,45 +74,9 @@
             @enderror
         </div>
     </div>
-
     <div class="col-md-3">
         <div class="form-group">
-            <label for="insured">Insured</label>
-            <input type="text" id="insured" value="{{ $caseList->insured ?? old('insured') }}" name="insured" class="form-control @error('insured') is-invalid @enderror">
-            @error('insured')
-            <div class="invalid-feedback">
-                {{ $message }}
-            </div>
-            @enderror
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="form-group">
-            <label for="dol">Dol</label>
-            <input type="date" value="{{ $caseList->dol ?? old('dol') }}" id="dol" name="dol" class="form-control @error('dol') is-invalid @enderror">
-            @error('dol')
-            <div class="invalid-feedback">
-                {{ $message }}
-            </div>
-            @enderror
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="form-group">
-            <label for="risk_location">Risk Location</label>
-            <input type="text" id="risk_location" value="{{ $caseList->risk_location ?? old('risk_location') }}" name="risk_location" class="form-control @error('risk_location') is-invalid @enderror">
-            @error('risk_location')
-            <div class="invalid-feedback">
-                {{ $message }}
-            </div>
-            @enderror
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="form-group">
-            <label for="currency">Currency</label>
+            <label for="currency">Currency <strong class="text-danger">*</strong></label>
             <select class="form-control @error('currency') is-invalid @enderror" name="currency" id="currency">
                 <option disabled selected>Select Currency</option>
                 <option @if($caseList->currency == 'IDR') selected @endif value="IDR">IDR</option>
@@ -123,9 +90,46 @@
         </div>
     </div>
 
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="insured">Insured <strong class="text-danger">*</strong></label>
+            <textarea id="insured"  name="insured" class="form-control @error('insured') is-invalid @enderror">{{ $caseList->insured ?? old('insured') }}</textarea>
+            @error('insured')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="risk_location">Risk Location <strong class="text-danger">*</strong></label>
+            <textarea id="risk_location" name="risk_location" class="form-control @error('risk_location') is-invalid @enderror">{{ $caseList->risk_location ?? old('risk_location') }}</textarea>
+            @error('risk_location')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    </div>
     <div class="col-md-3">
         <div class="form-group">
-            <label for="broker">Broker</label>
+            <label for="dol">Dol <strong class="text-danger">*</strong></label>
+            <input type="date" value="{{ $caseList->dol ?? old('dol') }}" id="dol" name="dol" class="form-control @error('dol') is-invalid @enderror">
+            @error('dol')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    </div>
+
+    
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="broker">Broker <strong class="text-danger">*</strong></label>
             <select class="form-control @error('broker') is-invalid @enderror" name="broker" id="broker">
                 <option disabled selected>Select Broker</option>
                 @foreach($broker as $data)
@@ -142,7 +146,7 @@
 
     <div class="col-md-3">
         <div class="form-group">
-            <label for="incident">Incident</label>
+            <label for="incident">Incident <strong class="text-danger">*</strong></label>
             <select class="form-control @error('incident') is-invalid @enderror incident" name="incident" id="incident">
                 <option disabled selected>Select Incident</option>
                 @foreach($incident as $data)
@@ -159,7 +163,7 @@
 
     <div class="col-md-3">
         <div class="form-group">
-            <label for="policy">Policy</label>
+            <label for="policy">Policy <strong class="text-danger">*</strong></label>
             <select class="form-control @error('policy') is-invalid @enderror" name="policy" id="policy">
                 <option disabled selected>Select Policy</option>
                 @foreach($policy as $data)
@@ -176,19 +180,7 @@
 
     <div class="col-md-3">
         <div class="form-group">
-            <label for="no_leader_policy">No Leader Policy </label>
-            <input class="form-control @error('no_leader_policy') is-invalid @enderror" value="{{ $caseList->no_leader_policy ?? old('no_leader_policy') }}" name="no_leader_policy" id="no_leader_policy" type="text">
-            @error('no_leader_policy')
-            <div class="invalid-feedback">
-                {{ $message }}
-            </div>
-            @enderror
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="form-group">
-            <label for="begin">Begin</label>
+            <label for="begin">Begin <strong class="text-danger">*</strong></label>
             <input class="form-control @error('begin') is-invalid @enderror" value="{{ $caseList->begin ?? old('begin')}}" name="begin" id="begin" type="date">
             @error('begin')
             <div class="invalid-feedback">
@@ -200,7 +192,7 @@
 
     <div class="col-md-3">
         <div class="form-group">
-            <label for="end">End</label>
+            <label for="end">End <strong class="text-danger">*</strong></label>
             <input class="form-control @error('end') is-invalid @enderror" value="{{ $caseList->end ?? old('end') }}" name="end" id="end" type="date">
             @error('end')
             <div class="invalid-feedback">
@@ -212,7 +204,7 @@
 
     <div class="col-md-3">
         <div class="form-group">
-            <label for="instruction_date">Instruction Date</label>
+            <label for="instruction_date">Instruction Date <strong class="text-danger">*</strong></label>
             <input class="form-control @error('instruction_date') is-invalid @enderror" value="{{ $caseList->instruction_date ?? old('instruction_date') }}" name="instruction_date" id="instruction_date" type="date">
             @error('instruction_date')
             <div class="invalid-feedback">
@@ -224,7 +216,7 @@
 
     <div class="col-md-3">
         <div class="form-group">
-            <label for="survey_date">Survey Date</label>
+            <label for="survey_date">Survey Date <strong class="text-danger">*</strong></label>
             <input class="form-control @error('survey_date') is-invalid @enderror" value="{{ $caseList->survey_date ?? old('survey_date') }}" name="survey_date" id="survey_date" type="date">
 
             @error('survey_date')
@@ -234,10 +226,20 @@
             @enderror
         </div>
     </div>
-
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="form-group">
-            <label for="leader_claim_no">Leader Claim No</label>
+            <label for="no_leader_policy">No Leader Policy <strong class="text-danger">*</strong></label>
+            <input class="form-control @error('no_leader_policy') is-invalid @enderror" value="{{ $caseList->no_leader_policy ?? old('no_leader_policy') }}" name="no_leader_policy" id="no_leader_policy" type="text">
+            @error('no_leader_policy')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="leader_claim_no">Leader Claim No <strong class="text-danger">*</strong></label>
             <input class="form-control @error('leader_claim_no') is-invalid @enderror" value="{{ $caseList->leader_claim_no ?? old('leader_claim_no') }}" name="leader_claim_no" id="leader_claim_no" type="text">
             @error('leader_claim_no')
             <div class="invalid-feedback">
@@ -246,9 +248,20 @@
             @enderror
         </div>
     </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="no_ref_surat_asuransi">No Ref Surat Asuransi <strong class="text-danger">*</strong></label>
+            <input class="form-control @error('no_ref_surat_asuransi') is-invalid @enderror" value="{{ $caseList->no_ref_surat_asuransi ?? old('no_ref_surat_asuransi') }}" name="no_ref_surat_asuransi" id="no_ref_surat_asuransi" type="text">
+            @error('no_ref_surat_asuransi')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    </div>
     <div class="col-md-3">
         <div class="form-group">
-            <label for="file_penunjukan">File Penunjukan</label>
+            <label for="file_penunjukan">File Penunjukan <strong class="text-danger">*</strong></label>
             <input type="file" class="form-control @error('file_penunjukan') is-invalid @enderror" id="file_penunjukan" name="file_penunjukan">
             @error('file_penunjukan')
             <div class="invalid-feedback">
@@ -259,7 +272,7 @@
     </div>
     <div class="col-md-3">
         <div class="form-group">
-            <label for="copy_polis">Copy Polis</label>
+            <label for="copy_polis">Copy Polis <strong class="text-danger">*</strong></label>
             <input type="file" class="form-control @error('copy_polis') is-invalid @enderror" id="copy_polis" value="{{ $caseList->copy_polis ?? old('copy_polis') }}" name="copy_polis">
             @error('copy_polis')
             <div class="invalid-feedback">
@@ -268,9 +281,9 @@
             @enderror
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-6">
         <div class="form-group d-none" id="cyc">
-            <label for="conveyance">Conveyance</label>
+            <label for="conveyance">Conveyance <strong class="text-danger">*</strong></label>
             <input class="form-control @error('conveyance') is-invalid @enderror" value="{{ $caseList->conveyance ?? old('conveyance') }}" name="conveyance" id="conveyance" type="text">
             @error('conveyance')
             <div class="invalid-feedback">
@@ -279,8 +292,8 @@
             @enderror
         </div>
         <div class="form-group d-none" id="lol">
-            <label for="location_of_loss">Location Of Loss</label>
-            <input class="form-control @error('location_of_loss') is-invalid @enderror" value="{{ $caseList->location_of_loss ?? old('location_of_loss') }}" name="location_of_loss" id="location_of_loss" type="text">
+            <label for="location_of_loss">Location Of Loss <strong class="text-danger">*</strong></label>
+            <textarea class="form-control @error('location_of_loss') is-invalid @enderror" name="location_of_loss" id="location_of_loss">{{ $caseList->location_of_loss ?? old('location_of_loss') }}</textarea>
             @error('location_of_loss')
             <div class="invalid-feedback">
                 {{ $message }}
