@@ -133,7 +133,7 @@
                                     <td>{{ $caseList->survey_date }}</td>
                                     <td>LEADER CLAIM NO</td>
                                     <td>:</td>
-                                    <td>{{ $caseList->leader_claim_no }}</td>
+                                    <td>{{ $caseList->leader_claim_no }} -  <strong>{{ $caseList->no_ref_surat_asuransi }}</strong></td>
                                 </tr>
                                 <tr>
                                     <td>NOW UPDATE</td>
