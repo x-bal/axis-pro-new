@@ -155,7 +155,7 @@ class CaseListController extends Controller
             'member' => 'required|array|min:1',
             'percent' => 'required|array|min:1',
             'status' => 'required|array|min:1',
-            'document_policy' => 'required',
+            'copy_polis' => 'required|mimes:pdf,docx',
             'file_penunjukan' => 'required|mimes:pdf,docx'
         ]);
         if (!(array_sum($request->percent) <= 100 and array_sum($request->percent) >= 100)) {
@@ -171,6 +171,8 @@ class CaseListController extends Controller
             try {
                 $name_file_penunjukan = Carbon::now()->format('YmdHis') . '_' . $request->file('file_penunjukan')->getClientOriginalName();
                 $path_file_penunjukan = $request->file('file_penunjukan')->storeAs('/file/penunjukan', $name_file_penunjukan);
+                $name_copy_polis = Carbon::now()->format('YmdHis') . '_' . $request->file('copy_polis')->getClientOriginalName();
+                $path_copy_polis = $request->file('copy_polis')->storeAs('/file/copypolis', $name_copy_polis);
                 $caselist = Caselist::create([
                     'file_no' => $request->file_no . '-JAK',
                     'insurance_id' => $request->insurance,
@@ -194,7 +196,7 @@ class CaseListController extends Controller
                     'ia_limit' => Carbon::parse($request->survey_date)->addDay(7)->format('Y-m-d'),
                     'conveyance' => $request->conveyance,
                     'location_of_loss' => $request->location_of_loss,
-                    'document_policy' => $request->document_policy,
+                    'copy_polis' => $path_copy_polis,
                     'file_penunjukan' => $path_file_penunjukan,
                     'history_id' => auth()->user()->id,
                     'history_date' => Carbon::now()->format('Y-m-d H:i:s')
@@ -217,6 +219,7 @@ class CaseListController extends Controller
                 return back()->with('success', 'Berhasil Membuat Data');
             } catch (Exception $th) {
                 Storage::delete($path_file_penunjukan);
+                Storage::delete($path_copy_polis);
                 DB::rollBack();
                 return back()->with('error', $th->getMessage());
             }
@@ -381,16 +384,35 @@ class CaseListController extends Controller
     public function update(Request $request, CaseList $caseList)
     {
         Gate::allows(abort_unless('case-list-edit', 403));
-
+        if($request->file('copy_polis')){
+            $this->validate($request, [
+                'copy_polis' => 'required|mimes:pdf,docx'
+            ]);
+            try {
+                DB::beginTransaction();
+                $name_copy_polis = Carbon::now()->format('YmdHis') . '_' . $request->file('copy_polis')->getClientOriginalName();
+                $path_copy_polis = $request->file('copy_polis')->storeAs('/file/copypolis', $name_copy_polis);
+                Storage::delete($caseList->copy_polis);
+                $caseList->update([
+                    'copy_polis' => $path_copy_polis
+                ]);
+                DB::commit();
+            } catch (\Exception $error) {
+                DB::rollBack();
+                Storage::delete($path_copy_polis);
+                return back()->with('error', $error->getMessage());
+            }
+        }
         if ($request->file('file_penunjukan')) {
             $this->validate($request, [
-                'file_penunjukan' => 'mimes:pdf,docx'
+                'file_penunjukan' => 'required|mimes:pdf,docx'
             ]);
             try {
                 DB::beginTransaction();
                 $name_file_penunjukan = Carbon::now()->format('YmdHis') . '_' . $request->file('file_penunjukan')->getClientOriginalName();
                 $path_file_penunjukan = $request->file('file_penunjukan')->storeAs('/file/penunjukan', $name_file_penunjukan);
                 Storage::delete($caseList->file_penunjukan);
+
                 $caseList->update([
                     'file_penunjukan' => $path_file_penunjukan
                 ]);
@@ -489,7 +511,6 @@ class CaseListController extends Controller
                 'survey_date' => $request->survey_date,
                 'conveyance' => $request->conveyance,
                 'location_of_loss' => $request->location_of_loss,
-                'document_policy' => $request->document_policy,
                 'history_id' => auth()->user()->id,
                 'history_date' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
