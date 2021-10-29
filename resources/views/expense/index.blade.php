@@ -145,7 +145,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -170,7 +169,19 @@
     // })
 
     function expenseedit(qr) {
+        let id = $(qr).attr('data-id')
         $('#id_expense').val($(qr).attr('data-id'))
+        $.ajax({
+            url: `/api/admin/expense/show/${id}`,
+            success: function(resource){
+                $('#name').val(resource.name)
+                $('#qty').val(resource.qty)
+                $('#nominal').val(resource.amount)
+            },
+            error: function(error){
+                alert(error.statusText)
+            }
+        })
     }
 
     function expenselog(qr) {

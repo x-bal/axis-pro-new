@@ -34,4 +34,5 @@ route::middleware('ApiRequest')->group(function () {
     Route::get('/interim/{id}', [AjaxController::class, 'GetInterimResource']);
     Route::get('/count/all/policy', [AjaxController::class, 'CountAllPolicy']);
     Route::get('/admin/expense/log/{id}',[AjaxController::class, 'ExpenseLog']);
+    Route::get('/admin/expense/show/{id}',[AjaxController::class, 'ExpenseShow']);
 });
