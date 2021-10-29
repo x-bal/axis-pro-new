@@ -94,26 +94,30 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, Expense $expense)
     {
-        $this->validate($request,[
-            'name' => 'required',
-            'qty' => 'required',
-            'nominal' => 'required'
-        ]);
-        $expense = Expense::find($request->id);
-        Log::create([
-            'nama' => auth()->user()->nama_lengkap,
-            'old' => $expense->amount,
-            'new' => $request->nominal,
-            'datetime' => Carbon::now()->format('Y-m-d H:i:s'),
-            'expense_id' => $request->id
-        ]);
-        $expense->update([
-            'name' => $request->name,
-            'qty' => $request->qty,
-            'amount' => $request->nominal,
-            'total' => $request->nominal * $request->qty
-        ]);
-        return back()->with('success', 'Berhasil Update Amount');
+        if (Expense::find($request->id)->is_active == 0) {
+            $this->validate($request, [
+                'name' => 'required',
+                'qty' => 'required',
+                'nominal' => 'required'
+            ]);
+            $expense = Expense::find($request->id);
+            Log::create([
+                'nama' => auth()->user()->nama_lengkap,
+                'old' => $expense->amount,
+                'new' => $request->nominal,
+                'datetime' => Carbon::now()->format('Y-m-d H:i:s'),
+                'expense_id' => $request->id
+            ]);
+            $expense->update([
+                'name' => $request->name,
+                'qty' => $request->qty,
+                'amount' => $request->nominal,
+                'total' => $request->nominal * $request->qty
+            ]);
+            return back()->with('success', 'Berhasil Update Amount');
+        } else {
+            return back()->with('error', 'Expense has been used');
+        }
     }
 
     /**
@@ -124,15 +128,19 @@ class ExpenseController extends Controller
      */
     public function destroy(Expense $expense)
     {
-        Log::create([
-            'nama' => auth()->user()->nama_lengkap,
-            'old' => $expense->amount,
-            'new' => $expense->amount,
-            'datetime' => Carbon::now()->format('Y-m-d H:i:s'),
-            'expense_id' => $expense->id
-        ]);
-        $expense->delete();
-        return back()->with('success', 'Expense has been deleted');
+        if ($expense->is_active == 0) {
+            Log::create([
+                'nama' => auth()->user()->nama_lengkap,
+                'old' => $expense->amount,
+                'new' => $expense->amount,
+                'datetime' => Carbon::now()->format('Y-m-d H:i:s'),
+                'expense_id' => $expense->id
+            ]);
+            $expense->delete();
+            return back()->with('success', 'Expense has been deleted');
+        } else {
+            return back()->with('error', 'Expense has been used');
+        }
     }
 
     public function download()
