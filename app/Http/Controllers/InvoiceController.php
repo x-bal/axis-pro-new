@@ -177,9 +177,19 @@ class InvoiceController extends Controller
 
     public function destroy(Invoice $invoice)
     {
-        Invoice::where('case_list_id', $invoice->case_list_id)->delete();
+        $caselist = CaseList::find($invoice->case_list_id);
+        if ($caselist->ir_status == 1) {
+            Invoice::where('case_list_id', $invoice->case_list_id)->where('type_invoice', '!=', 1)->delete();
+        } else {
+            Invoice::where('case_list_id', $invoice->case_list_id)->delete();
+            $expense = Expense::where('case_list_id', $invoice->case_list_id)->get();
+            foreach ($expense as $exp) {
+                $exp->update(['is_active' => 0]);
+            }
+        }
+
         Invoice::onlyTrashed()->forceDelete();
-        CaseList::find($invoice->case_list_id)->update(['is_ready' => 3]);
+        $caselist->update(['is_ready' => 3]);
 
         return back()->with('success', 'Delete Successfull');
     }

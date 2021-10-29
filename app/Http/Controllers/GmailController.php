@@ -33,6 +33,10 @@ class GmailController extends Controller
 
         if (Auth::loginUsingId($user->id)) {
             return redirect('/dashboard');
+        } else {
+            Auth::logout();
+            \LaravelGmail::logout();
+            return back();
         }
     }
 
