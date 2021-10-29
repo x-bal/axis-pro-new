@@ -94,6 +94,11 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, Expense $expense)
     {
+        $this->validate($request,[
+            'name' => 'required',
+            'qty' => 'required',
+            'nominal' => 'required'
+        ]);
         $expense = Expense::find($request->id);
         Log::create([
             'nama' => auth()->user()->nama_lengkap,
@@ -103,7 +108,10 @@ class ExpenseController extends Controller
             'expense_id' => $request->id
         ]);
         $expense->update([
-            'amount' => $request->nominal
+            'name' => $request->name,
+            'qty' => $request->qty,
+            'amount' => $request->nominal,
+            'total' => $request->nominal * $request->qty
         ]);
         return back()->with('success', 'Berhasil Update Amount');
     }
@@ -116,6 +124,13 @@ class ExpenseController extends Controller
      */
     public function destroy(Expense $expense)
     {
+        Log::create([
+            'nama' => auth()->user()->nama_lengkap,
+            'old' => $expense->amount,
+            'new' => $expense->amount,
+            'datetime' => Carbon::now()->format('Y-m-d H:i:s'),
+            'expense_id' => $expense->id
+        ]);
         $expense->delete();
         return back()->with('success', 'Expense has been deleted');
     }

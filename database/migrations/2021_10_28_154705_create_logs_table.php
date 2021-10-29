@@ -19,7 +19,7 @@ class CreateLogsTable extends Migration
             $table->integer('old');
             $table->integer('new');
             $table->timestamp('datetime');
-            $table->foreignId('expense_id')->constrained('expenses');
+            $table->unsignedBigInteger('expense_id')->nullable();
             $table->timestamps();
         });
     }
