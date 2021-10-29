@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    
+    <title>Laporan Expense {{ Carbon\Carbon::parse($from)->format('d/m/Y') }} - {{ Carbon\Carbon::parse($to)->format('d/m/Y') }}</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -22,8 +22,8 @@
             <div>
                 <h1>Laporan Invoice</h1>
                 <div class="d-flex justify-content-between">
-                    <strong>{{ $from }}</strong>
-                    <strong>{{ $to }}</strong>
+                    <strong>{{ Carbon\Carbon::parse($from)->format('d/m/Y') }}</strong>
+                    <strong>{{ Carbon\Carbon::parse($to)->format('d/m/Y') }}</strong>
                 </div>
             </div>
         </div>
@@ -83,9 +83,9 @@
                                 <td>{{ $data->caselist->file_no }}</td>
                                 <td>{{ $data->no_invoice }}</td>
                                 <td>{{ $data->member->name }}</td>
-                                <td>{{ $data->due_date }}</td>
-                                <td>{{ $data->date_invoice }}</td>
-                                <td class="text-center">{{ $data->status_paid }}</td>
+                                <td>{{ Carbon\Carbon::parse($data->due_date)->format('d/m/Y') }}</td>
+                                <td>{{ Carbon\Carbon::parse($data->date_invoice)->format('d/m/Y')  }}</td>
+                                <td class="text-center">{{ $data->status_paid == 1 ? 'Paid' : 'Unpaid' }}</td>
                                 <td class="text-center">@if($data->caselist->currency == 'IDR')<strong>Rp.</strong> {{ number_format($data->grand_total) }}@endif</td>
                                 <td class="text-center">@if($data->caselist->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->grand_total) }}@endif</td>
                             </tr>

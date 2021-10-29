@@ -203,7 +203,7 @@ class CaseListController extends Controller
                 ]);
                 History::create([
                     'name' => auth()->user()->nama_lengkap,
-                    'type' => 'Case List Create : '.$request->file_no . '-JAK',
+                    'type' => 'Case List Create : ' . $request->file_no . '-JAK',
                     'datetime' => Carbon::now()->format('Y-m-d H:i:s')
                 ]);
                 for ($i = 1; $i <= count($request->member); $i++) {
@@ -384,7 +384,7 @@ class CaseListController extends Controller
     public function update(Request $request, CaseList $caseList)
     {
         Gate::allows(abort_unless('case-list-edit', 403));
-        if($request->file('copy_polis')){
+        if ($request->file('copy_polis')) {
             $this->validate($request, [
                 'copy_polis' => 'required|mimes:pdf,docx'
             ]);
@@ -516,7 +516,7 @@ class CaseListController extends Controller
             ]);
             History::create([
                 'name' => auth()->user()->nama_lengkap,
-                'type' => 'Case List Edit : '.$request->file_no . '-JAK',
+                'type' => 'Case List Edit : ' . $request->file_no . '-JAK',
                 'datetime' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
             MemberInsurance::where('file_no_outstanding', $caseList->id)->delete();
@@ -545,7 +545,7 @@ class CaseListController extends Controller
         ]);
         History::create([
             'name' => auth()->user()->nama_lengkap,
-            'type' => 'Case List Delete : '.$caseList->file_no,
+            'type' => 'Case List Delete : ' . $caseList->file_no,
             'datetime' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         Invoice::where('case_list_id', $caseList->id)->delete();

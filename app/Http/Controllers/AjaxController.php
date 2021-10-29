@@ -292,6 +292,6 @@ class AjaxController extends Controller
     public function ExpenseLog($id)
     {
         $data = Expense::find($id)->logs;
-        return datatables()->of($data)->make(true);
+        return datatables()->of($data)->addIndexColumn()->make(true);
     }
 }

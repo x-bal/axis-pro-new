@@ -34,20 +34,31 @@
                                 <th>File No</th>
                                 <th>Description</th>
                                 <th>Date</th>
+                                <th>Qty</th>
                                 <th>Amount</th>
+                                <th>Total</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($expense as $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td><a href="{{ route('case-list.show',$data->caselist->id) }}">{{ $data->caselist->file_no }}</a></td>
+                                <td>
+                                    <a href="{{ route('case-list.show',$data->caselist->id) }}">{{ $data->caselist->file_no }}</a>
+                                </td>
                                 <td>{{ $data->name }}</td>
-                                <th>{{ $data->tanggal }}</th>
-                                <th class="text-right">{{ number_format($data->amount) }}</th>
+                                <td>{{ $data->tanggal }}</td>
+                                <td class="text-center">{{ $data->qty }}</td>
+                                <td class="text-right">{{ number_format($data->amount) }}</td>
+                                <td class="text-right">{{ number_format($data->total) }}</td>
                             </tr>
                             @endforeach
                         </tbody>
+                        <tfoot>
+                            <td colspan="5"></td>
+                            <td class="text-right">{{ number_format($expense->sum('amount')) }}</td>
+                            <td class="text-right">{{ number_format($expense->sum('total')) }}</td>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -61,6 +72,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
+
     <script>
         $('#table').DataTable({
             dom: 'Bfrtip',
