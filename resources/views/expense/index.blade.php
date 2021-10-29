@@ -67,13 +67,13 @@
                                     <th class="text-right">{{ number_format($data->total) }}</th>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-warning" onclick="expenseedit(this)" data-id="{{ $data->id }}" data-toggle="modal" data-target="#exampleModalCenter">Edit</button>
-                                            <button type="button" class="btn btn-primary" onclick="expenselog(this)" data-id="{{ $data->id }}" data-toggle="modal" data-target="#exampleModalLong">Log</button>
+                                            <button type="button" class="btn btn-warning @if($data->is_active == 1) d-none @endif" onclick="expenseedit(this)" data-id="{{ $data->id }}" data-toggle="modal" data-target="#exampleModalCenter">Edit</button>
                                             <form action="{{ route('expense.destroy',$data->id) }}" method="post">
                                                 @csrf
                                                 @method('delete')
-                                                <button class="btn btn-danger" onclick="return confirm('Anda Yakin Ingin Menghapus Expense')">Delete</button>
+                                                <button class="btn btn-danger @if($data->is_active == 1) d-none @endif" onclick="return confirm('Anda Yakin Ingin Menghapus Expense')">Delete</button>
                                             </form>
+                                            <button type="button" class="btn btn-primary" onclick="expenselog(this)" data-id="{{ $data->id }}" data-toggle="modal" data-target="#exampleModalLong">Log</button>
                                         </div>
                                     </td>
                                 </tr>
