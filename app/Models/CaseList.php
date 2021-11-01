@@ -96,4 +96,8 @@ class CaseList extends Model
     {
         return $this->belongsTo(User::class, 'history_id');
     }
+    public function leader_id()
+    {
+        return $this->belongsTo(Client::class, 'leader');
+    }
 }

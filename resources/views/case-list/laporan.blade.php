@@ -152,16 +152,26 @@
                                 <td>{{ $data->policy->type_policy }}</td>
                                 <td>@if($data->category == 1) Marine @else Non Marine @endif</td>
                                 <td>{{ $data->insured }}</td>
+                                <!-- claim amount -->
                                 <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format($data->claim_amount) }} @endif</td>
                                 <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->claim_amount) }} @endif</td>
+                                <!-- claim amount -->
+                                <!-- fee based  -->
                                 <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format($data->fee_idr) }} @endif</td>
                                 <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->fee_usd) }} @endif</td>
-                                <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format($data->expense->sum('amount')) }} @php $expense_idr += $data->expense->sum('amount') @endphp @endif</td>
-                                <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->expense->sum('amount')) }} @php $expense_usd += $data->expense->sum('amount') @endphp @endif</td>
-                                <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format($data->fee_idr + $data->expense->sum('amount') * 10 / 100) }} @php $ppn_idr += $data->fee_idr + $data->expense->sum('amount') * 10 / 100 @endphp @endif</td>
-                                <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->fee_usd + $data->expense->sum('amount') * 10 / 100) }} @php $ppn_usd += $data->fee_usd + $data->expense->sum('amount') * 10 / 100 @endphp @endif</td>
-                                <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format($data->claim_amount + $data->fee_idr + ($data->fee_idr + $data->expense->sum('amount') * 10 / 100)) }} @php $invoice_idr += $data->claim_amount + $data->fee_idr + ($data->fee_idr + $data->expense->sum('amount') * 10 / 100) @endphp @endif </td>
-                                <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->claim_amount + $data->fee_usd + ($data->fee_usd + $data->expense->sum('amount') * 10 / 100)) }} @php $invoice_usd += $data->claim_amount + $data->fee_usd + ($data->fee_usd + $data->expense->sum('amount') * 10 / 100) @endphp @endif</td>
+                                <!-- fee based  -->
+                                <!-- expense -->
+                                <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format($data->expense->sum('total')) }} @php $expense_idr += $data->expense->sum('total') @endphp @endif</td>
+                                <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->expense->sum('total')) }} @php $expense_usd += $data->expense->sum('total') @endphp @endif</td>
+                                <!-- expense -->
+                                <!-- ppn -->
+                                <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format(($data->fee_idr + $data->expense->sum('total')) * 10 / 100) }} @php $ppn_idr += ($data->fee_idr + $data->expense->sum('total')) * 10 / 100 @endphp @endif</td>
+                                <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format(($data->fee_usd + $data->expense->sum('total')) * 10 / 100) }} @php $ppn_usd += ($data->fee_usd + $data->expense->sum('total')) * 10 / 100 @endphp @endif</td>
+                                <!-- ppn -->
+                                <!-- invoice  -->
+                                <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format(($data->claim_amount + $data->fee_idr) + (($data->fee_idr + $data->expense->sum('total')) * 10 / 100)) }} @php $invoice_idr += ($data->claim_amount + $data->fee_idr) + (($data->fee_idr + $data->expense->sum('total')) * 10 / 100) @endphp @endif </td>
+                                <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format(($data->claim_amount + $data->fee_usd) + (($data->fee_usd + $data->expense->sum('total')) * 10 / 100)) }} @php $invoice_usd += ($data->claim_amount + $data->fee_usd) + (($data->fee_usd + $data->expense->sum('total')) * 10 / 100) @endphp @endif</td>
+                                <!-- invoice -->
                                 <td>{{ $data->instruction_date ? \Carbon\Carbon::parse($data->instruction_date)->format('d/m/Y') : '' }}</td>
                                 <td>{{ $data->survey_date ? \Carbon\Carbon::parse($data->survey_date)->format('d/m/Y') : '' }}</td>
                                 <td>{{ $data->now_update ? \Carbon\Carbon::parse($data->now_update)->format('d/m/Y') : '' }}</td>
