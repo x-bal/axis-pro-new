@@ -133,7 +133,7 @@
                                     <td>{{ $caseList->survey_date }}</td>
                                     <td>LEADER CLAIM NO</td>
                                     <td>:</td>
-                                    <td>{{ $caseList->leader_claim_no }} -  <strong>{{ $caseList->no_ref_surat_asuransi }}</strong></td>
+                                    <td>{{ $caseList->leader_claim_no }} - <strong>{{ $caseList->no_ref_surat_asuransi }}</strong></td>
                                 </tr>
                                 <tr>
                                     <td>NOW UPDATE</td>
@@ -889,7 +889,7 @@
                                 <tbody>
                                     <tr>
                                         <td width="197">File Upload</td>
-                                        <td width="214">Time Upload</td>
+                                        <td width="300">Time Upload</td>
                                         <td width="822">Add new</td>
                                     </tr>
                                     <tr>
@@ -965,7 +965,13 @@
                                             <input type="date" name="date_complete" class="form-control" value="{{ $caseList->date_complete ?? '' }}">
                                         </div>
                                     </td>
-                                    <td>&nbsp;</td>
+                                    <td>
+                                        @if(auth()->user()->hasRole('admin'))
+                                        <div class="form-group">
+                                            <input type="number" class="form-control" placeholder="Professional Service" name="professional_service" value="{{ $caseList->professional_service ?? 0 }}">
+                                        </div>
+                                        @endif
+                                    </td>
                                     <td>&nbsp;</td>
                                 </tr>
                                 @endif

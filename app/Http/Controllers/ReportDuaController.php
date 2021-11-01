@@ -39,15 +39,16 @@ class ReportDuaController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'case_list_id' => 'required',
+            'file_upload' => 'required',
+            'file_upload.*' => 'max:10240|mimes:xlsx,xls,docx,doc,pdf,mp4',
+            'time_upload' => 'required',
+            'pr_amount' => 'required',
+            'ir_status' => 'required',
+        ]);
+
         try {
-            $request->validate([
-                'case_list_id' => 'required',
-                'file_upload' => 'required',
-                'file_upload.*' => 'max:10240|mimes:xlsx,xls,docx,doc,pdf,mp4',
-                'time_upload' => 'required',
-                'pr_amount' => 'required',
-                'ir_status' => 'required',
-            ]);
 
             if ($request->hasFile('file_upload')) {
                 $files = $request->file('file_upload');

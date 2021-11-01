@@ -38,14 +38,14 @@ class ClaimDocumentController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $request->validate([
-                'case_list_id' => 'required',
-                'file_upload' => 'required',
-                'file_upload.*' => 'max:10240|mimes:xlsx,xls,docx,doc,pdf,mp4',
-                'time_upload' => 'required',
-            ]);
+        $request->validate([
+            'case_list_id' => 'required',
+            'file_upload' => 'required',
+            'file_upload.*' => 'max:10240|mimes:xlsx,xls,docx,doc,pdf,mp4',
+            'time_upload' => 'required',
+        ]);
 
+        try {
             if ($request->hasFile('file_upload')) {
                 $files = $request->file('file_upload');
                 foreach ($files as $file) {

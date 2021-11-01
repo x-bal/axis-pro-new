@@ -79,6 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/invoice/laporan', [InvoiceController::class, 'laporan'])->name('invoice.laporan');
     Route::post('/invoice/excel', [InvoiceController::class, 'excel'])->name('invoice.excel');
     Route::get('invoice/pdf/{id}', [InvoiceController::class, 'pdf'])->name('invoice.pdf');
+    Route::get('invoice/{id}/final', [InvoiceController::class, 'final'])->name('invoice.final');
     Route::post('invoice/store-interim', [InvoiceController::class, 'storeInterim'])->name('invoice.storeInterim');
     Route::resource('invoice', InvoiceController::class);
     Route::get('expense/download', [ExpenseController::class, 'download'])->name('expense.download');

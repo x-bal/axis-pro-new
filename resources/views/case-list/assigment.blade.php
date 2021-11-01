@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assigment Info {{ $caseList->file_no }}</title>
-    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <style>
         @page {
             margin: 0
@@ -14,122 +14,25 @@
 
         body {
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Open Sans';
             font-size: 12;
         }
 
-        .table-kop tr td {
-            padding: 5px;
+        @font-face {
+            font-family: 'Open Sans';
+            font-style: normal;
+            font-weight: normal;
+            src: url(http://themes.googleusercontent.com/static/fonts/opensans/v8/cJZKeOuBrn4kERxqtaUH3aCWcynf_cDxXwCLxiixG1c.ttf) format('truetype');
         }
 
-        .italic {
-            font-style: italic;
-        }
-
-        .sheet {
-            overflow: hidden;
-            position: relative;
-            display: block;
-            margin: 0 auto;
-            box-sizing: border-box;
-            page-break-after: always;
-        }
-
-        /** Paper sizes **/
-        body.A3 .sheet {
-            width: 297mm;
-            height: 419mm
-        }
-
-        body.A3.landscape .sheet {
-            width: 420mm;
-            height: 296mm
-        }
-
-        body.A4 .sheet {
-            width: 210mm;
-            height: 296mm
-        }
-
-        body.struk .sheet {
-            width: 100mm;
-        }
-
-        body.A4.landscape .sheet {
-            width: 297mm;
-            height: 209mm
-        }
-
-        body.A5 .sheet {
-            width: 148mm;
-            height: 209mm
-        }
-
-        body.A5.landscape .sheet {
-            width: 210mm;
-            height: 147mm
-        }
-
-        /** Padding area **/
         .sheet.padding-1mm {
-            padding: 1mm
-        }
-
-        .sheet.padding-10mm {
-            padding: 10mm
-        }
-
-        .sheet.padding-15mm {
-            padding: 15mm
-        }
-
-        .sheet.padding-20mm {
-            padding: 20mm
-        }
-
-        .sheet.padding-25mm {
-            padding: 25mm
-        }
-
-        /** For screen preview **/
-        @media screen {
-            body {
-                background: #e0e0e0
-            }
-
-            .sheet {
-                background: white;
-                box-shadow: 0 .5mm 2mm rgba(0, 0, 0, .3);
-                margin: 5mm auto;
-                display: block;
-            }
-        }
-
-        /** Fix for Chrome issue #273306 **/
-        @media print {
-            body.A3.landscape {
-                width: 420mm
-            }
-
-            body.A3,
-            body.A4.landscape {
-                width: 297mm
-            }
-
-            body.A4,
-            body.A5.landscape {
-                width: 210mm
-            }
-
-            body.A5 {
-                width: 148mm
-            }
+            padding: 5mm
         }
     </style>
 </head>
 
 <body class="A4 landscape">
-    <section class="sheet padding-10mm">
+    <div class="container-fluid sheet padding-1mm">
         <h4>Assigment Info {{ $caseList->file_no }}</h4>
         <table width="100%" class="table table-bordered table-striped" style="font-size: 12px; margin-top: 20px;">
             <tbody>
@@ -162,7 +65,7 @@
                     <td>:</td>
                     <td>
                         @foreach($caseList->member as $member)
-                        <p>{{ App\Models\Client::find($member->member_insurance)->name ?? 'Kosong' }} ({{ $member->share }}) - @if($member->is_leader) <strong class="text-primary">Leader</strong> @else <strong class="text-secondary">Member</strong> @endif</p>
+                        <p>{{ App\Models\Client::find($member->member_insurance)->name ?? 'Kosong' }} ({{ $member->share }}) - @if($member->is_leader) <strong class="text-dark">Leader</strong> @else <strong class="text-secondary">Member</strong> @endif</p>
                         @endforeach
                     </td>
                     <td>LOCATION RISK / PROJECT</td>
@@ -172,7 +75,7 @@
                 <tr>
                     <td>BROKER</td>
                     <td>:</td>
-                    <td><span class="bg-secondary p-2 text-light">{{ $caseList->broker->nama_broker }}</span> </td>
+                    <td><span class="text-dark"><b>{{ $caseList->broker->nama_broker }}</b></span> </td>
                     <td>CAUSE OF LOSS</td>
                     <td>:</td>
                     <td>{{ $caseList->incident->type_incident }}</td>
@@ -191,7 +94,7 @@
                     <td>{{ $caseList->survey_date }}</td>
                     <td>LEADER CLAIM NO</td>
                     <td>:</td>
-                    <td>{{ $caseList->leader_claim_no }}</td>
+                    <td>{{ $caseList->leader_claim_no }} - {{ $caseList->no_ref_surat_asuransi }}</td>
                 </tr>
                 <tr>
                     <td>NOW UPDATE</td>
@@ -205,7 +108,7 @@
                 </tr>
             </tbody>
         </table>
-    </section>
+    </div>
 </body>
 
 </html>

@@ -25,7 +25,7 @@
             INTERIM INVOICE
             @endif
             @if($invoice->type_invoice == 2)
-            PERFORMA INVOICE
+            PROFORMA INVOICE
             @endif
             @if($invoice->type_invoice == 3)
             FINAL INVOICE
@@ -52,7 +52,7 @@
                 <table>
                     <tr>
                         <th>Date</th>
-                        <th width="100">:</th>
+                        <th width="90">:</th>
                         <td>{{ Carbon\Carbon::parse($invoice->date_invoice)->format('d F Y') }}</td>
                     </tr>
                 </table>
@@ -139,17 +139,17 @@
                         <td>
                             <table style="margin-left: 20px; margin-bottom: 10px;">
                                 <tr>
-                                    <td width="150px">Adjusters Fee</td>
+                                    <td width="150px">{{ $inv->type_invoice == 1 ? 'Professional Fee' : 'Adjusters Fee' }}</td>
                                     <td width="250px">Your Share</td>
                                     <td width="50px">&nbsp;</td>
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td>{{ $invoice->type_invoice != 1 ? number_format($fee, 2) : number_format(0, 2) }}</td>
-                                    <td>{{ $invoice->type_invoice != 1 ? number_format($share, 2) : number_format(0, 2) }}%</td>
+                                    <td>{{ $invoice->type_invoice != 1 ? number_format($fee, 2) : number_format($caselist->professional_service, 2) }}</td>
+                                    <td>{{ $invoice->type_invoice != 1 ? number_format($share, 2) : number_format($share, 2) }}%</td>
                                     <td>{{ $caselist->currency }}</td>
                                     <td width="100px" class="text-right">
-                                        {{ $invoice->type_invoice != 1 ? number_format($fee * $share / 100, 2) : number_format(0, 2) }}
+                                        {{ $invoice->type_invoice != 1 ? number_format($fee * $share / 100, 2) : number_format($caselist->professional_service * $share / 100, 2) }}
                                     </td>
                                 </tr>
                             </table>
@@ -203,7 +203,7 @@
                                     <td width="50px">{{ $caselist->currency }}</td>
                                     <td width="100px" class="text-right">
                                         @if($inv->type_invoice == 1)
-                                        {{number_format($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100, 2) }}
+                                        {{number_format(($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100) , 2) }}
                                         @else
                                         {{number_format(($fee * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100), 2) }}
                                         @endif
@@ -224,7 +224,7 @@
                                     <td width="50px">{{ $caselist->currency }}</td>
                                     <td width="100px" class="text-right">
                                         @if($inv->type_invoice == 1)
-                                        {{ number_format(($inv->caselist->expense->where('is_active', 1)->sum('total') * 10 / 100) * $share / 100, 2) }}
+                                        {{ number_format((($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100)) * 10 / 100, 2) }}
                                         @else
                                         {{ number_format((($fee * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100)) * 10 / 100, 2) }}
                                         @endif
@@ -247,7 +247,7 @@
                                     <th width="50px">{{ $caselist->currency }}</th>
                                     <th width="100px" class="text-right">
                                         @if($inv->type_invoice == 1)
-                                        {{ number_format(($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($inv->caselist->expense->where('is_active', 1)->sum('total') * 10 / 100) * $share / 100, 2)  }}
+                                        {{ number_format(($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100) + (($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100)) * 10 / 100 , 2)  }}
                                         @else
                                         {{ number_format(((($fee * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100)) * 10 / 100) + ($fee * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100), 2) }}
                                         @endif

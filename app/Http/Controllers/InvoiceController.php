@@ -178,18 +178,44 @@ class InvoiceController extends Controller
     public function destroy(Invoice $invoice)
     {
         $caselist = CaseList::find($invoice->case_list_id);
+
         if ($caselist->ir_status == 1) {
-            Invoice::where('case_list_id', $invoice->case_list_id)->where('type_invoice', '!=', 1)->delete();
+            if ($invoice->type_invoice == 1) {
+                $expense = Expense::where('case_list_id', $invoice->case_list_id)->get();
+
+                foreach ($expense as $exp) {
+                    $exp->update(['is_active' => 0]);
+                }
+
+                Invoice::where('case_list_id', $invoice->case_list_id)->where('type_invoice', 1)->delete();
+
+                Invoice::onlyTrashed()->forceDelete();
+                $caselist->update(['is_ready' => 1]);
+            } else {
+                $expense = Expense::where('case_list_id', $invoice->case_list_id)->get();
+
+                foreach ($expense as $exp) {
+                    $exp->update(['is_active' => 0]);
+                }
+
+                Invoice::where('case_list_id', $invoice->case_list_id)->where('type_invoice', '!=',  1)->delete();
+
+                Invoice::onlyTrashed()->forceDelete();
+                $caselist->update(['is_ready' => 2]);
+            }
         } else {
-            Invoice::where('case_list_id', $invoice->case_list_id)->delete();
             $expense = Expense::where('case_list_id', $invoice->case_list_id)->get();
+
             foreach ($expense as $exp) {
                 $exp->update(['is_active' => 0]);
             }
+            Invoice::where('case_list_id', $invoice->case_list_id)->delete();
+
+            Invoice::onlyTrashed()->forceDelete();
+            $caselist->update(['is_ready' => 2]);
         }
 
-        Invoice::onlyTrashed()->forceDelete();
-        $caselist->update(['is_ready' => 3]);
+
 
         return back()->with('success', 'Delete Successfull');
     }
@@ -251,6 +277,20 @@ class InvoiceController extends Controller
         $timestamp = Carbon::now()->format('Y-m-d H:i:s');
         return Excel::download(new InvoiceExport($request->except(['_token'])), 'Invoice Excel ' . $timestamp . ' Report.xlsx');
     }
+
+    public function final($id)
+    {
+        $invoices = Invoice::where('case_list_id', $id)->where('type_invoice', 2)->get();
+        $caselist = CaseList::find($id);
+        foreach ($invoices as $inv) {
+            $inv->update(['type_invoice' => 3]);
+        }
+
+        $caselist->update(['is_ready' => 4]);
+
+        return back()->with('success', 'Final invoice successfully created');
+    }
+
     public function pdf($id)
     {
         $invoice = Invoice::findOrFail($id);

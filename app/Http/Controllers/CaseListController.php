@@ -156,8 +156,7 @@ class CaseListController extends Controller
             'percent' => 'required|array|min:1',
             'status' => 'required|array|min:1',
             'copy_polis' => 'required|mimes:pdf,docx',
-            'file_penunjukan' => 'required|mimes:pdf,docx',
-            'no_ref_surat_asuransi'=> 'required'
+            'file_penunjukan' => 'required|mimes:pdf,docx'
         ]);
         if (!(array_sum($request->percent) <= 100 and array_sum($request->percent) >= 100)) {
             $error = \Illuminate\Validation\ValidationException::withMessages([
@@ -200,8 +199,7 @@ class CaseListController extends Controller
                     'copy_polis' => $path_copy_polis,
                     'file_penunjukan' => $path_file_penunjukan,
                     'history_id' => auth()->user()->id,
-                    'history_date' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'no_ref_surat_asuransi' => $request->no_ref_surat_asuransi
+                    'history_date' => Carbon::now()->format('Y-m-d H:i:s')
                 ]);
                 History::create([
                     'name' => auth()->user()->nama_lengkap,
@@ -514,8 +512,7 @@ class CaseListController extends Controller
                 'conveyance' => $request->conveyance,
                 'location_of_loss' => $request->location_of_loss,
                 'history_id' => auth()->user()->id,
-                'history_date' => Carbon::now()->format('Y-m-d H:i:s'),
-                'no_ref_surat_asuransi' => $request->no_ref_surat_asuransi
+                'history_date' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
             History::create([
                 'name' => auth()->user()->nama_lengkap,
@@ -717,7 +714,7 @@ class CaseListController extends Controller
     }
 
     public function restore()
-    {   
+    {
         Invoice::onlyTrashed()->restore();
         CaseList::onlyTrashed()->restore();
         History::create([
@@ -730,6 +727,8 @@ class CaseListController extends Controller
 
     public function assigment(CaseList $caseList)
     {
-        return view('case-list.assigment', compact('caseList'));
+        $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true, ''])->setPaper('a4', 'landscape')->loadview('case-list.assigment', ['caseList' => $caseList]);
+        return $pdf->stream();
+        // return view('case-list.assigment', compact('caseList'));
     }
 }
