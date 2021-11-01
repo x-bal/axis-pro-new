@@ -93,7 +93,7 @@
     <div class="col-md-6">
         <div class="form-group">
             <label for="insured">Insured <strong class="text-danger">*</strong></label>
-            <textarea id="insured"  name="insured" class="form-control @error('insured') is-invalid @enderror">{{ $caseList->insured ?? old('insured') }}</textarea>
+            <textarea id="insured" name="insured" class="form-control @error('insured') is-invalid @enderror">{{ $caseList->insured ?? old('insured') }}</textarea>
             @error('insured')
             <div class="invalid-feedback">
                 {{ $message }}
@@ -125,7 +125,7 @@
         </div>
     </div>
 
-    
+
 
     <div class="col-md-3">
         <div class="form-group">

@@ -152,6 +152,7 @@ class CaseListController extends Controller
             'instruction_date' => 'required',
             'leader_claim_no' => 'required',
             'survey_date' => 'required',
+            'no_ref_surat_asuransi' => 'required',
             'member' => 'required|array|min:1',
             'percent' => 'required|array|min:1',
             'status' => 'required|array|min:1',
@@ -510,6 +511,7 @@ class CaseListController extends Controller
                 'no_leader_policy' => $request->no_leader_policy,
                 'survey_date' => $request->survey_date,
                 'conveyance' => $request->conveyance,
+                'no_ref_surat_asuransi' => $request->no_ref_surat_asuransi,
                 'location_of_loss' => $request->location_of_loss,
                 'history_id' => auth()->user()->id,
                 'history_date' => Carbon::now()->format('Y-m-d H:i:s')
