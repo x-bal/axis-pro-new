@@ -21,5 +21,4 @@ class MemberInsurance extends Model
     {
         return $this->belongsTo(Client::class, 'member_insurance');
     }
-
 }

@@ -115,14 +115,22 @@ class InsuranceController extends Controller
     {
         $this->validate($request,[
             'from' => 'required',
-            'to' => 'required'
+            'to' => 'required',
+            'status' => 'required'
         ]);
+        $status = $request->status;
         $from = $request->from;
         $to = $request->to;
 
-        $member = MemberInsurance::where('member_insurance', $id)->whereHas('caselist', function($data) use($from,$to){
-            return $data->whereBetween('instruction_date',[$from, $to]);
-        })->get();
+        if($status == 'outstanding'){
+            $member = MemberInsurance::where('member_insurance', $id)->whereHas('caselist', function($data) use($from,$to, $status){
+                return $data->whereBetween('instruction_date',[$from, $to])->where('file_status_id','!=',5);
+            })->get();
+        }else{
+            $member = MemberInsurance::where('member_insurance', $id)->whereHas('caselist', function($data) use($from,$to, $status){
+                return $data->whereBetween('instruction_date',[$from, $to])->where('file_status_id', $status);
+            })->get();
+        }
         return view('insurance.laporan',[
             'member' => $member,
             'from' => $from,
