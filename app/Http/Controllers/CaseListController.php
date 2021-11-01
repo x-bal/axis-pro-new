@@ -157,7 +157,7 @@ class CaseListController extends Controller
             'status' => 'required|array|min:1',
             'copy_polis' => 'required|mimes:pdf,docx',
             'file_penunjukan' => 'required|mimes:pdf,docx',
-            'no_ref_surat_asuransi'=> 'required'
+            'no_ref_surat_asuransi' => 'required'
         ]);
         if (!(array_sum($request->percent) <= 100 and array_sum($request->percent) >= 100)) {
             $error = \Illuminate\Validation\ValidationException::withMessages([
@@ -205,7 +205,7 @@ class CaseListController extends Controller
                 ]);
                 History::create([
                     'name' => auth()->user()->nama_lengkap,
-                    'type' => 'Case List Create : '.$request->file_no . '-JAK',
+                    'type' => 'Case List Create : ' . $request->file_no . '-JAK',
                     'datetime' => Carbon::now()->format('Y-m-d H:i:s')
                 ]);
                 for ($i = 1; $i <= count($request->member); $i++) {
@@ -386,7 +386,7 @@ class CaseListController extends Controller
     public function update(Request $request, CaseList $caseList)
     {
         Gate::allows(abort_unless('case-list-edit', 403));
-        if($request->file('copy_polis')){
+        if ($request->file('copy_polis')) {
             $this->validate($request, [
                 'copy_polis' => 'required|mimes:pdf,docx'
             ]);
@@ -519,7 +519,7 @@ class CaseListController extends Controller
             ]);
             History::create([
                 'name' => auth()->user()->nama_lengkap,
-                'type' => 'Case List Edit : '.$request->file_no . '-JAK',
+                'type' => 'Case List Edit : ' . $request->file_no . '-JAK',
                 'datetime' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
             MemberInsurance::where('file_no_outstanding', $caseList->id)->delete();
@@ -548,7 +548,7 @@ class CaseListController extends Controller
         ]);
         History::create([
             'name' => auth()->user()->nama_lengkap,
-            'type' => 'Case List Delete : '.$caseList->file_no,
+            'type' => 'Case List Delete : ' . $caseList->file_no,
             'datetime' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         Invoice::where('case_list_id', $caseList->id)->delete();
@@ -597,7 +597,8 @@ class CaseListController extends Controller
             $this->validate($request, [
                 'from' => 'required',
                 'to' => 'required',
-                'adjuster' => 'required'
+                'adjuster' => 'required',
+                'status' => 'required'
             ]);
         } else {
             $this->validate($request, [
@@ -606,25 +607,44 @@ class CaseListController extends Controller
                 'status' => 'required'
             ]);
         }
-
         if (auth()->user()->hasRole('admin')) {
+            if ($request->status == 'outstanding') {
 
-            $case = CaseList::whereBetween('instruction_date', [$request->from, $request->to])->where('adjuster_id', $request->adjuster)->get();
+                $case = CaseList::where('file_status_id','!=', 5)->whereBetween('instruction_date', [$request->from, $request->to])->where('adjuster_id', $request->adjuster)->get();
 
 
-            $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
-            $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
-            $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
-            $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
-
-            if ($request->adjuster == "All") {
-
-                $case =  CaseList::whereBetween('instruction_date', [$request->from, $request->to])->get();
                 $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
                 $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
                 $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
                 $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
+
+                if ($request->adjuster == "All") {
+
+                    $case =  CaseList::where('file_status_id','!=', 5)->whereBetween('instruction_date', [$request->from, $request->to])->get();
+                    $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
+                    $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
+                    $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
+                    $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
+                }
+            }else{
+                $case = CaseList::where('file_status_id', 5)->whereBetween('instruction_date', [$request->from, $request->to])->where('adjuster_id', $request->adjuster)->get();
+
+
+                $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
+                $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
+                $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
+                $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
+
+                if ($request->adjuster == "All") {
+
+                    $case =  CaseList::where('file_status_id', 5)->whereBetween('instruction_date', [$request->from, $request->to])->get();
+                    $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
+                    $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
+                    $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
+                    $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
+                }
             }
+            dd($case);
             History::create([
                 'name' => auth()->user()->nama_lengkap,
                 'type' => 'Case List Laporan Admin',
@@ -717,7 +737,7 @@ class CaseListController extends Controller
     }
 
     public function restore()
-    {   
+    {
         Invoice::onlyTrashed()->restore();
         CaseList::onlyTrashed()->restore();
         History::create([
