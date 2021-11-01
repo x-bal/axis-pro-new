@@ -38,7 +38,15 @@
                                     @enderror
                                 </div>
                             </div>
-
+                        
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <select name="status" id="status" class="form-control @error('status') is-invalid @enderror">
+                                        <option value="outstanding">Outstanding</option>
+                                        <option value="5">Close File</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary"><i class="fas fa-print"></i> Laporan</button>
