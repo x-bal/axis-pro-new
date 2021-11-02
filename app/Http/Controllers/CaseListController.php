@@ -31,17 +31,33 @@ class CaseListController extends Controller
             return datatables()->of($data)
                 ->addIndexColumn()
                 ->editColumn('fileno', function ($row) {
-                    return '<a href="' . route('case-list.show', $row->id) . '">' . $row->file_no . '</a>';
+                    if ($row->remark == null) {
+                        return '<a href="' . route('case-list.show', $row->id) . '">' . $row->file_no . '</a>';
+                    } else {
+                        return '<a href="' . route('case-list.show', $row->id) . '" class="text-danger">' . $row->file_no . '</a>';
+                    }
                 })
                 ->editColumn('initial', function ($row) {
-                    return $row->adjuster->kode_adjuster;
+                    if ($row->remark == NULL) {
+                        return $row->adjuster->kode_adjuster;
+                    } else {
+                        return '<span class="text-danger">' . $row->adjuster->kode_adjuster . '</span>';
+                    }
                 })
                 ->editColumn('name', function ($row) {
-                    return $row->insurance->name;
+                    if ($row->remark == NULL) {
+                        return $row->insurance->name;
+                    } else {
+                        return '<span class="text-danger">' . $row->insurance->name . '</span>';
+                    }
                 })
                 ->editColumn('share', function ($row) {
                     foreach ($row->member as $member) {
-                        return $member->share . '%';
+                        if ($row->remark == NULL) {
+                            return $member->share . '%';
+                        } else {
+                            return '<span class="text-danger">' . $member->share . '%' . '</span>';
+                        }
                     }
                 })
                 ->editColumn('is_leader', function ($row) {
@@ -55,7 +71,11 @@ class CaseListController extends Controller
                         <ul class="list-unstyled">
                         ';
                     foreach ($row->member as $data) {
-                        $html .= '<li>' . $data->client->brand . '-' . '(' . $data->share . ')' . '-' . '<strong>' . $data->is_leader  . '</strong>' . '<li>';
+                        if ($row->remark == NULL) {
+                            $html .= '<li>' . $data->client->brand . '-' . '(' . $data->share . ')' . '-' . '<strong>' . $data->is_leader  . '</strong>' . '<li>';
+                        } else {
+                            $html .= '<li class="text-danger">' . $data->client->brand . '-' . '(' . $data->share . ')' . '-' . '<strong>' . $data->is_leader  . '</strong>' . '<li>';
+                        }
                     };
                     $html .= '
                         </ul>
@@ -69,14 +89,47 @@ class CaseListController extends Controller
                 })
                 ->editColumn('leader', function ($row) {
                     foreach ($row->member as $member) {
-                        return $member->is_leader == 1 ? Client::find($member->member_insurance)->name ?? '-' : '-';
+                        if ($row->remark == NULL) {
+                            return $member->is_leader == 1 ? Client::find($member->member_insurance)->name ?? '-' : '-';
+                        } else {
+                            return $member->is_leader == 1 ? '<span class="text-danger">' . Client::find($member->member_insurance)->name . '</span>'  ?? '-' : '-';
+                        }
                     }
                 })
                 ->editColumn('cause', function ($row) {
-                    return $row->incident->type_incident;
+                    if ($row->remark == NULL) {
+                        return $row->incident->type_incident;
+                    } else {
+                        return '<span class="text-danger">' . $row->incident->type_incident . '</span> ';
+                    }
                 })
                 ->editColumn('status', function ($row) {
-                    return $row->status->nama_status;
+                    if ($row->remark == NULL) {
+                        return $row->status->nama_status;
+                    } else {
+                        return '<span class="text-danger">' . $row->status->nama_status . '</span>';
+                    }
+                })
+                ->editColumn('insured', function ($row) {
+                    if ($row->remark == NULL) {
+                        return $row->insured;
+                    } else {
+                        return '<span class="text-danger">' . $row->insured . '</span>';
+                    }
+                })
+                ->editColumn('dol', function ($row) {
+                    if ($row->remark == NULL) {
+                        return Carbon::parse($row->dol)->format('d/m/Y');
+                    } else {
+                        return '<span class="text-danger">' . Carbon::parse($row->dol)->format('d/m/Y') . '</span>';
+                    }
+                })
+                ->editColumn('risk_location', function ($row) {
+                    if ($row->remark == NULL) {
+                        return $row->risk_location;
+                    } else {
+                        return '<span class="text-danger">' . $row->risk_location . '</span>';
+                    }
                 })
                 ->addColumn('action', function ($row) {
 
@@ -92,12 +145,7 @@ class CaseListController extends Controller
 
                     return $btn;
                 })
-                // ->filter(function ($instance) {
-                //     if (request()->has('status')) {
-                //         $instance->where('file_status_id', request('status'));
-                //     }
-                // })
-                ->rawColumns(['action', 'fileno', 'is_leader'])
+                ->rawColumns(['action', 'fileno', 'is_leader', 'initial', 'name', 'share', 'is_leader', 'leader', 'cause', 'status', 'insured', 'dol', 'risk_location'])
                 ->make(true);
         }
 
@@ -610,7 +658,7 @@ class CaseListController extends Controller
         if (auth()->user()->hasRole('admin')) {
             if ($request->status == 'outstanding') {
 
-                $case = CaseList::where('file_status_id','!=', 5)->whereBetween('instruction_date', [$request->from, $request->to])->where('adjuster_id', $request->adjuster)->get();
+                $case = CaseList::where('file_status_id', '!=', 5)->whereBetween('instruction_date', [$request->from, $request->to])->where('adjuster_id', $request->adjuster)->get();
 
 
                 $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
@@ -620,13 +668,13 @@ class CaseListController extends Controller
 
                 if ($request->adjuster == "All") {
 
-                    $case =  CaseList::where('file_status_id','!=', 5)->whereBetween('instruction_date', [$request->from, $request->to])->get();
+                    $case =  CaseList::where('file_status_id', '!=', 5)->whereBetween('instruction_date', [$request->from, $request->to])->get();
                     $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
                     $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
                     $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
                     $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
                 }
-            }else{
+            } else {
                 $case = CaseList::where('file_status_id', 5)->whereBetween('instruction_date', [$request->from, $request->to])->where('adjuster_id', $request->adjuster)->get();
 
 
@@ -644,7 +692,7 @@ class CaseListController extends Controller
                     $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
                 }
             }
-            dd($case);
+
             History::create([
                 'name' => auth()->user()->nama_lengkap,
                 'type' => 'Case List Laporan Admin',
@@ -753,5 +801,56 @@ class CaseListController extends Controller
         $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true, ''])->setPaper('a4', 'landscape')->loadview('case-list.assigment', ['caseList' => $caseList]);
         return $pdf->stream();
         // return view('case-list.assigment', compact('caseList'));
+    }
+
+    public function closeCase(Request $request)
+    {
+        $request->validate([
+            'type_close' => 'required',
+            'fee' => 'required',
+            'remark' => 'required'
+        ]);
+
+        $caselist = CaseList::find($request->id);
+
+        if ($request->type_close == 1) {
+            if ($caselist->currency == 'IDR') {
+                $caselist->update([
+                    'remark' => $request->remark,
+                    'claim_amount' => 0,
+                    'is_ready' => 2,
+                    'file_status_id' => 5,
+                    'fee_idr' => $request->fee
+                ]);
+            } else {
+                $caselist->update([
+                    'remark' => $request->remark,
+                    'claim_amount' => 0,
+                    'is_ready' => 2,
+                    'file_status_id' => 5,
+                    'fee_usd' => $request->fee
+                ]);
+            }
+        } else {
+            if ($caselist->currency == 'IDR') {
+                $caselist->update([
+                    'remark' => $request->remark,
+                    'claim_amount' => 0,
+                    'is_ready' => 2,
+                    'file_status_id' => 5,
+                    'fee_idr' => $request->fee
+                ]);
+            } else {
+                $caselist->update([
+                    'remark' => $request->remark,
+                    'claim_amount' => 0,
+                    'is_ready' => 2,
+                    'file_status_id' => 5,
+                    'fee_usd' => $request->fee
+                ]);
+            }
+        }
+
+        return back()->with('success', 'Case successfully closed');
     }
 }

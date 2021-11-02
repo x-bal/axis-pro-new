@@ -592,7 +592,7 @@
 
             $('.claim_amount').val(formatter(data.sum.claim_amount))
             $('.adjusted').val(formatter(data.sum.adjusted))
-            $('.fee_based').val(formatter(data.sum.fee))
+            $('.fee_based').val(formatter(data.fee_adj))
             $('.expense').val(formatter(data.expense))
             $('.share').val(formatter(parseInt(data.sum.fee) + parseInt(data.caselist.expense.amount)))
             // 

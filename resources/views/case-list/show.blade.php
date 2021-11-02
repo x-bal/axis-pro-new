@@ -1373,6 +1373,10 @@
                     <a href="{{ route('caselist.assigment', $caseList->id) }}" class="btn btn-info">Cetak Assigment</a>
                     @endif
 
+                    @if(request()->get('page') == "nav-report-1" && $caseList->file_status_id != 5)
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable">Close Case</button>
+                    @endif
+
                     @if($caseList->fr_status == 1 && $caseList->ir_status == 0 && $caseList->is_ready == 0)
                     @if(request()->get('page') == "nav-report-4" )
                     <form action="{{ route('case-list.invoice', $caseList->id) }}" method="post">
@@ -1393,7 +1397,7 @@
                     @endif
                     @endif
 
-                    @if($caseList->ir_status == 1 && $caseList->ir_st_status == 1)
+                    @if($caseList->ir_status == 1 && $caseList->ir_st_status == 1 && $caseList->is_ready == 0)
                     @if(request()->get('page') == "nav-report-3")
                     <form action="{{ route('case-list.invoice', $caseList->id) }}" method="post">
                         @csrf
@@ -1404,6 +1408,56 @@
                     @endif
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalScrollable" role="dialog" aria-labelledby="KonfirmasiModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" style="overflow: auto;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="KonfirmasiModalTitle">Close Case</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('caselist.closecase') }}" method="post">
+                    @csrf
+                    <div class="container-fluid">
+                        <div class="row">
+                            <input type="hidden" id="caselist" name="id" value="{{ $caseList->id }}">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">Type Close Case</label>
+                                    <select name="type_close" id="type_close" class="form-control">
+                                        <option disabled selected>-- Choose Type --</option>
+                                        <option value="1">Close With Invoice</option>
+                                        <option value="2">Close Without Invoice</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Fee</label>
+                                    <input type="text" name="fee" id="fee" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="">Remark</label>
+                                    <textarea type="text" name="remark" id="remark" rows="3" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" data-primary>Save changes</button>
+            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -1514,29 +1568,27 @@
             })
         });
 
-
-        // $(".status").on('change', function() {
-        //     let id = "{{ $caseList->id }}";
-        //     let status = $(this).val();
-
-        //     $.ajax({
-        //         method: 'POST',
-        //         type: 'POST',
-        //         url: '/case-list/status',
-        //         data: {
-        //             id: id,
-        //             status: status,
-        //         },
-        //         success: function(result) {
-        //             iziToast.success({
-        //                 title: 'Success',
-        //                 message: result.message,
-        //                 position: 'topRight',
-        //             });
-        //         }
-        //     })
-        // })
         $('#table-expense').DataTable()
+
+        $("#type_close").on('change', function() {
+            $("#fee").val('')
+            let type = $(this).val();
+            let id = $("#caselist").val()
+
+            if (type == 1) {
+                $.ajax({
+                    type: "GET",
+                    method: "GET",
+                    url: '/api/getfee/' + id,
+                    success: function(response) {
+                        $("#fee").attr('readonly', '')
+                        $("#fee").val(response.sum.fee)
+                    }
+                })
+            } else {
+                $("#fee").removeAttr('readonly')
+            }
+        })
     })
 </script>
 @stop

@@ -145,11 +145,11 @@
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td>{{ $invoice->type_invoice != 1 ? number_format($fee, 2) : number_format($caselist->professional_service, 2) }}</td>
+                                    <td>{{ $invoice->type_invoice != 1 ? number_format($fee_adj, 2) : number_format($caselist->professional_service, 2) }}</td>
                                     <td>{{ $invoice->type_invoice != 1 ? number_format($share, 2) : number_format($share, 2) }}%</td>
                                     <td>{{ $caselist->currency }}</td>
                                     <td width="100px" class="text-right">
-                                        {{ $invoice->type_invoice != 1 ? number_format($fee * $share / 100, 2) : number_format($caselist->professional_service * $share / 100, 2) }}
+                                        {{ $invoice->type_invoice != 1 ? number_format($fee_adj * $share / 100, 2) : number_format($caselist->professional_service * $share / 100, 2) }}
                                     </td>
                                 </tr>
                             </table>
@@ -205,7 +205,7 @@
                                         @if($inv->type_invoice == 1)
                                         {{number_format(($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100) , 2) }}
                                         @else
-                                        {{number_format(($fee * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100), 2) }}
+                                        {{number_format(($fee_adj * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100), 2) }}
                                         @endif
                                     </td>
                                 </tr>
@@ -226,7 +226,7 @@
                                         @if($inv->type_invoice == 1)
                                         {{ number_format((($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100)) * 10 / 100, 2) }}
                                         @else
-                                        {{ number_format((($fee * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100)) * 10 / 100, 2) }}
+                                        {{ number_format((($fee_adj * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100)) * 10 / 100, 2) }}
                                         @endif
                                     </td>
                                 </tr>
@@ -249,7 +249,7 @@
                                         @if($inv->type_invoice == 1)
                                         {{ number_format(($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100) + (($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100)) * 10 / 100 , 2)  }}
                                         @else
-                                        {{ number_format(((($fee * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100)) * 10 / 100) + ($fee * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100), 2) }}
+                                        {{ number_format(((($fee_adj * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100)) * 10 / 100) + ($fee_adj * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100), 2) }}
                                         @endif
                                     </th>
                                 </tr>

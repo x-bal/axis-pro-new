@@ -65,6 +65,8 @@ class AjaxController extends Controller
                             'fee' => $caselist->claim_amount * 2 / 100
                         ];
                     }
+
+                    $fee = $caselist->fee_idr;
                 }
                 if ($caselist->currency == 'USD') {
                     $max = FeeBased::where('category_fee', 1)->max('adjusted_usd');
@@ -85,6 +87,7 @@ class AjaxController extends Controller
                             'fee' => $caselist->claim_amount * 2 / 100
                         ];
                     }
+                    $fee = $caselist->fee_usd;
                 }
             }
             // 2
@@ -109,6 +112,8 @@ class AjaxController extends Controller
                             'fee' => $caselist->claim_amount * 2 / 100
                         ];
                     }
+
+                    $fee = $caselist->fee_idr;
                 }
                 if ($caselist->currency == 'USD') {
                     $max = FeeBased::where('category_fee', 2)->max('adjusted_usd');
@@ -130,6 +135,8 @@ class AjaxController extends Controller
                             break;
                         }
                     }
+
+                    $fee = $caselist->fee_idr;
                 }
             }
             $interim = 0;
@@ -140,6 +147,7 @@ class AjaxController extends Controller
                 'caselist' => CaseList::with('member', 'expense', 'insurance')->where('id', $id)->firstOrFail(),
                 'expense' => $caselist->expense()->where('is_active', 0)->sum('total'),
                 'sum' => $array,
+                'fee_adj' => $fee,
                 'interim' => $interim
             ];
 
@@ -297,6 +305,76 @@ class AjaxController extends Controller
     public function ExpenseShow($id)
     {
         $response = Expense::find($id);
+        return response()->json($response);
+    }
+
+    public function getFee($id)
+    {
+        $caselist = CaseList::find($id);
+        if ($caselist->category == 1) {
+            $feebased = FeeBased::where('category_fee', 1)->get();
+            if ($caselist->currency == 'IDR') {
+                $min = FeeBased::where('category_fee', 1)->min('adjusted_idr');
+                foreach ($feebased as $data) {
+                    if ($caselist->claim_amount <= $data->adjusted_idr) {
+                        $array = [
+                            'adjusted' => $data->adjusted_idr,
+                            'claim_amount' => $caselist->claim_amount,
+                            'fee' => $data->fee_idr
+                        ];
+                        break;
+                    }
+                }
+            }
+            if ($caselist->currency == 'USD') {
+                $min = FeeBased::where('category_fee', 1)->min('adjusted_usd');
+                foreach ($feebased as $data) {
+                    if ($caselist->claim_amount <= $data->adjusted_usd) {
+                        $array = [
+                            'adjusted' => $data->adjusted_usd,
+                            'claim_amount' => $caselist->claim_amount,
+                            'fee' => $data->fee_usd
+                        ];
+                        break;
+                    }
+                }
+            }
+        }
+        // 2
+        if ($caselist->category == 2) {
+            $feebased = FeeBased::where('category_fee', 2)->get();
+            if ($caselist->currency == 'IDR') {
+                $min = FeeBased::where('category_fee', 2)->min('adjusted_idr');
+                foreach ($feebased as $data) {
+                    if ($caselist->claim_amount <= $data->adjusted_idr) {
+                        $array = [
+                            'adjusted' => $data->adjusted_idr,
+                            'claim_amount' => $caselist->claim_amount,
+                            'fee' => $data->fee_idr
+                        ];
+                        break;
+                    }
+                }
+            }
+            if ($caselist->currency == 'USD') {
+                $min = FeeBased::where('category_fee', 2)->min('adjusted_usd');
+                foreach ($feebased as $data) {
+                    if ($caselist->claim_amount <= $data->adjusted_usd) {
+                        $array = [
+                            'adjusted' => $data->adjusted_usd,
+                            'claim_amount' => $caselist->claim_amount,
+                            'fee' => $data->fee_usd
+                        ];
+                        break;
+                    }
+                }
+            }
+        }
+
+        $response = [
+            'sum' => $array,
+        ];
+
         return response()->json($response);
     }
 }

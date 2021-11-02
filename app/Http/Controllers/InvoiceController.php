@@ -296,6 +296,13 @@ class InvoiceController extends Controller
         $invoice = Invoice::findOrFail($id);
         $fee_based = new AjaxController();
         $fee = $fee_based->caselist($invoice->caselist->id)->original['sum']['fee'];
+
+        $caselist = CaseList::where('id', $invoice->case_list_id)->first();
+        if ($caselist->fee_idr == NULL) {
+            $fee_adj = $caselist->fee_usd;
+        } else {
+            $fee_adj = $caselist->fee_idr;
+        }
         // ob_end_clean();
         // ob_start();
         // test
@@ -311,6 +318,7 @@ class InvoiceController extends Controller
             'inv' => Invoice::findOrFail($id),
             'share' => $share,
             'fee' => $fee,
+            'fee_adj' => $fee_adj,
             // 'interim' => $interim,
             'caselist' => $fee_based->caselist($invoice->caselist->id)->original['caselist'],
             'bank' => Bank::where('id', $invoice->bank_id)->get()->unique('bank_name'),
