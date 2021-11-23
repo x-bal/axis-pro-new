@@ -246,7 +246,9 @@ class CaseListController extends Controller
                     'ia_limit' => Carbon::parse($request->survey_date)->addDay(7)->format('Y-m-d'),
                     'conveyance' => $request->conveyance,
                     'location_of_loss' => $request->location_of_loss,
+                    'no_ref_surat_asuransi' => $request->no_ref_surat_asuransi,
                     'copy_polis' => $path_copy_polis,
+                    'file_penunjukan' => $path_file_penunjukan,
                     'file_penunjukan' => $path_file_penunjukan,
                     'history_id' => auth()->user()->id,
                     'history_date' => Carbon::now()->format('Y-m-d H:i:s')
@@ -817,7 +819,7 @@ class CaseListController extends Controller
             if ($caselist->currency == 'IDR') {
                 $caselist->update([
                     'remark' => $request->remark,
-                    'claim_amount' => 0,
+                    'claim_amount' => $request->claim_amount,
                     'is_ready' => 2,
                     'file_status_id' => 5,
                     'fee_idr' => $request->fee
@@ -825,7 +827,7 @@ class CaseListController extends Controller
             } else {
                 $caselist->update([
                     'remark' => $request->remark,
-                    'claim_amount' => 0,
+                    'claim_amount' => $request->claim_amount,
                     'is_ready' => 2,
                     'file_status_id' => 5,
                     'fee_usd' => $request->fee
@@ -835,16 +837,16 @@ class CaseListController extends Controller
             if ($caselist->currency == 'IDR') {
                 $caselist->update([
                     'remark' => $request->remark,
-                    'claim_amount' => 0,
-                    'is_ready' => 2,
+                    'claim_amount' => $request->claim_amount,
+                    // 'is_ready' => 2,
                     'file_status_id' => 5,
                     'fee_idr' => $request->fee
                 ]);
             } else {
                 $caselist->update([
                     'remark' => $request->remark,
-                    'claim_amount' => 0,
-                    'is_ready' => 2,
+                    'claim_amount' => $request->claim_amount,
+                    // 'is_ready' => 2,
                     'file_status_id' => 5,
                     'fee_usd' => $request->fee
                 ]);

@@ -956,7 +956,7 @@
                                 @if($caseList->ir_status == 1)
                                 <tr>
                                     <td width="100">Date Complete</td>
-                                    <td width="100">&nbsp;</td>
+                                    <td width="100">Professional Service</td>
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
@@ -1425,22 +1425,26 @@
                 <form action="{{ route('caselist.closecase') }}" method="post">
                     @csrf
                     <div class="container-fluid">
+                        <div class="form-group">
+                            <label for="">Type Close Case</label>
+                            <select name="type_close" id="type_close" class="form-control">
+                                <option disabled selected>-- Choose Type --</option>
+                                <option value="1">Close With Invoice</option>
+                                <option value="2">Close Without Invoice</option>
+                            </select>
+                        </div>
                         <div class="row">
                             <input type="hidden" id="caselist" name="id" value="{{ $caseList->id }}">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="">Type Close Case</label>
-                                    <select name="type_close" id="type_close" class="form-control">
-                                        <option disabled selected>-- Choose Type --</option>
-                                        <option value="1">Close With Invoice</option>
-                                        <option value="2">Close Without Invoice</option>
-                                    </select>
+                                    <label for="">Gross Adjustment</label>
+                                    <input type="number" name="claim_amount" id="claim_amount" class="form-control" value="0">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Fee</label>
-                                    <input type="text" name="fee" id="fee" class="form-control">
+                                    <input type="text" name="fee" id="fee" class="form-control" value="0">
                                 </div>
                             </div>
 
@@ -1570,25 +1574,25 @@
 
         $('#table-expense').DataTable()
 
-        $("#type_close").on('change', function() {
-            $("#fee").val('')
-            let type = $(this).val();
-            let id = $("#caselist").val()
+        // $("#type_close").on('change', function() {
+        //     $("#fee").val('')
+        //     let type = $(this).val();
+        //     let id = $("#caselist").val()
 
-            if (type == 1) {
-                $.ajax({
-                    type: "GET",
-                    method: "GET",
-                    url: '/api/getfee/' + id,
-                    success: function(response) {
-                        $("#fee").attr('readonly', '')
-                        $("#fee").val(response.sum.fee)
-                    }
-                })
-            } else {
-                $("#fee").removeAttr('readonly')
-            }
-        })
+        //     if (type == 1) {
+        //         $.ajax({
+        //             type: "GET",
+        //             method: "GET",
+        //             url: '/api/getfee/' + id,
+        //             success: function(response) {
+        //                 $("#fee").attr('readonly', '')
+        //                 $("#fee").val(response.sum.fee)
+        //             }
+        //         })
+        //     } else {
+        //         $("#fee").removeAttr('readonly')
+        //     }
+        // })
     })
 </script>
 @stop

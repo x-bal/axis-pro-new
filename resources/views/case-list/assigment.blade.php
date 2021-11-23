@@ -100,10 +100,10 @@
                     <td>NOW UPDATE</td>
                     <td>:</td>
                     <td>{{ $caseList->now_update }}</td>
-                    <td>AGING (DAY)</td>
-                    <td>:</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                     <td>
-                        {{ Carbon\Carbon::parse($caseList->instruction_date)->diff($caseList->file_status_id == 5 ? $caseList->now_update : Carbon\Carbon::now())->d  }}
+                        &nbsp;
                     </td>
                 </tr>
             </tbody>

@@ -19,17 +19,17 @@ class HomeController extends Controller
     public function index()
     {
         if (auth()->user()->hasRole('admin')) {
-            $satu = CaseList::where('ia_status', 0)->count();
-            $dua = CaseList::where('ia_status', 1)->where('pr_status', 0)->count();
-            $tiga = CaseList::where('pa_status', 0)->where('pr_status', 1)->count();
-            $empat = CaseList::where('fr_status', 0)->where('pa_status', 1)->count();
-            $lima = CaseList::where('fr_status', 0)->where('ir_st_status', 1)->where('pa_status', 1)->count();
+            $satu = CaseList::where('ia_status', 0)->where('remark', NULL)->count();
+            $dua = CaseList::where('ia_status', 1)->where('pr_status', 0)->where('remark', NULL)->count();
+            $tiga = CaseList::where('pa_status', 0)->where('pr_status', 1)->where('remark', NULL)->count();
+            $empat = CaseList::where('fr_status', 0)->where('pa_status', 1)->where('remark', NULL)->count();
+            $lima = CaseList::where('fr_status', 0)->where('ir_st_status', 1)->where('pa_status', 1)->where('remark', NULL)->count();
         } else {
-            $satu = CaseList::where('adjuster_id', auth()->user()->id)->where('ia_status', 0)->count();
-            $dua = CaseList::where('adjuster_id', auth()->user()->id)->where('ia_status', 1)->where('pr_status', 0)->count();
-            $tiga = CaseList::where('adjuster_id', auth()->user()->id)->where('pa_status', 0)->where('pr_status', 1)->count();
-            $empat = CaseList::where('adjuster_id', auth()->user()->id)->where('fr_status', 0)->where('pa_status', 1)->count();
-            $lima = CaseList::where('adjuster_id', auth()->user()->id)->where('fr_status', 0)->where('ir_st_status', 1)->where('pa_status', 1)->count();
+            $satu = CaseList::where('adjuster_id', auth()->user()->id)->where('ia_status', 0)->where('remark', NULL)->count();
+            $dua = CaseList::where('adjuster_id', auth()->user()->id)->where('ia_status', 1)->where('pr_status', 0)->where('remark', NULL)->count();
+            $tiga = CaseList::where('adjuster_id', auth()->user()->id)->where('pa_status', 0)->where('pr_status', 1)->where('remark', NULL)->count();
+            $empat = CaseList::where('adjuster_id', auth()->user()->id)->where('fr_status', 0)->where('pa_status', 1)->where('remark', NULL)->count();
+            $lima = CaseList::where('adjuster_id', auth()->user()->id)->where('fr_status', 0)->where('ir_st_status', 1)->where('pa_status', 1)->where('remark', NULL)->count();
         }
 
         return view('dashboard.index', compact('satu', 'dua', 'tiga', 'empat', 'lima'));

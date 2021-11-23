@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <style>
     html {
@@ -19,7 +20,7 @@
 </style>
 
 <body>
-    <img src="https://i.postimg.cc/LhK2mN8f/header.png" alt="">
+    <img src="https://i.postimg.cc/7Y38bvL8/header.png" alt="">
     <h5 class="text-center"><b>
             @if($invoice->type_invoice == 1)
             INTERIM INVOICE
@@ -264,7 +265,7 @@
             </div>
         </div>
 
-        <div style="margin-top: 70px;">
+        <div style="margin-top: 90px;">
             <div class="row">
                 <div class="col">
                     <table>
@@ -308,8 +309,8 @@
                     <table>
                         <tr>
                             <th colspan="3">
-                                <strong>{{ $data->bank_name }}</strong>
-                                <p>{{ $data->address }}</p>
+                                <strong>{{ $data->bank_name }}</strong><br>
+                                {{ $data->address }}
                             </th>
                         </tr>
                         <tr>
@@ -333,26 +334,13 @@
                     @endforeach
                 </div>
             </div>
-
-            <div class="row">
-                <!-- <div class="col" style="margin-left: 80%;margin-top:-10px">
-                <table>
-                    <tr>
-                        <th>
-                            <u>Febrizal</u><br>
-                            Director
-                        </th>
-                    </tr>
-                </table>
-            </div> -->
-            </div>
         </div>
 
-        <div class="row" style="clear: both; position: relative;height: 200px; margin-top: -100px;">
-            <div class="col" style="margin-left: 60%;">
+        <div class="row" style="clear: both; position: relative;height: 70px;">
+            <div class="col" style="margin-left: 53%; border-left: 1px solid #1f67a7;">
                 <table style="font-size: 8px;">
                     <tr>
-                        <th>PT AXIS Internasional Indonesia</th>
+                        <th style="color: #1f67a7;">PT AXIS Internasional Indonesia</th>
                     </tr>
                     <tr>
                         <td>Pakuwon Tower 12 fl. Unit I</td>
@@ -365,19 +353,19 @@
                     </tr>
                 </table>
             </div>
-            <div class="col" style="margin-left: 80%;">
-                <table style="font-size: 8px;">
+            <div class="col" style="margin-left: 78%; border-left: 1px solid #1f67a7;">
+                <table style="font-size: 8px;" width="100%">
                     <tr>
-                        <th>+62 21 2290 3759</th>
+                        <td><i class="fab fa-tumblr" style="color: #1f67a7; margin-right: 10px;"></i> +62 21 2290 3759</td>
                     </tr>
                     <tr>
-                        <td>+62 21 2290 3831</td>
+                        <td><i class="fab fa-tumblr" style="color: #1f67a7; margin-right: 10px;"></i> +62 21 2290 3831</td>
                     </tr>
                     <tr>
-                        <td>claims@axis-adjusters.com</td>
+                        <td><i class="fas fa-at" style="color: #1f67a7; margin-right: 10px;"></i> claims@axis-adjusters.com</td>
                     </tr>
                     <tr>
-                        <td>www.axis-lossadjusters.com</td>
+                        <td><i class="fab fa-chrome" style="color: #1f67a7; margin-right: 10px;"></i> www.axis-lossadjusters.com</td>
                     </tr>
                 </table>
             </div>
