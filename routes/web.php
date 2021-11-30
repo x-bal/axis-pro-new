@@ -41,7 +41,10 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Auth::routes();
+Auth::routes([
+    'register' => false,
+    'reset' => false,
+]);
 
 
 Route::middleware('auth')->group(function () {
