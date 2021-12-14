@@ -204,9 +204,8 @@ class CaseListController extends Controller
             'member' => 'required|array|min:1',
             'percent' => 'required|array|min:1',
             'status' => 'required|array|min:1',
-            'copy_polis' => 'required|mimes:pdf,docx',
-            'file_penunjukan' => 'required|mimes:pdf,docx',
-            'no_ref_surat_asuransi' => 'required'
+            'copy_polis' => 'mimes:pdf,docx',
+            'file_penunjukan' => 'mimes:pdf,docx',
         ]);
         if (!(array_sum($request->percent) <= 100 and array_sum($request->percent) >= 100)) {
             $error = \Illuminate\Validation\ValidationException::withMessages([
@@ -220,9 +219,9 @@ class CaseListController extends Controller
             DB::beginTransaction();
             try {
                 $name_file_penunjukan = Carbon::now()->format('YmdHis') . '_' . $request->file('file_penunjukan')->getClientOriginalName();
-                $path_file_penunjukan = $request->file('file_penunjukan')->storeAs('/file/penunjukan', $name_file_penunjukan);
+                $path_file_penunjukan = $request->file('file_penunjukan')->storeAs('files/penunjukan', $name_file_penunjukan);
                 $name_copy_polis = Carbon::now()->format('YmdHis') . '_' . $request->file('copy_polis')->getClientOriginalName();
-                $path_copy_polis = $request->file('copy_polis')->storeAs('/file/copypolis', $name_copy_polis);
+                $path_copy_polis = $request->file('copy_polis')->storeAs('/files/copypolis', $name_copy_polis);
                 $caselist = Caselist::create([
                     'file_no' => $request->file_no . '-JAK',
                     'insurance_id' => $request->insurance,
@@ -438,12 +437,12 @@ class CaseListController extends Controller
         Gate::allows(abort_unless('case-list-edit', 403));
         if ($request->file('copy_polis')) {
             $this->validate($request, [
-                'copy_polis' => 'required|mimes:pdf,docx'
+                'copy_polis' => 'mimes:pdf,docx'
             ]);
             try {
                 DB::beginTransaction();
                 $name_copy_polis = Carbon::now()->format('YmdHis') . '_' . $request->file('copy_polis')->getClientOriginalName();
-                $path_copy_polis = $request->file('copy_polis')->storeAs('/file/copypolis', $name_copy_polis);
+                $path_copy_polis = $request->file('copy_polis')->storeAs('/files/copypolis', $name_copy_polis);
                 Storage::delete($caseList->copy_polis);
                 $caseList->update([
                     'copy_polis' => $path_copy_polis
@@ -457,12 +456,12 @@ class CaseListController extends Controller
         }
         if ($request->file('file_penunjukan')) {
             $this->validate($request, [
-                'file_penunjukan' => 'required|mimes:pdf,docx'
+                'file_penunjukan' => 'mimes:pdf,docx'
             ]);
             try {
                 DB::beginTransaction();
                 $name_file_penunjukan = Carbon::now()->format('YmdHis') . '_' . $request->file('file_penunjukan')->getClientOriginalName();
-                $path_file_penunjukan = $request->file('file_penunjukan')->storeAs('/file/penunjukan', $name_file_penunjukan);
+                $path_file_penunjukan = $request->file('file_penunjukan')->storeAs('/files/penunjukan', $name_file_penunjukan);
                 Storage::delete($caseList->file_penunjukan);
 
                 $caseList->update([

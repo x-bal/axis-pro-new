@@ -56,7 +56,7 @@ class InsuranceController extends Controller
 
     public function show(Client $insurance)
     {
-        return view('insurance.show',[
+        return view('insurance.show', [
             'clients' => $insurance
         ]);
     }
@@ -106,14 +106,17 @@ class InsuranceController extends Controller
     public function destroy(Client $insurance)
     {
         abort_unless(Gate::allows('insurance-delete'), 403);
+        if (!$insurance->caselist()) {
+            Storage::delete($insurance->picture);
+            $insurance->delete();
 
-        Storage::delete($insurance->picture);
-        $insurance->delete();
-        return redirect()->route('insurance.index')->with('success', 'Insurance has been deleted');
+            return redirect()->route('insurance.index')->with('success', 'Insurance has been deleted');
+        }
+        return redirect()->route('insurance.index')->with('error', 'Insurance have been caselists');
     }
     public function laporan(Request $request, $id)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'from' => 'required',
             'to' => 'required',
             'status' => 'required'
@@ -122,16 +125,16 @@ class InsuranceController extends Controller
         $from = $request->from;
         $to = $request->to;
 
-        if($status == 'outstanding'){
-            $member = MemberInsurance::where('member_insurance', $id)->whereHas('caselist', function($data) use($from,$to, $status){
-                return $data->whereBetween('instruction_date',[$from, $to])->where('file_status_id','!=',5);
+        if ($status == 'outstanding') {
+            $member = MemberInsurance::where('member_insurance', $id)->whereHas('caselist', function ($data) use ($from, $to, $status) {
+                return $data->whereBetween('instruction_date', [$from, $to])->where('file_status_id', '!=', 5);
             })->get();
-        }else{
-            $member = MemberInsurance::where('member_insurance', $id)->whereHas('caselist', function($data) use($from,$to, $status){
-                return $data->whereBetween('instruction_date',[$from, $to])->where('file_status_id', $status);
+        } else {
+            $member = MemberInsurance::where('member_insurance', $id)->whereHas('caselist', function ($data) use ($from, $to, $status) {
+                return $data->whereBetween('instruction_date', [$from, $to])->where('file_status_id', $status);
             })->get();
         }
-        return view('insurance.laporan',[
+        return view('insurance.laporan', [
             'member' => $member,
             'from' => $from,
             'to' => $to
