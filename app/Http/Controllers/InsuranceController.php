@@ -111,8 +111,9 @@ class InsuranceController extends Controller
             $insurance->delete();
 
             return redirect()->route('insurance.index')->with('success', 'Insurance has been deleted');
+        } else {
+            return redirect()->route('insurance.index')->with('error', 'Insurance have been caselists');
         }
-        return redirect()->route('insurance.index')->with('error', 'Insurance have been caselists');
     }
     public function laporan(Request $request, $id)
     {
