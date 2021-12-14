@@ -200,7 +200,6 @@ class CaseListController extends Controller
             'instruction_date' => 'required',
             'leader_claim_no' => 'required',
             'survey_date' => 'required',
-            'no_ref_surat_asuransi' => 'required',
             'member' => 'required|array|min:1',
             'percent' => 'required|array|min:1',
             'status' => 'required|array|min:1',
