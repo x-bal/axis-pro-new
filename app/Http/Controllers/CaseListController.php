@@ -857,11 +857,11 @@ class CaseListController extends Controller
 
     public function penunjukan(CaseList $caseList)
     {
-        return Storage::readStream($caseList->file_penunjukkan);
+        return Storage::download($caseList->file_penunjukkan);
     }
 
     public function copyPolice(CaseList $caseList)
     {
-        return Storage::readStream($caseList->copy_polis);
+        return Storage::download($caseList->copy_polis);
     }
 }
