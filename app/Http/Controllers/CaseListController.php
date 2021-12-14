@@ -442,7 +442,7 @@ class CaseListController extends Controller
             try {
                 DB::beginTransaction();
                 $name_copy_polis = Carbon::now()->format('YmdHis') . '_' . $request->file('copy_polis')->getClientOriginalName();
-                $path_copy_polis = $request->file('copy_polis')->storeAs('/files/copypolis', $name_copy_polis);
+                $path_copy_polis = $request->file('copy_polis')->storeAs('files/copypolis', $name_copy_polis);
                 Storage::delete($caseList->copy_polis);
                 $caseList->update([
                     'copy_polis' => $path_copy_polis
@@ -461,7 +461,7 @@ class CaseListController extends Controller
             try {
                 DB::beginTransaction();
                 $name_file_penunjukan = Carbon::now()->format('YmdHis') . '_' . $request->file('file_penunjukan')->getClientOriginalName();
-                $path_file_penunjukan = $request->file('file_penunjukan')->storeAs('/files/penunjukan', $name_file_penunjukan);
+                $path_file_penunjukan = $request->file('file_penunjukan')->storeAs('files/penunjukan', $name_file_penunjukan);
                 Storage::delete($caseList->file_penunjukan);
 
                 $caseList->update([
