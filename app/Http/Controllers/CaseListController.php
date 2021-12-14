@@ -854,4 +854,14 @@ class CaseListController extends Controller
 
         return back()->with('success', 'Case successfully closed');
     }
+
+    public function penunjukan(CaseList $caseList)
+    {
+        return Storage::get($caseList->file_penunjukkan);
+    }
+
+    public function copyPolice(CaseList $caseList)
+    {
+        return Storage::get($caseList->copy_polis);
+    }
 }
