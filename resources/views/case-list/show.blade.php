@@ -148,10 +148,10 @@
                                 <tr>
                                     <td>File Penunjukan</td>
                                     <td>:</td>
-                                    <td><a href="{{ route('caselist.penunjukan', $caseList->id) }}" target="_blank" class="btn btn-danger">File Penunjukan</a></td>
+                                    <td><a href="{{ route('caselist.penunjukan', $caseList->id) }}" class="btn btn-danger">File Penunjukan</a></td>
                                     <td>Copy Polis</td>
                                     <td>:</td>
-                                    <td><a href="{{ route('caselist.copyPolice', $caseList->id) }}" target="_blank" class="btn btn-info">Copy Polis</a></td>
+                                    <td><a href="{{ route('caselist.copyPolice', $caseList->id) }}" class="btn btn-info">Copy Polis</a></td>
                                 </tr>
                             </tbody>
                         </table>
