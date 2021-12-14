@@ -107,12 +107,12 @@ class InsuranceController extends Controller
     {
         abort_unless(Gate::allows('insurance-delete'), 403);
         if ($insurance->caselist()->exists()) {
+            return redirect()->route('insurance.index')->with('error', 'Insurance have been caselists');
+        } else {
             Storage::delete($insurance->picture);
             $insurance->delete();
 
             return redirect()->route('insurance.index')->with('success', 'Insurance has been deleted');
-        } else {
-            return redirect()->route('insurance.index')->with('error', 'Insurance have been caselists');
         }
     }
     public function laporan(Request $request, $id)
