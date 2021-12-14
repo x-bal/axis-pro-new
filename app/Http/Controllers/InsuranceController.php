@@ -106,7 +106,7 @@ class InsuranceController extends Controller
     public function destroy(Client $insurance)
     {
         abort_unless(Gate::allows('insurance-delete'), 403);
-        if (!$insurance->caselist) {
+        if ($insurance->caselist == NULL) {
             Storage::delete($insurance->picture);
             $insurance->delete();
 
