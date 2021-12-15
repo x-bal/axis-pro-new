@@ -123,7 +123,7 @@
                                     <td>TYPE OF BUSINESS</td>
                                     <td>:</td>
                                     <td>{{ $caseList->policy->type_policy }}</td>
-                                    <td>LEADER POLICY</td>
+                                    <td>LEADER POLICY NO</td>
                                     <td>:</td>
                                     <td>{{ $caseList->no_leader_policy }} | PERIOD BEGIN : {{ Carbon\Carbon::parse($caseList->begin)->format('d-M-Y') }} PERIOD END : {{ Carbon\Carbon::parse($caseList->end)->format('d-M-Y') }} <br> </td>
                                 </tr>
@@ -146,12 +146,12 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>File Penunjukan</td>
+                                    <td>LETTER OF APPOINTMENT</td>
                                     <td>:</td>
-                                    <td><a href="{{ route('caselist.penunjukan', $caseList->id) }}" class="btn btn-danger">File Penunjukan</a></td>
-                                    <td>Copy Polis</td>
+                                    <td><a href="{{ route('caselist.penunjukan', $caseList->id) }}" class="btn btn-danger">LETTER OF APPOINTMENT</a></td>
+                                    <td>POLICY SCHEDULE OR COPY POLICY</td>
                                     <td>:</td>
-                                    <td><a href="{{ route('caselist.copyPolice', $caseList->id) }}" class="btn btn-info">Copy Polis</a></td>
+                                    <td><a href="{{ route('caselist.copyPolice', $caseList->id) }}" class="btn btn-info">POLICY SCHEDULE OR COPY POLICY</a></td>
                                 </tr>
                             </tbody>
                         </table>

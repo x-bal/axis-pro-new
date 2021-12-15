@@ -84,7 +84,7 @@
                     <td>TYPE OF BUSINESS</td>
                     <td>:</td>
                     <td>{{ $caseList->policy->type_policy }}</td>
-                    <td>LEADER POLICY</td>
+                    <td>LEADER POLICY NO</td>
                     <td>:</td>
                     <td>{{ $caseList->no_leader_policy }} | PERIOD BEGIN : {{ Carbon\Carbon::parse($caseList->begin)->format('d-M-Y') }} PERIOD END : {{ Carbon\Carbon::parse($caseList->end)->format('d-M-Y') }} <br> </td>
                 </tr>
