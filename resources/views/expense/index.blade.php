@@ -173,12 +173,12 @@
         $('#id_expense').val($(qr).attr('data-id'))
         $.ajax({
             url: `/api/admin/expense/show/${id}`,
-            success: function(resource){
+            success: function(resource) {
                 $('#name').val(resource.name)
                 $('#qty').val(resource.qty)
                 $('#nominal').val(resource.amount)
             },
-            error: function(error){
+            error: function(error) {
                 alert(error.statusText)
             }
         })

@@ -115,7 +115,7 @@
     </div>
     <div class="col-md-3">
         <div class="form-group">
-            <label for="dol">Dol <strong class="text-danger">*</strong></label>
+            <label for="dol">Date Of Loss <strong class="text-danger">*</strong></label>
             <input type="date" value="{{ $caseList->dol ?? old('dol') }}" id="dol" name="dol" class="form-control @error('dol') is-invalid @enderror">
             @error('dol')
             <div class="invalid-feedback">
@@ -228,7 +228,7 @@
     </div>
     <div class="col-md-4">
         <div class="form-group">
-            <label for="no_leader_policy">No Leader Policy <strong class="text-danger">*</strong></label>
+            <label for="no_leader_policy">Leader Policy No <strong class="text-danger">*</strong></label>
             <input class="form-control @error('no_leader_policy') is-invalid @enderror" value="{{ $caseList->no_leader_policy ?? old('no_leader_policy') }}" name="no_leader_policy" id="no_leader_policy" type="text">
             @error('no_leader_policy')
             <div class="invalid-feedback">
@@ -250,7 +250,7 @@
     </div>
     <div class="col-md-4">
         <div class="form-group">
-            <label for="no_ref_surat_asuransi">No Ref Surat Asuransi <strong class="text-danger">*</strong></label>
+            <label for="no_ref_surat_asuransi">Insurer Ref No <strong class="text-danger">*</strong></label>
             <input class="form-control @error('no_ref_surat_asuransi') is-invalid @enderror" value="{{ $caseList->no_ref_surat_asuransi ?? old('no_ref_surat_asuransi') }}" name="no_ref_surat_asuransi" id="no_ref_surat_asuransi" type="text">
             @error('no_ref_surat_asuransi')
             <div class="invalid-feedback">
@@ -261,7 +261,7 @@
     </div>
     <div class="col-md-3">
         <div class="form-group">
-            <label for="file_penunjukan">File Penunjukan <strong class="text-danger">*</strong></label>
+            <label for="file_penunjukan">Letter of Appointment <strong class="text-danger">*</strong></label>
             <input type="file" class="form-control @error('file_penunjukan') is-invalid @enderror" id="file_penunjukan" name="file_penunjukan">
             @error('file_penunjukan')
             <div class="invalid-feedback">
@@ -272,7 +272,7 @@
     </div>
     <div class="col-md-3">
         <div class="form-group">
-            <label for="copy_polis">Copy Polis <strong class="text-danger">*</strong></label>
+            <label for="copy_polis">Policy Schedule or Copy Policy <strong class="text-danger">*</strong></label>
             <input type="file" class="form-control @error('copy_polis') is-invalid @enderror" id="copy_polis" value="{{ $caseList->copy_polis ?? old('copy_polis') }}" name="copy_polis">
             @error('copy_polis')
             <div class="invalid-feedback">

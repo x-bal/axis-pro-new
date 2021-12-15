@@ -47,7 +47,7 @@
                                     <a href="{{ route('case-list.show',$data->caselist->id) }}">{{ $data->caselist->file_no }}</a>
                                 </td>
                                 <td>{{ $data->name }}</td>
-                                <td>{{ $data->tanggal }}</td>
+                                <td>{{ Carbon\Carbon::parse($data->tanggal)->format('d/m/Y') }}</td>
                                 <td class="text-center">{{ $data->qty }}</td>
                                 <td class="text-right">{{ number_format($data->amount) }}</td>
                                 <td class="text-right">{{ number_format($data->total) }}</td>
