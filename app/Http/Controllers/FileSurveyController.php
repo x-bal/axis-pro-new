@@ -65,4 +65,20 @@ class FileSurveyController extends Controller
             return Storage::download($fileSurvey->file_upload);
         }
     }
+
+    public function destroy(FileSurvey $fileSurvey)
+    {
+        $file = explode('.', $fileSurvey->file_upload);
+        $ext = $file[1];
+
+        if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
+            File::delete($fileSurvey->file_upload);
+        } else {
+            Storage::delete($fileSurvey->file_upload);
+        }
+
+        $fileSurvey->delete();
+
+        return back()->with('success', 'File Survey has been deleted');
+    }
 }

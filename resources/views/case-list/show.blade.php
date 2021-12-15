@@ -427,6 +427,11 @@
                                     </td>
                                     <td>
                                         <a href="{{ route('file-survey.show', $filesurvey->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a>
+                                        <form action="{{ route('file-survey.destroy', $filesurvey->id) }}" method="post" style="display: inline;">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure to delete this file ?')"><i class="fas fa-trash"></i></button>
+                                        </form>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -495,7 +500,14 @@
                                         {{ number_format(\Storage::size($claimdocument->file_upload) / 1048576,2 )}} MB
                                         @endif
                                     </td>
-                                    <td><a href="{{ route('claim-document.show', $claimdocument->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a></td>
+                                    <td>
+                                        <a href="{{ route('claim-document.show', $claimdocument->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a>
+                                        <form action="{{ route('claim-document.destroy', $claimdocument->id) }}" method="post" style="display: inline;">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure to delete this file ?')"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -624,7 +636,14 @@
                                         {{ number_format(\Storage::size($reportsatu->file_upload) / 1048576,2 )}} MB
                                         @endif
                                     </td>
-                                    <td><a href="{{ route('report-satu.show', $reportsatu->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a></td>
+                                    <td>
+                                        <a href="{{ route('report-satu.show', $reportsatu->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a>
+                                        <form action="{{ route('report-satu.destroy', $reportsatu->id) }}" method="post" style="display: inline;">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure to delete this file ?')"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -793,7 +812,14 @@
                                         {{ number_format(\Storage::size($reportdua->file_upload) / 1048576,2 )}} MB
                                         @endif
                                     </td>
-                                    <td><a href="{{ route('report-dua.show', $reportdua->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a></td>
+                                    <td>
+                                        <a href="{{ route('report-dua.show', $reportdua->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a>
+                                        <form action="{{ route('report-dua.destroy', $reportdua->id) }}" method="post" style="display: inline;">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure to delete this file ?')"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -1009,7 +1035,14 @@
                                         {{ number_format(\Storage::size($reporttiga->file_upload) / 1048576,2 )}} MB
                                         @endif
                                     </td>
-                                    <td><a href="{{ route('report-tiga.show', $reporttiga->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a></td>
+                                    <td>
+                                        <a href="{{ route('report-tiga.show', $reporttiga->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a>
+                                        <form action="{{ route('report-tiga.destroy', $reporttiga->id) }}" method="post" style="display: inline;">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure to delete this file ?')"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -1205,7 +1238,14 @@
                                         {{ number_format(\Storage::size($reportempat->file_upload) / 1048576,2 )}} MB
                                         @endif
                                     </td>
-                                    <td><a href="{{ route('report-empat.show', $reportempat->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a></td>
+                                    <td>
+                                        <a href="{{ route('report-empat.show', $reportempat->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a>
+                                        <form action="{{ route('report-empat.destroy', $reportempat->id) }}" method="post" style="display: inline;">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure to delete this file ?')"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -1357,7 +1397,14 @@
                                         {{ number_format(\Storage::size($reportlima->file_upload) / 1048576,2 )}} MB
                                         @endif
                                     </td>
-                                    <td><a href="{{ route('report-lima.show', $reportlima->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a></td>
+                                    <td>
+                                        <a href="{{ route('report-lima.show', $reportlima->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a>
+                                        <form action="{{ route('report-lima.destroy', $reportlima->id) }}" method="post" style="display: inline;">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure to delete this file ?')"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>

@@ -165,6 +165,17 @@ class ReportTigaController extends Controller
      */
     public function destroy(ReportTiga $reportTiga)
     {
-        //
+        $file = explode('.', $reportTiga->file_upload);
+        $ext = $file[1];
+
+        if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
+            File::delete($reportTiga->file_upload);
+        } else {
+            Storage::delete($reportTiga->file_upload);
+        }
+
+        $reportTiga->delete();
+
+        return back()->with('success', 'File Report 4 has been deleted');
     }
 }

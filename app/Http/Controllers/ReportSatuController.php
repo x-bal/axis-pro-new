@@ -139,6 +139,17 @@ class ReportSatuController extends Controller
      */
     public function destroy(ReportSatu $reportSatu)
     {
-        //
+        $file = explode('.', $reportSatu->file_upload);
+        $ext = $file[1];
+
+        if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
+            File::delete($reportSatu->file_upload);
+        } else {
+            Storage::delete($reportSatu->file_upload);
+        }
+
+        $reportSatu->delete();
+
+        return back()->with('success', 'File Report 1 has been deleted');
     }
 }

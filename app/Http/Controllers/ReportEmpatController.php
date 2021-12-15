@@ -159,4 +159,20 @@ class ReportEmpatController extends Controller
         }
         return Storage::download($reportEmpat->file_upload);
     }
+
+    public function destroy(ReportEmpat $reportEmpat)
+    {
+        $file = explode('.', $reportEmpat->file_upload);
+        $ext = $file[1];
+
+        if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
+            File::delete($reportEmpat->file_upload);
+        } else {
+            Storage::delete($reportEmpat->file_upload);
+        }
+
+        $reportEmpat->delete();
+
+        return back()->with('success', 'File Report 4 has been deleted');
+    }
 }

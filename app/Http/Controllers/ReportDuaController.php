@@ -148,6 +148,17 @@ class ReportDuaController extends Controller
      */
     public function destroy(ReportDua $reportDua)
     {
-        //
+        $file = explode('.', $reportDua->file_upload);
+        $ext = $file[1];
+
+        if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
+            File::delete($reportDua->file_upload);
+        } else {
+            Storage::delete($reportDua->file_upload);
+        }
+
+        $reportDua->delete();
+
+        return back()->with('success', 'File Report 2 has been deleted');
     }
 }

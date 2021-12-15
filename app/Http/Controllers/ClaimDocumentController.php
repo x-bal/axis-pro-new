@@ -121,6 +121,17 @@ class ClaimDocumentController extends Controller
      */
     public function destroy(ClaimDocument $claimDocument)
     {
-        //
+        $file = explode('.', $claimDocument->file_upload);
+        $ext = $file[1];
+
+        if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
+            File::delete($claimDocument->file_upload);
+        } else {
+            Storage::delete($claimDocument->file_upload);
+        }
+
+        $claimDocument->delete();
+
+        return back()->with('success', 'File Claim Document has been deleted');
     }
 }

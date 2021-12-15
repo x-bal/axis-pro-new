@@ -163,6 +163,17 @@ class ReportLimaController extends Controller
      */
     public function destroy(ReportLima $reportLima)
     {
-        //
+        $file = explode('.', $reportLima->file_upload);
+        $ext = $file[1];
+
+        if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
+            File::delete($reportLima->file_upload);
+        } else {
+            Storage::delete($reportLima->file_upload);
+        }
+
+        $reportLima->delete();
+
+        return back()->with('success', 'File Report 5 has been deleted');
     }
 }
