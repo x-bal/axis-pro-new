@@ -44,8 +44,6 @@ class ExpenseController extends Controller
     public function store(Request $request)
     {
         try {
-            //code...
-
             $request->validate([
                 'file_upload' => 'required',
                 'file_upload.*' => 'max:10240|mimes:xlsx,xls',

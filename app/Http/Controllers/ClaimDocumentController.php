@@ -125,7 +125,7 @@ class ClaimDocumentController extends Controller
         $ext = $file[1];
 
         if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
-            File::delete($claimDocument->file_upload);
+            \File::delete($claimDocument->file_upload);
         } else {
             Storage::delete($claimDocument->file_upload);
         }

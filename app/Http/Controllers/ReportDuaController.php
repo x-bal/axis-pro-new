@@ -152,7 +152,7 @@ class ReportDuaController extends Controller
         $ext = $file[1];
 
         if (in_array($ext, ['jpg', 'png', 'jpeg'])) {
-            File::delete($reportDua->file_upload);
+            \File::delete($reportDua->file_upload);
         } else {
             Storage::delete($reportDua->file_upload);
         }

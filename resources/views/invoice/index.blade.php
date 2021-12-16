@@ -601,21 +601,23 @@
                     $('.fee_based').val(formatter(data.caselist.fee_usd))
                 }
             }
+            // console.log(data.caselist.expense.amount)
             $('.expense').val(formatter(data.expense))
-            $('.share').val(formatter(parseInt(data.sum.fee) + parseInt(data.caselist.expense.amount)))
+            $('.share').val(formatter(parseInt(data.fee_adj) + parseInt(data.expense)))
             // 
+            let persen = parseInt(data.fee_adj + data.expense) * 10 / 100
+
             let sub_total = 0;
             if (data.caselist.remark == null) {
-                sub_total = parseInt(data.sum.claim_amount) + parseInt(data.sum.fee) + parseInt(data.expense)
+                sub_total = parseInt(data.fee_adj) + parseInt(data.expense)
             } else {
                 if (data.caselist.currency == 'IDR') {
-                    sub_total = parseInt(data.sum.claim_amount) + parseInt(data.caselist.fee_idr) + parseInt(data.expense)
+                    sub_total = parseInt(data.fee_adj) + parseInt(data.expense)
                 } else {
-                    sub_total = parseInt(data.sum.claim_amount) + parseInt(data.caselist.fee_usd) + parseInt(data.expense)
+                    sub_total = parseInt(data.fee_adj) + parseInt(data.expense)
                 }
             }
             // let persen = parseInt(sub_total) * parseInt(data.caselist.insurance.ppn) / 100
-            let persen = parseInt(sub_total) * 10 / 100
             // $('.ForPercent').html(`${data.caselist.insurance.name} - ${data.caselist.insurance.ppn}%`)
             $('.ForAdjusted').html(`${data.caselist.currency}`)
             $('.share').val(formatter(persen))
