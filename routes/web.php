@@ -39,7 +39,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('auth.login');
-});
+})->middleware('guest');
 
 Auth::routes([
     'register' => false,
