@@ -77,11 +77,7 @@
     'italic' => $fontDir . '/DejaVuSerif-Italic',
     'normal' => $fontDir . '/DejaVuSerif',
   ),
-  'font awesome 5 brands' => array(
-    'normal' => $fontDir . '/font_awesome_5_brands_normal_6b898e2c5cc213c4404811c323fdcab6',
-  ),
-  'font awesome 5 free' => array(
-    'normal' => $fontDir . '/font_awesome_5_free_normal_09a636486ad6e3e7e715ee5a0373f2ab',
-    '900' => $fontDir . '/font_awesome_5_free_900_f6c1d66ca0f6a9c230936770c324b606',
+  'open sans' => array(
+    'normal' => $fontDir . '/open_sans_normal_bf11512877ef2223afd06e89358ef2fc',
   ),
 ) ?>
