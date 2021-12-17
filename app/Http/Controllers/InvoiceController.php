@@ -68,6 +68,7 @@ class InvoiceController extends Controller
                     'date_invoice' => $request->date_invoice,
                     'due_date' => Carbon::parse($request->date_invoice)->addDays(30)->format('Y-m-d'),
                     'status_paid' => 0,
+                    'bank_id' => 1,
                     'is_active' => 1,
                     'type_invoice' => 1,
                     'grand_total' => $total * $data->share / 100
@@ -79,8 +80,11 @@ class InvoiceController extends Controller
             foreach ($expenses as $expense) {
                 $expense->update(['is_active' => 1]);
             }
-
-            // $caselist->update(['is_ready' => 2]);
+            // if ($request->type == 1) {
+            //     $caselist->update(['discount' => $request->discount]);
+            // } else {
+            //     $caselist->update(['discount_percent' => $request->discount]);
+            // }
 
             DB::commit();
             return back()->with('success', 'Success create Invoice');
@@ -136,6 +140,7 @@ class InvoiceController extends Controller
                     'date_invoice' => $request->date_invoice,
                     'due_date' => Carbon::parse($request->date_invoice)->addDays(30)->format('Y-m-d'),
                     'status_paid' => 0,
+                    'bank_id' => 1,
                     'is_active' => 1,
                     'type_invoice' => $request->type_invoice,
                     'grand_total' => $total * $data->share / 100
@@ -146,11 +151,33 @@ class InvoiceController extends Controller
             foreach ($expenses as $expense) {
                 $expense->update(['is_active' => 2]);
             }
-
+            // dd($request->discount);
             if ($request->type_invoice == 2) {
-                $caselist->update(['is_ready' => 3]);
+                if ($request->type == 1) {
+                    $caselist->update([
+                        'is_ready' => 3,
+                        'discount' => str_replace(',', '', $request->discount),
+                        'discount_percent' => 0
+                    ]);
+                } else {
+                    $caselist->update([
+                        'is_ready' => 3,
+                        'discount' => 0,
+                        'discount_percent' => str_replace(',', '', $request->discount)
+                    ]);
+                }
             } else {
-                $caselist->update(['is_ready' => 4]);
+                if ($request->type == 1) {
+                    $caselist->update([
+                        'is_ready' => 4,
+                        'discount' => $request->discount
+                    ]);
+                } else {
+                    $caselist->update([
+                        'is_ready' => 4,
+                        'discount_percent' => $request->discount
+                    ]);
+                }
             }
             DB::commit();
             return back()->with('success', 'Success create Invoice');
@@ -191,18 +218,19 @@ class InvoiceController extends Controller
 
                 Invoice::onlyTrashed()->forceDelete();
                 $caselist->update(['is_ready' => 1]);
-            } else {
-                $expense = Expense::where('case_list_id', $invoice->case_list_id)->get();
-
-                foreach ($expense as $exp) {
-                    $exp->update(['is_active' => 0]);
-                }
-
-                Invoice::where('case_list_id', $invoice->case_list_id)->where('type_invoice', '!=',  1)->delete();
-
-                Invoice::onlyTrashed()->forceDelete();
-                $caselist->update(['is_ready' => 2]);
             }
+            // } else {
+            //     $expense = Expense::where('case_list_id', $invoice->case_list_id)->get();
+
+            //     foreach ($expense as $exp) {
+            //         $exp->update(['is_active' => 0]);
+            //     }
+
+            //     Invoice::where('case_list_id', $invoice->case_list_id)->where('type_invoice', '!=',  1)->delete();
+
+            //     Invoice::onlyTrashed()->forceDelete();
+            //     $caselist->update(['is_ready' => 2]);
+            // }
         } else {
             $expense = Expense::where('case_list_id', $invoice->case_list_id)->get();
 
