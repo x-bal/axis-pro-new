@@ -240,34 +240,14 @@
                                     <label for="fee_based">Fee Based</label>
                                     <input type="text" required id="fee_based" name="fee_based" class="form-control fee_based" readonly>
                                 </div>
-                                <input type="hidden" name="fee_hidden" id="fee_hidden" class="fee_hidden">
                             </div>
-                            <div class=" col-md-4">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Expense</label>
                                     <input type="text" required id="expense" class="form-control expense" readonly name="expense">
                                     <span class="badge badge-info text-light" id="expense_badge"></span>
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="">Discount</label>
-                                    <input type="number" required id="discount" value="0" class="form-control discount" name="discount">
-                                    <span class="badge badge-primary"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="">Type</label>
-                                    <select name="type" id="type" class="form-control" onchange="OnSelectType(this)">
-                                        <option disabled selected>-- Type --</option>
-                                        <option value="1">Nominal</option>
-                                        <option value="2">Percent (%)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">PPN</label>
@@ -275,6 +255,8 @@
                                     <span class="badge badge-primary" id="ForPercent"></span>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Total</label>
@@ -592,7 +574,6 @@
         $('#claim_amount').val('')
         $('#adjusted').val('')
         $('#fee_based').val('')
-        $('#fee_hidden').val('')
         $('#expense').val('')
         $('#share').val('')
         $('#total').val('')
@@ -608,21 +589,17 @@
                 $('#ForCategory').html('Non Marine')
             }
 
+
             $('.claim_amount').val(formatter(data.sum.claim_amount))
             $('.adjusted').val(formatter(data.sum.adjusted))
             if (data.caselist.remark == null) {
                 $('.fee_based').val(formatter(data.sum.fee))
-                $('.fee_hidden').val(formatter(data.sum.fee))
             } else {
                 if (data.caselist.currency == 'IDR') {
                     $('.fee_based').val(formatter(data.caselist.fee_idr))
-                    // $('.fee_hidden').val(data.caselist.fee_idr)
                 } else {
                     $('.fee_based').val(formatter(data.caselist.fee_usd))
-                    // $('.fee_hidden').val(data.caselist.fee_usd)
                 }
-
-                // $(".fee_hidden").val(parseInt(data.sum.fee))
             }
 
             $('.expense').val(formatter(data.expense))
@@ -671,104 +648,6 @@
             });
         }
     }
-
-    const OnSelectType = async function(q) {
-        $('#claim_amount').val('')
-        $('#adjusted').val('')
-        $('#fee_based').val('')
-        $('#fee_hidden').val('')
-        $('#expense').val('')
-        $('#share').val('')
-        $('#total').val('')
-        $('#forLoop').html('')
-        $('#claim_amount_badge').html('')
-        $('#expense_badge').html('')
-        try {
-            let data = await GetResource($("#no_case_proforma").val())
-            // console.log(data)
-            if (data.caselist.category == 1) {
-                $('#ForCategory').html('Marine')
-            } else {
-                $('#ForCategory').html('Non Marine')
-            }
-
-            $('.claim_amount').val(formatter(data.sum.claim_amount))
-            $('.adjusted').val(formatter(data.sum.adjusted))
-            if (data.caselist.remark == null) {
-                $('.fee_based').val(formatter(data.sum.fee))
-                $('.fee_hidden').val(formatter(data.sum.fee))
-            } else {
-                if (data.caselist.currency == 'IDR') {
-                    $('.fee_based').val(formatter(data.caselist.fee_idr))
-                } else {
-                    $('.fee_based').val(formatter(data.caselist.fee_usd))
-                }
-            }
-
-            let discount = $(".discount").val()
-            let type = $(q).val();
-            let sub_total = 0;
-            let ppn = 0;
-            let fee = parseFloat($(".fee_based").val().replace(/,/g, ''));
-            if (type == 1) {
-                let nominal = parseInt(fee - discount) + parseInt(data.expense);
-                console.log(nominal)
-                ppn = nominal * 10 / 100;
-                sub_total = parseInt(nominal + ppn)
-            } else {
-                let disc = parseInt(fee * discount) / 100;
-                let nominal = parseInt(fee - disc) + parseInt(data.expense);
-                ppn = nominal * 10 / 100;
-                sub_total = parseInt(nominal + ppn)
-            }
-
-            $('.expense').val(formatter(data.expense))
-            $('.share').val(formatter(ppn))
-            $('.ForAdjusted').html(`${data.caselist.currency}`)
-            $('.share').val(formatter(ppn))
-            let total = (parseInt(sub_total))
-            $('.total').val(formatter(total))
-            if (data.interim == 0) {
-                $('.TheInterim').addClass('d-none')
-            } else {
-                $('.TheInterim').removeClass('d-none')
-                $('.TotalBeforeInterim').val(formatter(total + data.interim))
-                $('.TheInterimField').val(formatter(data.interim))
-            }
-
-            $.each(data.caselist.member, function() {
-                $('.forLoop').append(`<tr>` +
-                    `<td id=` + this.member_insurance + `_dom>` + TheAjaxFunc(this.member_insurance) + `</td>` +
-                    `<td>` + this.share + `</td>` +
-                    `<td>` + `<input class="form-control" required name="no_invoice[]">` + `</td>` +
-                    `<td>` + formatter(total * parseInt(this.share) / 100) + `</td>` +
-                    `</tr>`)
-            })
-        } catch (err) {
-            console.info(err.message)
-            iziToast.error({
-                title: 'Error',
-                message: `${err}`,
-                position: 'topRight',
-            });
-        }
-    }
-
-    // $("#type").on('change', function() {
-    //     let discount = $("#discount").val();
-    //     let fee = parseFloat($("#fee_hidden").val().replace(/,/g, ''))
-    //     let expense = parseFloat($("#expense").val().replace(/,/g, ''))
-
-    //     if ($(this).val() == 1) {
-    //         let nominal = parseInt(fee - discount) + expense;
-    //         let ppn = nominal * 10 / 100;
-    //         let subTotal = nominal + ppn;
-    //         $("#share").val('')
-    //         $("#share").val(formatter(ppn))
-    //         $("#total").val('')
-    //         $("#total").val(formatter(subTotal))
-    //     }
-    // })
 
     function FindTheInsurance(id) {
         return fetch(`/api/insurance/${id}`)
