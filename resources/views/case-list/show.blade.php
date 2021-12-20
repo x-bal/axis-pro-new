@@ -586,7 +586,7 @@
                                     </tr>
                                 </tbody>
                                 <tr>
-                                    <td width="197">Ia Amount</td>
+                                    <td width="197">IA Amount</td>
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                 </tr>
@@ -735,7 +735,7 @@
                                     </tr>
                                 </tbody>
                                 <tr>
-                                    <td width="100">Pr Amount</td>
+                                    <td width="100">PR Amount</td>
                                     <td width="100">Interim Report</td>
                                     <td>&nbsp;</td>
                                 </tr>
@@ -932,8 +932,8 @@
                                     </tr>
                                 </tbody>
                                 <tr>
-                                    <td>{{ $caseList->ir_status == 0 ? 'Pa Amount' : 'Ir St Amount' }}</td>
-                                    <td>{{ $caseList->ir_status == 0 ? '' : 'Ir Nd Amount' }}</td>
+                                    <td>{{ $caseList->ir_status == 0 ? 'PA Amount' : 'IR St Amount' }}</td>
+                                    <td>{{ $caseList->ir_status == 0 ? '' : 'IR Nd Amount' }}</td>
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
@@ -1156,7 +1156,7 @@
                                     </tr>
                                 </tbody>
                                 <tr>
-                                    <td>{{ $caseList->ir_status == 0 ? 'Net Adjustment' : 'Pa Amount' }}</td>
+                                    <td>{{ $caseList->ir_status == 0 ? 'Net Adjustment' : 'PA Amount' }}</td>
                                     <td>{{ $caseList->ir_status == 0 ? 'Gross Adjustment' : '' }}</td>
                                     <td>&nbsp;</td>
                                 </tr>

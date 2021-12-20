@@ -235,28 +235,28 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="fee_based">Fee Based</label>
                                     <input type="text" required id="fee_based" name="fee_based" class="form-control fee_based" readonly>
                                 </div>
                                 <input type="hidden" name="fee_hidden" id="fee_hidden" class="fee_hidden">
                             </div>
-                            <div class=" col-md-4">
+                            <div class=" col-md-3">
                                 <div class="form-group">
                                     <label for="">Expense</label>
                                     <input type="text" required id="expense" class="form-control expense" readonly name="expense">
                                     <span class="badge badge-info text-light" id="expense_badge"></span>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="">Discount</label>
                                     <input type="number" required id="discount" value="0" class="form-control discount" name="discount">
                                     <span class="badge badge-primary"></span>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="">Type</label>
                                     <select name="type" id="type" class="form-control" onchange="OnSelectType(this)">
