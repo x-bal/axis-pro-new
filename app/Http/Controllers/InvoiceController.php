@@ -153,29 +153,41 @@ class InvoiceController extends Controller
             }
             // dd($request->discount);
             if ($request->type_invoice == 2) {
-                if ($request->type == 1) {
-                    $caselist->update([
-                        'is_ready' => 3,
-                        'discount' => str_replace(',', '', $request->discount),
-                        'discount_percent' => 0
-                    ]);
+                if ($request->type) {
+                    if ($request->type == 1) {
+                        $caselist->update([
+                            'is_ready' => 3,
+                            'discount' => str_replace(',', '', $request->discount),
+                            'discount_percent' => 0
+                        ]);
+                    } else {
+                        $caselist->update([
+                            'is_ready' => 3,
+                            'discount' => 0,
+                            'discount_percent' => str_replace(',', '', $request->discount)
+                        ]);
+                    }
                 } else {
                     $caselist->update([
                         'is_ready' => 3,
-                        'discount' => 0,
-                        'discount_percent' => str_replace(',', '', $request->discount)
                     ]);
                 }
             } else {
-                if ($request->type == 1) {
-                    $caselist->update([
-                        'is_ready' => 4,
-                        'discount' => $request->discount
-                    ]);
+                if ($request->type) {
+                    if ($request->type == 1) {
+                        $caselist->update([
+                            'is_ready' => 4,
+                            'discount' => $request->discount
+                        ]);
+                    } else {
+                        $caselist->update([
+                            'is_ready' => 4,
+                            'discount_percent' => $request->discount
+                        ]);
+                    }
                 } else {
                     $caselist->update([
                         'is_ready' => 4,
-                        'discount_percent' => $request->discount
                     ]);
                 }
             }
