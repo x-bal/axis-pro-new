@@ -9,6 +9,7 @@ use App\Models\Log;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Excel;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 
 class ExpenseController extends Controller
@@ -35,19 +36,46 @@ class ExpenseController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'adjuster' => 'required',
+            'category' => 'required',
+            'qty' => 'required',
+            'amount' => 'required',
+            'tanggal' => 'required',
+        ]);
+
         try {
-            $request->validate([
-                'file_upload' => 'required',
-                'file_upload.*' => 'max:10240|mimes:xlsx,xls',
+            DB::beginTransaction();
+
+            Expense::create([
+                'case_list_id' => $request->case_list_id,
+                'adjuster' => $request->adjuster,
+                'name' => $request->name,
+                'qty' => $request->qty,
+                'amount' => $request->amount,
+                'total' => intval($request->qty * $request->amount),
+                'category_expense' => $request->category,
+                'tanggal' => $request->tanggal
             ]);
+
+            DB::commit();
+
+            return back()->with('success', 'Expense successfully created');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file_upload' => 'required',
+            'file_upload.*' => 'max:10240|mimes:xlsx,xls',
+        ]);
+        try {
 
             $case = CaseList::find($request->case_list_id);
 

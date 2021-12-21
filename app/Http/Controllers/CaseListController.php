@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\CaseListExport;
-use App\Models\{Attachment, CaseList, User, Broker, Incident, Policy, Client, Currency, Expense, FileStatus, History, Invoice, MemberInsurance};
+use App\Models\{Attachment, CaseList, User, Broker, CategoryExpense, Incident, Policy, Client, Currency, Expense, FileStatus, History, Invoice, MemberInsurance};
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Exception;
@@ -285,6 +285,8 @@ class CaseListController extends Controller
         $messages = [];
         $status = FileStatus::get();
         $gmails = [];
+        $categories = CategoryExpense::get();
+        $adjusters = User::Role('adjuster')->get();
 
         if ($caseList->is_transcript == 0) {
             if (auth()->user()->hasRole('admin')) {
@@ -310,7 +312,7 @@ class CaseListController extends Controller
             }
         }
 
-        return view('case-list.show', compact('caseList', 'status', 'messages', 'gmails'));
+        return view('case-list.show', compact('caseList', 'status', 'messages', 'gmails', 'categories', 'adjusters'));
     }
 
     public function getEmail($fileno)

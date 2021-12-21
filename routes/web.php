@@ -90,6 +90,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('invoice', InvoiceController::class);
     Route::get('expense/download', [ExpenseController::class, 'download'])->name('expense.download');
     Route::post('expense/store', [ExpenseController::class, 'store'])->name('expense.store');
+    Route::post('expense/import', [ExpenseController::class, 'import'])->name('expense.import');
     Route::resource('file-survey', FileSurveyController::class);
     Route::resource('claim-document', ClaimDocumentController::class);
     Route::resource('report-satu', ReportSatuController::class);

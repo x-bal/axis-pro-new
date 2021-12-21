@@ -218,13 +218,13 @@
 
                         @if(auth()->user()->hasRole('admin'))
                         <table width="200" border="0" class="table table-striped">
-                            <form action="{{ route('expense.store') }}" method="post" enctype="multipart/form-data">
-                                @csrf
-                                <tbody>
+                            <tbody>
+                                <form action="{{ route('expense.import') }}" method="post" enctype="multipart/form-data">
+                                    @csrf
                                     <tr>
-                                        <td width="30%">Upload File</td>
-                                        <td width="10%">&nbsp;</td>
-                                        <td width="60%">&nbsp;</td>
+                                        <td>Upload File</td>
+                                        <td>&nbsp;</td>
+                                        <td colspan="5">&nbsp;</td>
                                     </tr>
                                     <tr>
                                         <input type="hidden" name="case_list_id" value="{{ $caseList->id }}">
@@ -235,15 +235,75 @@
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </td>
-                                        <td>
+                                        <td colspan="5">
                                             <button type="submit" class="btn btn-success">Import</button>
-                                        </td>
-                                        <td>
                                             <a href="{{ route('expense.download') }}" class="btn btn-primary"><i class="fas fa-download"></i> Example Format</a>
                                         </td>
                                     </tr>
-                                </tbody>
-                            </form>
+                                </form>
+                                <tr>
+                                    <td colspan="7">&nbsp;</td>
+                                </tr>
+
+                                <form action="{{ route('expense.store') }}" method="post">
+                                    @csrf
+                                    <tr>
+                                        <input type="hidden" name="case_list_id" value="{{ $caseList->id }}">
+                                        <td>
+                                            <input type="text" name="name" class="form-control" placeholder="Name">
+                                            @error('name')
+                                            <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <select name="adjuster" id="adjuster" class="form-control">
+                                                <option disabled selected>- Choose Adjuster -</option>
+                                                @foreach($adjusters as $adjuster)
+                                                <option value="{{ $adjuster->kode_adjuster }}">{{ $adjuster->nama_lengkap }} ({{ $adjuster->kode_adjuster }})</option>
+                                                @endforeach
+                                            </select>
+                                            @error('adjuster')
+                                            <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <select name="category" id="category" class="form-control">
+                                                <option disabled selected>- Choose Category -</option>
+                                                @foreach($categories as $category)
+                                                <option value="{{ $category->nama_kategory }}">{{ $category->nama_kategory }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('category')
+                                            <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </td>
+
+                                        <td>
+                                            <input type="number" name="qty" class="form-control" placeholder="Qty">
+                                            @error('qty')
+                                            <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="number" name="amount" class="form-control" placeholder="Amount">
+                                            @error('amount')
+                                            <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </td>
+
+                                        <td>
+                                            <input type="date" name="tanggal" class="form-control">
+                                            @error('tanggal')
+                                            <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </td>
+
+                                        <td>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </td>
+                                    </tr>
+                                </form>
+                            </tbody>
                         </table>
                         @endif
 
