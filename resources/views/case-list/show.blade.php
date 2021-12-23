@@ -217,94 +217,100 @@
                         <h5 class="mb-3">Expense list</h5>
 
                         @if(auth()->user()->hasRole('admin'))
-                        <table width="200" border="0" class="table table-striped">
-                            <tbody>
-                                <form action="{{ route('expense.import') }}" method="post" enctype="multipart/form-data">
-                                    @csrf
+                        <div class="table-responsive">
+                            <table width="200" border="0" class="table table-striped">
+                                <tbody>
+                                    <form action="{{ route('expense.import') }}" method="post" enctype="multipart/form-data">
+                                        @csrf
+                                        <tr>
+                                            <td>Upload File</td>
+                                            <td>&nbsp;</td>
+                                            <td colspan="5">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <input type="hidden" name="case_list_id" value="{{ $caseList->id }}">
+                                            <td>
+                                                <input type="file" name="file_upload">
+                                                <br>
+                                                @error('file_upload')
+                                                <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </td>
+                                            <td colspan="5">
+                                                <button type="submit" class="btn btn-success">Import</button>
+                                                <a href="{{ route('expense.download') }}" class="btn btn-primary"><i class="fas fa-download"></i> Example Format</a>
+                                            </td>
+                                        </tr>
+                                    </form>
                                     <tr>
-                                        <td>Upload File</td>
-                                        <td>&nbsp;</td>
-                                        <td colspan="5">&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <input type="hidden" name="case_list_id" value="{{ $caseList->id }}">
-                                        <td>
-                                            <input type="file" name="file_upload">
-                                            <br>
-                                            @error('file_upload')
-                                            <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </td>
-                                        <td colspan="5">
-                                            <button type="submit" class="btn btn-success">Import</button>
-                                            <a href="{{ route('expense.download') }}" class="btn btn-primary"><i class="fas fa-download"></i> Example Format</a>
-                                        </td>
-                                    </tr>
-                                </form>
-                                <tr>
-                                    <td colspan="7">&nbsp;</td>
-                                </tr>
-
-                                <form action="{{ route('expense.store') }}" method="post">
-                                    @csrf
-                                    <tr>
-                                        <input type="hidden" name="case_list_id" value="{{ $caseList->id }}">
-                                        <td>
-                                            <input type="text" name="name" class="form-control" placeholder="Name">
-                                            @error('name')
-                                            <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </td>
-                                        <td>
-                                            <select name="adjuster" id="adjuster" class="form-control">
-                                                <option disabled selected>- Choose Adjuster -</option>
-                                                @foreach($adjusters as $adjuster)
-                                                <option value="{{ $adjuster->kode_adjuster }}">{{ $adjuster->nama_lengkap }} ({{ $adjuster->kode_adjuster }})</option>
-                                                @endforeach
-                                            </select>
-                                            @error('adjuster')
-                                            <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </td>
-                                        <td>
-                                            <select name="category" id="category" class="form-control">
-                                                <option disabled selected>- Choose Category -</option>
-                                                @foreach($categories as $category)
-                                                <option value="{{ $category->nama_kategory }}">{{ $category->nama_kategory }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('category')
-                                            <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </td>
-
-                                        <td>
-                                            <input type="number" name="qty" class="form-control" placeholder="Qty">
-                                            @error('qty')
-                                            <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </td>
-                                        <td>
-                                            <input type="number" name="amount" class="form-control" placeholder="Amount">
-                                            @error('amount')
-                                            <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </td>
-
-                                        <td>
-                                            <input type="date" name="tanggal" class="form-control">
-                                            @error('tanggal')
-                                            <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </td>
-
-                                        <td>
-                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        <td colspan="7">
+                                            Add Expense
                                         </td>
                                     </tr>
-                                </form>
-                            </tbody>
-                        </table>
+
+                                    <form action="{{ route('expense.store') }}" method="post">
+                                        @csrf
+                                        <tr>
+                                            <input type="hidden" name="case_list_id" value="{{ $caseList->id }}">
+                                            <td>
+                                                <input type="text" name="name" class="form-control" placeholder="Name">
+                                                @error('name')
+                                                <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </td>
+                                            <td>
+                                                <select name="adjuster" id="adjuster" class="form-control">
+                                                    <option disabled selected>- Choose Adjuster -</option>
+                                                    @foreach($adjusters as $adjuster)
+                                                    <option value="{{ $adjuster->kode_adjuster }}">{{ $adjuster->nama_lengkap }} ({{ $adjuster->kode_adjuster }})</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('adjuster')
+                                                <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </td>
+                                            <td>
+                                                <select name="category" id="category" class="form-control">
+                                                    <option disabled selected>- Choose Category -</option>
+                                                    @foreach($categories as $category)
+                                                    <option value="{{ $category->nama_kategory }}">{{ $category->nama_kategory }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('category')
+                                                <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="number" name="qty" class="form-control" placeholder="Qty">
+                                                @error('qty')
+                                                <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </td>
+                                            <td>
+                                                <input type="number" name="amount" class="form-control" placeholder="Amount">
+                                                @error('amount')
+                                                <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </td>
+
+                                            <td>
+                                                <input type="date" name="tanggal" class="form-control">
+                                                @error('tanggal')
+                                                <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                            </td>
+                                        </tr>
+                                    </form>
+                                </tbody>
+                            </table>
+                        </div>
                         @endif
 
                         @if($caseList->is_expense == 1)

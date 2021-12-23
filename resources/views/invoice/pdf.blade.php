@@ -152,7 +152,7 @@
                         <td>
                             <table style="margin-left: 20px; margin-bottom: 10px;">
                                 <tr>
-                                    <td width="150px">{{ $inv->type_invoice == 1 ? 'Professional Fee' : 'Adjuster Fee' }}</td>
+                                    <td width="150px">Professional Fee</td>
                                     <td width="250px">Your Share</td>
                                     <td width="50px">&nbsp;</td>
                                     <td>&nbsp;</td>
@@ -309,8 +309,8 @@
                         <tr>
                             <th>Payments</th>
                             <td style="white-space: pre-line;">
-                                Please make payment <strong>no later than 30 days after receipt of this invoice,
-                                </strong> and please email Bank Slip Transfer to <strong>finance@axis-adjusters.com</strong>
+                                Please pay within <strong>30 days after receiving the invoice</strong>
+                                Kindly send copy of bank transfer to <strong>finance@axis-adjusters.com</strong>
                             </td>
                             <th colspan="4">&nbsp;</th>
                             <th>&nbsp;</th>
@@ -320,7 +320,7 @@
                         </tr>
                         <tr>
                             <th>&nbsp;</th>
-                            <th>PT AXIS INTERNASIONAL INDONESIA</th>
+                            <th>PT AXIS INTERNATIONAL INDONESIA</th>
                             <th colspan="4">&nbsp;</th>
                             <th>&nbsp;</th>
                         </tr>
@@ -367,18 +367,18 @@
                     <th width="400px"></th>
                     <th width="150px" style="border-left: 1px solid #1f67a7;">
                         <div style="margin-left: 5px;">
-                            <b style="color: #1f67a7;">PT AXIS Internasional Indonesia</b> <br>
-                            Pakuwon Tower 12 fl. Unit I <br>
-                            Jl. Casablanca Raya Kav 88 <br>
-                            Jakarta Selatan 12870, Indonesia <br>
+                            <b style="color: #1f67a7;">PT AXIS International Indonesia</b> <br>
+                            Pakuwon Tower 12th floor, Unit I <br>
+                            Jl. Casablanca Raya, Kav. 88, <br>
+                            Jakarta 12870, Indonesia <br>
                         </div>
                     </th>
                     <th width="150px" style="border-left: 1px solid #1f67a7;">
                         <div style="margin-left: 5px;">
-                            <i class="fab fa-tumblr" style="color: #1f67a7; margin-right: 10px;"></i> +62 21 2290 3759 <br>
-                            <i class="fab fa-tumblr" style="color: #1f67a7; margin-right: 10px;"></i> +62 21 2290 3831 <br>
-                            <i class="fas fa-at" style="color: #1f67a7; margin-right: 10px;"></i> claims@axis-adjusters.com <br>
-                            <i class="fab fa-chrome" style="color: #1f67a7; margin-right: 10px;"></i> www.axis-lossadjusters.com <br>
+                            <i class="fab fa-tumblr" style="color: #1f67a7;"></i> + 62 21 2290 3759, 2290 3831 <br>
+                            <i class="fab fa-tumblr" style="color: #1f67a7;"></i> + 62 62 21 2138 3924 <br>
+                            <span style="color: #1f67a7;">e</span> claims@axis-adjusters.com <br>
+                            <span style="color: #1f67a7;">w</span> www.axis-lossadjusters.com <br>
                         </div>
                     </th>
                 </tr>
