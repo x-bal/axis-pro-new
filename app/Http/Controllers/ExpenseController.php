@@ -155,13 +155,16 @@ class ExpenseController extends Controller
     public function destroy(Expense $expense)
     {
         if ($expense->is_active == 0) {
-            Log::create([
-                'nama' => auth()->user()->nama_lengkap,
-                'old' => $expense->amount,
-                'new' => $expense->amount,
-                'datetime' => Carbon::now()->format('Y-m-d H:i:s'),
-                'expense_id' => $expense->id
-            ]);
+            foreach (Log::where('expense_id', $expense->id)->get() as $log) {
+                $log->delete();
+            }
+            // Log::create([
+            //     'nama' => auth()->user()->nama_lengkap,
+            //     'old' => $expense->amount,
+            //     'new' => $expense->amount,
+            //     'datetime' => Carbon::now()->format('Y-m-d H:i:s'),
+            //     'expense_id' => $expense->id
+            // ]);
             $expense->delete();
             return back()->with('success', 'Expense has been deleted');
         } else {
