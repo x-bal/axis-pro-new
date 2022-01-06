@@ -97,7 +97,7 @@
                                     <td>{{ $caseList->adjuster->kode_adjuster }} ({{ $caseList->adjuster->nama_lengkap }})</td>
                                     <td>DOL</td>
                                     <td>:</td>
-                                    <td>{{ Carbon\Carbon::parse($caseList->dol)->format('d-M-Y') }}</td>
+                                    <td>{{ Carbon\Carbon::parse($caseList->dol)->format('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
                                     <td>INSURANCE</td>
@@ -125,12 +125,12 @@
                                     <td>{{ $caseList->policy->type_policy }}</td>
                                     <td>LEADER POLICY NO</td>
                                     <td>:</td>
-                                    <td>{{ $caseList->no_leader_policy }} | PERIOD BEGIN : {{ Carbon\Carbon::parse($caseList->begin)->format('d-M-Y') }} PERIOD END : {{ Carbon\Carbon::parse($caseList->end)->format('d-M-Y') }} <br> </td>
+                                    <td>{{ $caseList->no_leader_policy }} | PERIOD BEGIN : {{ Carbon\Carbon::parse($caseList->begin)->format('d/m/Y') }} PERIOD END : {{ Carbon\Carbon::parse($caseList->end)->format('d/m/Y') }} <br> </td>
                                 </tr>
                                 <tr>
                                     <td>SURVEY DATE</td>
                                     <td>:</td>
-                                    <td>{{ $caseList->survey_date }}</td>
+                                    <td>{{ Carbon\Carbon::parse($caseList->survey_date)->format('d/m/Y') }}</td>
                                     <td>LEADER CLAIM NO</td>
                                     <td>:</td>
                                     <td>{{ $caseList->leader_claim_no }} - <strong>{{ $caseList->no_ref_surat_asuransi }}</strong></td>
@@ -138,7 +138,7 @@
                                 <tr>
                                     <td>NOW UPDATE</td>
                                     <td>:</td>
-                                    <td>{{ $caseList->now_update }}</td>
+                                    <td>{{ Carbon\Carbon::parse($caseList->now_update)->format('d/m/Y') }}</td>
                                     <td>AGING (DAY)</td>
                                     <td>:</td>
                                     <td>
