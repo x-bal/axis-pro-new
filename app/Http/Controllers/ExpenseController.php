@@ -174,7 +174,7 @@ class ExpenseController extends Controller
 
     public function download()
     {
-        return Response::download('expense/example-expense.xlsx');
+        return Response::download('expense/new-example-expense.xlsx');
     }
     public function laporan(Request $request)
     {
