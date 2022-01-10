@@ -155,7 +155,7 @@ class ExpenseController extends Controller
     public function destroy(Expense $expense)
     {
         if ($expense->is_active == 0) {
-            foreach ($expense->log as $log) {
+            foreach ($expense->logs as $log) {
                 $log->delete();
             }
             // Log::create([
