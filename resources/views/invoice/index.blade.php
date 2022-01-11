@@ -89,7 +89,7 @@
                                 <th>No Invoice</th>
                                 <th>Type Invoice</th>
                                 <th>Tanggal Invoice</th>
-                                <th>Tanggal Jatuh Invoice</th>
+                                <th>Tanggal Jatuh Tempo</th>
                                 <th>Bank</th>
                                 <th>Tanggal Bayar</th>
                                 <th>Amount</th>
@@ -106,10 +106,10 @@
                                 <td>{{ $inv->caselist->file_no }}</td>
                                 <td>{{ $inv->no_invoice }}</td>
                                 <td>{{ $inv->type_invoice == 1 ? 'Interim Invoice' : '' }}{{ $inv->type_invoice == 2 ? 'Proforma Invoice' : '' }} {{ $inv->type_invoice == 3 ? 'Final Invoice' : '' }}</td>
-                                <td>{{ $inv->date_invoice }}</td>
-                                <td>{{ $inv->due_date }}</td>
+                                <td>{{ Carbon\Carbon::parse($inv->date_invoice)->format('d/m/Y') }}</td>
+                                <td>{{ Carbon\Carbon::parse($inv->due_date)->format('d/m/Y') }}</td>
                                 <td>{{ $inv->bank->bank_name ?? 'Kosong' }}</td>
-                                <td>{{ $inv->tanggal_invoice }}</td>
+                                <td>{{ $inv->tanggal_invoice ? Carbon\Carbon::parse($inv->tanggal_invoice)->format('d/m/Y') : '' }}</td>
                                 <td>@if($inv->caselist->currency == 'IDR') <strong>IDR.</strong> @else <i class="fas fa-dollar-sign"></i> @endif {{ number_format($inv->grand_total) }}</td>
                                 <td>
                                     <span class="badge badge-{{ $inv->status_paid == 1 ? 'success' : 'danger' }} p-1">{{ $inv->status_paid == 1 ? 'Paid' : 'Unpaid' }}</span>
@@ -153,14 +153,14 @@
                         <form action="" id="TheFormConfirm" method="post"></form>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="">Tanggal Invoice</label>
-                                <input type="date" value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" class="form-control" name="tanggal_invoice" id='tanggal_invoice'>
+                                <label for="">Tanggal Bayar</label>
+                                <input type="date" value="" class="form-control" name="tanggal_invoice" id='tanggal_invoice'>
                                 <input type="hidden" class="form-control" readonly name="id_invoice" id="id_invoice">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="Type Bank">Type Bank</label>
+                                <label for="Bank">Bank</label>
                                 <select class="form-control" name="bank" id="bank">
                                     @foreach($bank as $list)
                                     <option value="{{ $list->id }}">{{ $list->bank_name }} - {{ $list->currency }}</option>
@@ -170,7 +170,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="Type Bank">Status</label>
+                                <label for="status">Status</label>
                                 <select class="form-control" name="status_invoice" id="status_invoice">
                                     <option value="1">Paid</option>
                                     <option value="0">Unpaid</option>
@@ -220,14 +220,14 @@
 
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="claim_amount">Claim Amount</label>
+                                    <label for="claim_amount">Gross Adjusted</label>
                                     <input type="text" required id="claim_amount" class="form-control claim_amount" readonly>
                                     <span class="badge badge-info text-light" id="claim_amount_badge"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="adjusted">Adjusted</label>
+                                    <label for="adjusted">Scale Fee</label>
                                     <input type="text" required id="adjusted" class="form-control adjusted" readonly>
                                     <span class="badge badge-success" id="ForAdjusted"></span>
                                     <span class="badge badge-info" id="ForCategory"></span>

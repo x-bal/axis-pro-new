@@ -11,7 +11,7 @@
             <div class="card-body">
                 <ul class="nav nav-tabs" id="myTabs">
                     <li class="nav-item">
-                        <a class="nav-link nav-tab {{ request()->get('page') == 'nav-assigment' ? 'active bg-primary text-white' : '' }} {{ !request()->get('page') ? 'active bg-primary text-white' : '' }}" href="?page=nav-assigment">Assigment Info</a>
+                        <a class="nav-link nav-tab {{ request()->get('page') == 'nav-assignment' ? 'active bg-primary text-white' : '' }} {{ !request()->get('page') ? 'active bg-primary text-white' : '' }}" href="?page=nav-assignment">Assignment Info</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link nav-tab {{ request()->get('page') == 'nav-expense' ? 'active bg-primary text-white' : '' }}" href="?page=nav-expense">Expense</a>
@@ -51,9 +51,9 @@
                 </ul>
 
                 <div class="tab-content">
-                    @if(request()->get('page') == "nav-assigment" || !request()->get('page'))
+                    @if(request()->get('page') == "nav-assignment" || !request()->get('page'))
                     <div class="tab-pane fade show active mt-3" id="nav-assigmnet" aria-labelledby="nav-assigmnet-tab">
-                        <h5 class="mb-3">Assigment info</h5>
+                        <h5 class="mb-3">Assignment info</h5>
                         <table class="mb-3">
                             <tbody>
                                 <tr>
@@ -143,6 +143,16 @@
                                     <td>:</td>
                                     <td>
                                         {{ Carbon\Carbon::parse($caseList->instruction_date)->diff($caseList->file_status_id == 5 ? $caseList->now_update : Carbon\Carbon::now())->d  }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>CLAIM AMOUNT</td>
+                                    <td>:</td>
+                                    <td>
+                                        {{ $caseList->currency }} {{ number_format($caseList->claim_amount, 0, ',','.') }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -378,7 +388,9 @@
                                     <td>{{ $caseList->currency == 'IDR' ? 'Rp.' : '$' }} {{ number_format($amount, 2) }}</td>
                                     <td>{{ $caseList->currency == 'IDR' ? 'Rp.' : '$' }} {{ number_format($total, 2) }}</td>
                                     <td></td>
+                                    @if(auth()->user()->hasRole('admin'))
                                     <td></td>
+                                    @endif
                                 </tr>
                             </tfoot>
                         </table>
@@ -662,7 +674,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
                                             </div>
-                                            <input type="number" name="ia_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->ia_amount ?? '' }}">
+                                            <input type="text" id="" name="ia_amount" class="form-control ia_amount" aria-describedby="basic-addon1" value="{{ $caseList->ia_amount ?? '' }}">
                                         </div>
                                     </td>
                                     <td>&nbsp;</td>
@@ -830,7 +842,7 @@
                                 </tr>
                                 @if($caseList->ir_status == 0)
                                 <tr>
-                                    <td width="100">Date Complete</td>
+                                    <td width="100">Date Report</td>
                                     <td width="100">&nbsp;</td>
                                     <td>&nbsp;</td>
                                 </tr>
@@ -1047,7 +1059,7 @@
                                 </tr>
                                 @if($caseList->ir_status == 1)
                                 <tr>
-                                    <td width="100">Date Complete</td>
+                                    <td width="100">Date Report</td>
                                     <td width="100">Professional Service</td>
                                     <td>&nbsp;</td>
                                 </tr>
@@ -1482,8 +1494,8 @@
 
                 <div class="button mt-3 d-flex">
                     <a href="{{ route('case-list.index') }}" class="btn btn-success mr-2">Kembali</a>
-                    @if(request()->get('page') == "nav-assigment" || !request()->get('page'))
-                    <a href="{{ route('caselist.assigment', $caseList->id) }}" class="btn btn-info">Cetak Assigment</a>
+                    @if(request()->get('page') == "nav-assignment" || !request()->get('page'))
+                    <a href="{{ route('caselist.assignment', $caseList->id) }}" class="btn btn-info">Cetak Assignment</a>
                     @endif
 
                     @if(request()->get('page') == "nav-report-1" && $caseList->file_status_id != 5)
@@ -1646,6 +1658,19 @@
         $(".remove-5").live('click', function() {
             $(this).parent().parent().remove();
         })
+
+        // $('.ia_amount').keyup(function(event) {
+
+        //     // skip for arrow keys
+        //     if (event.which >= 37 && event.which <= 40) return;
+
+        //     // format number
+        //     $(this).val(function(index, value) {
+        //         return value
+        //             .replace(/\D/g, "")
+        //             .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        //     });
+        // });
     })
 
     $(document).ready(function() {

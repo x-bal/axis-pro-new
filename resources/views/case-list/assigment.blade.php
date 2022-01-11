@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assigment Info {{ $caseList->file_no }}</title>
+    <title>Assignment Info {{ $caseList->file_no }}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <style>
         @page {
@@ -33,7 +33,7 @@
 
 <body class="A4 landscape">
     <div class="container-fluid sheet padding-1mm">
-        <h4>Assigment Info {{ $caseList->file_no }}</h4>
+        <h4>Assignment Info {{ $caseList->file_no }}</h4>
         <table width="100%" class="table table-bordered table-striped" style="font-size: 12px; margin-top: 20px;">
             <tbody>
                 <tr>
@@ -58,7 +58,7 @@
                     <td>{{ $caseList->adjuster->kode_adjuster }} ({{ $caseList->adjuster->nama_lengkap }})</td>
                     <td>DOL</td>
                     <td>:</td>
-                    <td>{{ Carbon\Carbon::parse($caseList->dol)->format('d-M-Y') }}</td>
+                    <td>{{ Carbon\Carbon::parse($caseList->dol)->format('d/m/Y') }}</td>
                 </tr>
                 <tr>
                     <td>INSURANCE</td>
@@ -100,10 +100,10 @@
                     <td>NOW UPDATE</td>
                     <td>:</td>
                     <td>{{ Carbon\Carbon::parse($caseList->now_update)->format('d/m/Y') }}</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td>CLAIM AMOUNT</td>
+                    <td>:</td>
                     <td>
-                        &nbsp;
+                        {{ $caseList->currency }} {{ number_format($caseList->claim_amount, 0, ',','.') }}
                     </td>
                 </tr>
             </tbody>

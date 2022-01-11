@@ -6,14 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">  
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
 </head>
 
 <body>
@@ -97,25 +97,25 @@
                                 <th rowspan="2">Instruction Date</th>
                                 <th rowspan="2">Survey Date</th>
                                 <th rowspan="2">Now Update</th>
-                                <th rowspan="2">Ia Date</th>
-                                <th rowspan="2">Ia Amount</th>
-                                <th rowspan="2">Ia Status</th>
-                                <th rowspan="2">Pr Date</th>
-                                <th rowspan="2">Pr amount</th>
-                                <th rowspan="2">Pr Status</th>
-                                <th rowspan="2">Ir Status</th>
-                                <th rowspan="2">Ir St Date</th>
-                                <th rowspan="2">Ir St Amount</th>
-                                <th rowspan="2">Ir St Status</th>
-                                <th rowspan="2">Ir Nd Date</th>
-                                <th rowspan="2">Ir Nd Amount</th>
-                                <th rowspan="2">Ir Nd Status</th>
-                                <th rowspan="2">Pa Date</th>
-                                <th rowspan="2">Pa Amount</th>
-                                <th rowspan="2">Pa Status</th>
-                                <th rowspan="2">Fr Date</th>
-                                <th rowspan="2">Fr Amount</th>
-                                <th rowspan="2">Fr Status</th>
+                                <th rowspan="2">IA Date</th>
+                                <th rowspan="2">IA Amount</th>
+                                <th rowspan="2">IA Status</th>
+                                <th rowspan="2">PR Date</th>
+                                <th rowspan="2">PR amount</th>
+                                <th rowspan="2">PR Status</th>
+                                <th rowspan="2">IR Status</th>
+                                <th rowspan="2">IR St Date</th>
+                                <th rowspan="2">IR St Amount</th>
+                                <th rowspan="2">IR St Status</th>
+                                <th rowspan="2">IR Nd Date</th>
+                                <th rowspan="2">IR Nd Amount</th>
+                                <th rowspan="2">IR Nd Status</th>
+                                <th rowspan="2">PA Date</th>
+                                <th rowspan="2">PA Amount</th>
+                                <th rowspan="2">PA Status</th>
+                                <th rowspan="2">FR Date</th>
+                                <th rowspan="2">FR Amount</th>
+                                <th rowspan="2">FR Status</th>
                                 <th rowspan="2">Remark</th>
                                 <th rowspan="2">File Status</th>
                             </tr>

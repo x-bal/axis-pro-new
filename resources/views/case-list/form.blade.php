@@ -303,7 +303,7 @@
     </div>
 
 </div>
-@if($errors->any())
+<!-- @if($errors->any())
 <div class="alert alert-danger">
     <ul>
         @foreach($errors->all() as $error)
@@ -311,7 +311,7 @@
         @endforeach
     </ul>
 </div>
-@endif
+@endif -->
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">

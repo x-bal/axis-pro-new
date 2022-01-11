@@ -22,12 +22,14 @@ class CaseListController extends Controller
 
         if (auth()->user()->hasRole('admin')) {
             $data = CaseList::orderBy('file_no', 'desc')->get();
-        } else {
+        }
+
+        if (auth()->user()->hasRole('adjuster')) {
             $data = CaseList::orderBy('file_no', 'desc')->where('adjuster_id', auth()->user()->id)->get();
         }
 
-        if (request()->ajax()) {
 
+        if (request()->ajax()) {
             return datatables()->of($data)
                 ->addIndexColumn()
                 ->editColumn('fileno', function ($row) {

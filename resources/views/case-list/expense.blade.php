@@ -139,21 +139,21 @@
         <h3 style="text-align: center;"><u>WORK ORDER DETAIL</u></h3>
 
         <div style="line-height: 11px;">
-            <table>
+            <table width="100%">
                 <tr>
-                    <td>Work Order</td>
-                    <td> :</td>
-                    <td width="300px">{{ $caseList->file_no }}</td>
+                    <td width="70px">Work Order</td>
+                    <td width="10px"> : </td>
+                    <td width="230px">{{ $caseList->file_no }}</td>
 
-                    <td>DOL/Instruction</td>
-                    <td> :</td>
+                    <td width="100px">DOL/Instruction</td>
+                    <td width="10px"> :</td>
                     <td>{{ Carbon\Carbon::parse($caseList->dol)->format('d/m/Y') }} - {{ Carbon\Carbon::parse($caseList->instruction_date)->format('d/m/Y') }}</td>
                 </tr>
 
                 <tr>
                     <td>Policy No</td>
                     <td> :</td>
-                    <td width="300px">{{ $caseList->no_leader_policy }}</td>
+                    <td>{{ $caseList->no_leader_policy }}</td>
 
                     <td>Currency</td>
                     <td> :</td>
@@ -162,18 +162,18 @@
 
                 <tr>
                     <td>Status</td>
-                    <td> :</td>
-                    <td width="300px">Active</td>
+                    <td> : </td>
+                    <td>Active</td>
 
                     <td>Location</td>
-                    <td> :</td>
+                    <td> : </td>
                     <td style="text-transform: uppercase;">{{ $caseList->risk_location }}</td>
                 </tr>
 
                 <tr>
                     <td>Insured</td>
                     <td> :</td>
-                    <td width="300px" style="text-transform: uppercase;">{{ $caseList->insured }}</td>
+                    <td style="text-transform: uppercase;">{{ $caseList->insured }}</td>
                 </tr>
             </table>
         </div>
@@ -185,7 +185,7 @@
 
         <div style="margin-top: 20px;">
             <strong><u>Adjuster :</u></strong><br>
-            <table style="margin-left: -4px;">
+            <table style="margin-left: -4px;" width="100%">
                 <tr style="text-transform: uppercase;">
                     <td width="100px"><b>{{ $caseList->adjuster->kode_adjuster }}</b></td>
                     <td>{{ $caseList->adjuster->nama_lengkap }}</td>
@@ -195,10 +195,10 @@
 
         <div style="margin-top: 20px;">
             <strong><u>Insurers :</u></strong><br>
-            <table style="margin-left: -4px;">
+            <table style="margin-left: -4px;" width="100%">
                 @foreach($caseList->member as $member)
                 <tr style="text-transform: uppercase;">
-                    <td width="50px"><b>{{ App\Models\Client::find($member->member_insurance)->brand }}</b></td>
+                    <td width="300px"><b>{{ App\Models\Client::find($member->member_insurance)->brand }}</b></td>
                     <td width="300px">{{ App\Models\Client::find($member->member_insurance)->name }}</td>
                     <td>{{ $member->share}}</td>
                 </tr>
@@ -208,7 +208,7 @@
 
         <div style="margin-top: 20px;">
             <strong><u>Expenses :</u></strong><br>
-            <table style="margin-left: -4px; margin-top: 5px;">
+            <table style="margin-left: -4px; margin-top: 5px;" width="100%">
                 @foreach($adjuster as $adj)
                 <tr>
                     <td>
@@ -258,6 +258,5 @@
         </div>
     </div>
 </body>
-
 
 </html>

@@ -77,6 +77,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <select name="status" id="status" class="form-control @error('status') is-invalid @enderror">
+                                        <option value="all">All</option>
                                         <option value="outstanding">Outstanding</option>
                                         <option value="5">Close File</option>
                                     </select>
@@ -195,12 +196,11 @@
                 data: 'status',
                 name: 'status'
             },
-            @can('case-list-edit') {
+            {
                 data: 'action',
                 name: 'action',
 
             },
-            @endcan
 
         ],
         responsive: {

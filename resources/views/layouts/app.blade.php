@@ -76,24 +76,20 @@
                         <li class="nav-item {{ request()->is('dashboard*') ? 'active' : '' }}">
                             <a href="/dashboard" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                         </li>
-                        @can('insurance-access')
-                        <li class="nav-item {{ request()->is('insurance*') ? 'active' : '' }}">
-                            <a href="{{ route('insurance.index') }}" class="nav-link"><i class="fas fa-comments"></i> Insurance</a>
-                        </li>
-                        @endcan
+
                         @can('case-list-access')
                         <li class="nav-item {{ request()->is('case-list*') ? 'active' : '' }}">
                             <a href="{{ route('case-list.index') }}" class="nav-link"><i class="fas fa-list-alt"></i> Case List</a>
                         </li>
                         @endcan
-                        @can('invoice-access')
-                        <li class="nav-item {{ request()->is('invoice*') ? 'active' : '' }}">
-                            <a href="{{ route('invoice.index') }}" class="nav-link"><i class="fas fa-chart-bar"></i> Invoice</a>
-                        </li>
-                        @endcan
                         @can('expense-access')
                         <li class="nav-item {{ request()->is('expense*') ? 'active' : '' }}">
                             <a href="{{ route('expense.index') }}" class="nav-link"><i class="fas fa-coins"></i> Expense</a>
+                        </li>
+                        @endcan
+                        @can('invoice-access')
+                        <li class="nav-item {{ request()->is('invoice*') ? 'active' : '' }}">
+                            <a href="{{ route('invoice.index') }}" class="nav-link"><i class="fas fa-chart-bar"></i> Invoice</a>
                         </li>
                         @endcan
                         @can('master-access')
@@ -103,6 +99,9 @@
                             </a>
 
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @can('insurance-access')
+                                <a href="{{ route('insurance.index') }}" class="dropdown-item {{ request()->is('insurance*') ? 'active' : '' }}">Insurances</a>
+                                @endcan
                                 @can('cause-of-loss-access')
                                 <a class="dropdown-item {{ request()->is('cause-of-loss*') ? 'active' : '' }}" href="{{ route('cause-of-loss.index') }}">Cause Of Loss</a>
                                 @endcan
@@ -121,21 +120,9 @@
                                 @can('category-expense-access')
                                 <a class="dropdown-item {{ request()->is('category-expense*') ? 'active' : '' }}" href="{{ route('category-expense.index') }}">Category Expense</a>
                                 @endcan
-                            </div>
-                        </li>
-                        @endcan
-                        @can('user-access')
-                        <li class="nav-item {{ request()->is('users*') ? 'active' : '' }}">
-                            <a href="{{ route('users.index') }}" class="nav-link"><i class="fas fa-users"></i> User</a>
-                        </li>
-                        @endcan
-                        @can('group-access')
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link {{ request()->is('roles*') ? 'active' : '' }} {{ request()->is('permission*') ? 'active' : '' }} dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                <i class="fas fa-cogs"></i> Group
-                            </a>
-
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @can('user-access')
+                                <a href="{{ route('users.index') }}" class="dropdown-item {{ request()->is('users*') ? 'active' : '' }}"> Users</a>
+                                @endcan
                                 @can('role-access')
                                 <a class="dropdown-item {{ request()->is('roles*') ? 'active' : '' }}" href="{{ route('roles.index') }}">Roles</a>
                                 @endcan
@@ -145,6 +132,18 @@
                             </div>
                         </li>
                         @endcan
+
+                        <!-- @can('group-access')
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link {{ request()->is('roles*') ? 'active' : '' }} {{ request()->is('permission*') ? 'active' : '' }} dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <i class="fas fa-cogs"></i> Group
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                            </div>
+                        </li>
+                        @endcan -->
                     </ul>
                     @endauth
                     <!-- Right Side Of Navbar -->
