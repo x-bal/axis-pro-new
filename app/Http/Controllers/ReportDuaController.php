@@ -94,7 +94,7 @@ class ReportDuaController extends Controller
                 $caseList->update([
                     'pr_amount' => str_replace('.', '', $request->pr_amount),
                     'pr_curr' => $request->curr,
-                    'date_complete' => $request->date_complete
+                    'date_complete' => Carbon::createFromFormat('d/m/Y', $request->date_complete)->format('Y-m-d')
                 ]);
             }
 
