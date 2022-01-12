@@ -1687,7 +1687,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="">Date Instruction Closed</label>
-                                    <input type="text" name="date_instruction" id="date_instruction" class="form-control date_instruction" placeholder="dd/mm/yyyy" autocomplete="off">
+                                    <input type="text" name="date_instruction" id="date_instruction" class="form-control date_instruction" placeholder="dd/mm/yyyy" autocomplete="off" value="{{ Carbon\Carbon::parse($caseList->date_insctruction)->format('d/m/Y') }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
