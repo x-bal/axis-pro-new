@@ -71,8 +71,9 @@ class ReportSatuController extends Controller
             $caseList = CaseList::find($request->case_list_id);
             if ($caseList->ia_status == 0) {
                 $caseList->update([
-                    'ia_amount' => $request->ia_amount,
+                    'ia_amount' => str_replace('.', '', $request->ia_amount),
                     'ia_status' => 1,
+                    'ia_curr' => $request->curr,
                     'ia_date' => Carbon::now(),
                     'now_update' => Carbon::now(),
                     'pr_limit' => Carbon::now()->addDay(14),
@@ -80,7 +81,8 @@ class ReportSatuController extends Controller
                 ]);
             } else {
                 $caseList->update([
-                    'ia_amount' => $request->ia_amount,
+                    'ia_amount' => str_replace('.', '', $request->ia_amount),
+                    'ia_curr' => $request->curr,
                 ]);
             }
 

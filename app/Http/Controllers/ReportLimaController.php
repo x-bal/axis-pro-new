@@ -73,9 +73,11 @@ class ReportLimaController extends Controller
             $caseList = CaseList::find($request->case_list_id);
 
             $caseList->update([
-                'fr_amount' => $request->fr_amount,
-                'claim_amount' => $request->claim_amount,
+                'fr_amount' => str_replace('.', '', $request->fr_amount),
+                'claim_amount' => str_replace('.', '', $request->claim_amount),
                 'fr_status' => 1,
+                'fr_curr' => $request->curr,
+                'claim_amount_curr' => $request->claim_curr,
                 'fr_date' => Carbon::now(),
                 'now_update' => Carbon::now(),
                 'file_status_id' => 5

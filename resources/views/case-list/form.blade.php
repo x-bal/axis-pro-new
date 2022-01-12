@@ -116,7 +116,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="dol">Date Of Loss <strong class="text-danger">*</strong></label>
-            <input type="date" value="{{ $caseList->dol ?? old('dol') }}" id="dol" name="dol" class="form-control @error('dol') is-invalid @enderror">
+            <input type="text" value="{{ Carbon\Carbon::parse($caseList->dol)->format('d/m/Y') ?? old('dol') }}" id="dol" name="dol" class="form-control @error('dol') is-invalid @enderror">
             @error('dol')
             <div class="invalid-feedback">
                 {{ $message }}
@@ -181,7 +181,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="begin">Begin <strong class="text-danger">*</strong></label>
-            <input class="form-control @error('begin') is-invalid @enderror" value="{{ $caseList->begin ?? old('begin')}}" name="begin" id="begin" type="date">
+            <input class="form-control begin @error('begin') is-invalid @enderror" value="{{ Carbon\Carbon::parse($caseList->begin)->format('d/m/Y') ?? old('begin')}}" name="begin" id="begin" type="text">
             @error('begin')
             <div class="invalid-feedback">
                 {{ $message }}
@@ -193,7 +193,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="end">End <strong class="text-danger">*</strong></label>
-            <input class="form-control @error('end') is-invalid @enderror" value="{{ $caseList->end ?? old('end') }}" name="end" id="end" type="date">
+            <input class="form-control @error('end') is-invalid @enderror" value="{{ Carbon\Carbon::parse($caseList->end)->format('d/m/Y') ?? old('end') }}" name="end" id="end" type="text">
             @error('end')
             <div class="invalid-feedback">
                 {{ $message }}
@@ -205,7 +205,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="instruction_date">Instruction Date <strong class="text-danger">*</strong></label>
-            <input class="form-control @error('instruction_date') is-invalid @enderror" value="{{ $caseList->instruction_date ?? old('instruction_date') }}" name="instruction_date" id="instruction_date" type="date">
+            <input class="form-control @error('instruction_date') is-invalid @enderror" value="{{ Carbon\Carbon::parse($caseList->instruction_date)->format('d/m/Y') ?? old('instruction_date') }}" name="instruction_date" id="instruction_date" type="text">
             @error('instruction_date')
             <div class="invalid-feedback">
                 {{ $message }}
@@ -217,7 +217,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="survey_date">Survey Date <strong class="text-danger">*</strong></label>
-            <input class="form-control @error('survey_date') is-invalid @enderror" value="{{ $caseList->survey_date ?? old('survey_date') }}" name="survey_date" id="survey_date" type="date">
+            <input class="form-control @error('survey_date') is-invalid @enderror" value="{{ Carbon\Carbon::parse($caseList->survey_date)->format('d/m/Y') ?? old('survey_date') }}" name="survey_date" id="survey_date" type="text">
 
             @error('survey_date')
             <div class="invalid-feedback">
@@ -378,7 +378,28 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    $(function() {
+        $("#begin").datepicker({
+            dateFormat: "dd/mm/yy"
+        });
+        $("#dol").datepicker({
+            dateFormat: "dd/mm/yy"
+        });
+        $("#end").datepicker({
+            dateFormat: "dd/mm/yy"
+        });
+        $("#instruction_date").datepicker({
+            dateFormat: "dd/mm/yy"
+        });
+        $("#survey_date").datepicker({
+            dateFormat: "dd/mm/yy"
+        });
+    });
+</script>
 
 <script>
     $('#category').on('change', function() {

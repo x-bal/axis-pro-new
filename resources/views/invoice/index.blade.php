@@ -39,7 +39,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <input type="date" name="from" id="from" class="form-control @error('from') is-invalid @enderror">
+                                    <input type="text" autocomplete="off" placeholder="dd/mm/yyyy" name="from" id="from" class="form-control @error('from') is-invalid @enderror">
                                     @error('from')
                                     <div class="invalid-feedback">
                                         <strong>{{ $message }}</strong>
@@ -49,7 +49,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <input type="date" name="to" id="to" class="form-control @error('to') is-invalid @enderror">
+                                    <input type="text" autocomplete="off" placeholder="dd/mm/yyyy" name="to" id="to" class="form-control @error('to') is-invalid @enderror">
                                     @error('to')
                                     <div class="invalid-feedback">
                                         <strong>{{ $message }}</strong>
@@ -154,7 +154,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="">Tanggal Bayar</label>
-                                <input type="date" value="" class="form-control" name="tanggal_invoice" id='tanggal_invoice'>
+                                <input type="text" autocomplete="off" placeholder="dd/mm/yyyy" value="" class="form-control" name="tanggal_invoice" id='tanggal_invoice'>
                                 <input type="hidden" class="form-control" readonly name="id_invoice" id="id_invoice">
                             </div>
                         </div>
@@ -284,7 +284,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Date Invoice</label>
-                                    <input type="date" id="date_invoice" class="form-control" name="date_invoice">
+                                    <input type="text" autocomplete="off" placeholder="dd/mm/yyy" id="date_invoice" class="form-control date_invoice" name="date_invoice">
                                 </div>
                             </div>
                         </div>
@@ -347,7 +347,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Date Invoice</label>
-                                    <input type="date" id="date_invoice" class="form-control" name="date_invoice">
+                                    <input type="text" autocomplete="off" placeholder="dd/mm/yyyy" id="date_invoice" class="form-control date_invoice" name="date_invoice">
                                 </div>
                             </div>
 
@@ -418,7 +418,28 @@
 @stop
 
 @section('footer')
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script>
+    $(document).ready(function() {
+        $("#tanggal_invoice").datepicker({
+            dateFormat: "dd/mm/yy"
+        });
+
+        $(".date_invoice").datepicker({
+            dateFormat: "dd/mm/yy"
+        });
+
+        $("#from").datepicker({
+            dateFormat: "dd/mm/yy"
+        });
+
+        $("#to").datepicker({
+            dateFormat: "dd/mm/yy"
+        });
+
+    })
+
+
     function konfirmasi(id) {
         $('#id_invoice').val($(id).attr('data-id'))
     }

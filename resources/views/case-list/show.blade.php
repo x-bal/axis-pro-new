@@ -299,14 +299,14 @@
                                                 @enderror
                                             </td>
                                             <td>
-                                                <input type="number" name="amount" class="form-control" placeholder="Amount">
+                                                <input type="text" name="amount" class="form-control amount_expense" placeholder="Amount" autocomplete="off">
                                                 @error('amount')
                                                 <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </td>
 
                                             <td>
-                                                <input type="date" name="tanggal" class="form-control">
+                                                <input type="text" name="tanggal" id="" class="form-control tgl_expense" autocomplete="off" placeholder="dd/mm/yyyy">
                                                 @error('tanggal')
                                                 <small class="text-danger">{{ $message }}</small>
                                                 @enderror
@@ -459,7 +459,7 @@
                                             @enderror
                                         </td>
                                         <td>
-                                            <input type="date" name="time_upload" class="form-control" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
+                                            <input type="text" autocomplete="off" name="time_upload" class="form-control time_up" value="{{ \Carbon\Carbon::now()->format('d/m/Y') }}">
                                             @error('time_upload')
                                             <br>
                                             <small class="text-danger">{{ $message }}</small>
@@ -490,7 +490,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ str_replace('files/file-survey/', '', $filesurvey->file_upload) }}</td>
-                                    <td>{{ $filesurvey->time_upload }}</td>
+                                    <td>{{ Carbon\Carbon::parse($filesurvey->time_upload)->format('d/m/Y') }}</td>
                                     @php
                                     $name = str_replace('files/file-survey/', '', $filesurvey->file_upload);
                                     $file = explode('.',$filesurvey->file_upload);
@@ -540,7 +540,7 @@
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </td>
-                                        <td><input type="date" name="time_upload" class="form-control" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"></td>
+                                        <td><input type="text" autocomplete="off" name="time_upload" class="form-control time_up" value="{{ \Carbon\Carbon::now()->format('d/m/Y') }}"></td>
                                         <td><button type="button" class="btn btn-success plus-claim"><i class="fas fa-plus"></i></button></td>
                                     </tr>
                                 </tbody>
@@ -565,7 +565,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ str_replace('files/claim-document/', '', $claimdocument->file_upload) }}</td>
-                                    <td>{{ $claimdocument->time_upload }}</td>
+                                    <td>{{ Carbon\Carbon::parse($claimdocument->time_upload)->format('d/m/Y') }}</td>
                                     @php
                                     $name = str_replace('files/claim-document/', '', $claimdocument->file_upload);
                                     $file = explode('.',$claimdocument->file_upload);
@@ -640,6 +640,13 @@
                                 <td> : </td>
                                 <td>{{ $caseList->ia_date != NULL ? Carbon\Carbon::parse($caseList->ia_date)->format('d/m/Y') : '-'}}</td>
                             </tr>
+                            <tr>
+                                <td>Policy Schedule or Copy Policy</td>
+                                <td> : </td>
+                                <td>
+                                    <a href="{{ route('case-list.edit', $caseList->id) }}" class="btn btn-sm btn-{{ $caseList->copy_polis == null ? 'danger' : 'success' }}">{{ $caseList->copy_polis == null ? 'Please Upload File' : 'Update File' }}</a>
+                                </td>
+                            </tr>
                         </table>
 
                         <form action="{{ route('report-satu.store') }}" method="post" enctype="multipart/form-data">
@@ -659,7 +666,7 @@
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </td>
-                                        <td><input type="date" name="time_upload" class="form-control" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"></td>
+                                        <td><input type="text" autocomplete="off" name="time_upload" class="form-control time_up" value="{{ \Carbon\Carbon::now()->format('d/m/Y') }}"></td>
                                         <td><button type="button" class="btn btn-success plus-1"><i class="fas fa-plus"></i></button></td>
                                     </tr>
                                 </tbody>
@@ -672,9 +679,12 @@
                                     <td>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
+                                                <select name="curr" id="curr" class="form-control curr">
+                                                    <option {{ $caseList->ia_curr == 'IDR' ? 'selected' : '' }} value="IDR">IDR</option>
+                                                    <option {{ $caseList->ia_curr == 'USD' ? 'selected' : '' }} value="USD">USD</option>
+                                                </select>
                                             </div>
-                                            <input type="text" id="" name="ia_amount" class="form-control ia_amount" aria-describedby="basic-addon1" value="{{ $caseList->ia_amount ?? '' }}">
+                                            <input type="text" id="" name="ia_amount" class="form-control ia_amount" aria-describedby="basic-addon1" value="{{ number_format($caseList->ia_amount, 0, ',', '.') ?? '' }}">
                                         </div>
                                     </td>
                                     <td>&nbsp;</td>
@@ -701,7 +711,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ str_replace('files/report-satu/', '', $reportsatu->file_upload) }}</td>
-                                    <td>{{ $reportsatu->time_upload }}</td>
+                                    <td>{{ Carbon\Carbon::parse($reportsatu->time_upload)->format('d/m/Y') }}</td>
                                     @php
                                     $name = str_replace('files/report-satu/', '', $reportsatu->file_upload);
                                     $file = explode('.',$reportsatu->file_upload);
@@ -787,6 +797,13 @@
                                 <td> : </td>
                                 <td>{{ $caseList->pr_date ? Carbon\Carbon::parse($caseList->pr_date)->format('d/m/Y') : '-'}}</td>
                             </tr>
+                            <tr>
+                                <td>Policy Schedule or Copy Policy</td>
+                                <td> : </td>
+                                <td>
+                                    <a href="{{ route('case-list.edit', $caseList->id) }}" class="btn btn-sm btn-{{ $caseList->copy_polis == null ? 'danger' : 'success' }}">{{ $caseList->copy_polis == null ? 'Please Upload File' : 'Update File' }}</a>
+                                </td>
+                            </tr>
                         </table>
 
                         <form action="{{ route('report-dua.store') }}" method="post" enctype="multipart/form-data">
@@ -808,7 +825,7 @@
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </td>
-                                        <td><input type="date" name="time_upload" class="form-control" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"></td>
+                                        <td><input type="text" autocomplete="off" name="time_upload" class="form-control time_up" value="{{ \Carbon\Carbon::now()->format('d/m/Y') }}"></td>
                                         <td><button type="button" class="btn btn-success plus-2"><i class="fas fa-plus"></i></button></td>
                                     </tr>
                                 </tbody>
@@ -821,9 +838,14 @@
                                     <td>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
+                                                <div class="input-group-prepend">
+                                                    <select name="curr" id="curr" class="form-control curr">
+                                                        <option {{ $caseList->pr_curr == 'IDR' ? 'selected' : '' }} value="IDR">IDR</option>
+                                                        <option {{ $caseList->pr_curr == 'USD' ? 'selected' : '' }} value="USD">USD</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                            <input type="number" name="pr_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->pr_amount ?? '' }}">
+                                            <input type="text" name="pr_amount" class="form-control pr_amount" aria-describedby="basic-addon1" value="{{ number_format( $caseList->pr_amount, 0, ',', '.') ?? '' }}">
                                         </div>
                                         @error('pr_amount')
                                         <small class="text-danger"> {{ $message }}</small>
@@ -849,7 +871,7 @@
                                 <tr>
                                     <td>
                                         <div class="input-group">
-                                            <input type="date" name="date_complete" class="form-control" value="{{ $caseList->date_complete ?? '' }}">
+                                            <input type="text" name="date_complete" class="form-control time_up" value="{{ Carbon\Carbon::parse($caseList->date_complete)->format('d/m/Y') ?? '' }}">
                                         </div>
                                     </td>
                                     <td>&nbsp;</td>
@@ -877,7 +899,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ str_replace('files/report-dua/', '', $reportdua->file_upload) }}</td>
-                                    <td>{{ $reportdua->time_upload }}</td>
+                                    <td>{{ Carbon\Carbon::parse($reportdua->time_upload)->format('d/m/Y') }}</td>
                                     @php
                                     $name = str_replace('files/report-dua/', '', $reportdua->file_upload);
                                     $file = explode('.',$reportdua->file_upload);
@@ -985,6 +1007,13 @@
                                     @endif
                                 </td>
                             </tr>
+                            <tr>
+                                <td>Policy Schedule or Copy Policy</td>
+                                <td> : </td>
+                                <td>
+                                    <a href="{{ route('case-list.edit', $caseList->id) }}" class="btn btn-sm btn-{{ $caseList->copy_polis == null ? 'danger' : 'success' }}">{{ $caseList->copy_polis == null ? 'Please Upload File' : 'Update File' }}</a>
+                                </td>
+                            </tr>
                         </table>
 
                         <form action="{{ route('report-tiga.store') }}" method="post" enctype="multipart/form-data">
@@ -1005,7 +1034,7 @@
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </td>
-                                        <td><input type="date" name="time_upload" class="form-control" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"></td>
+                                        <td><input type="text" autocomplete="off" name="time_upload" class="form-control time_up" value="{{ \Carbon\Carbon::now()->format('d/m/Y') }}"></td>
                                         <td><button type="button" class="btn btn-success plus-3"><i class="fas fa-plus"></i></button></td>
                                     </tr>
                                 </tbody>
@@ -1019,9 +1048,12 @@
                                         @if($caseList->ir_status == 1)
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
+                                                <select name="curr" id="curr" class="form-control curr">
+                                                    <option {{ $caseList->ir_st_curr == 'IDR' ? 'selected' : '' }} value="IDR">IDR</option>
+                                                    <option {{ $caseList->ir_st_curr == 'USD' ? 'selected' : '' }} value="USD">USD</option>
+                                                </select>
                                             </div>
-                                            <input type="number" name="ir_st_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->ir_st_amount ?? '' }}">
+                                            <input type="text" name="ir_st_amount" class="form-control ir_st_amount" aria-describedby="basic-addon1" value="{{number_format( $caseList->ir_st_amount, 0, ',', '.') ?? '' }}">
                                         </div>
 
                                         @error('ir_st_amount')
@@ -1031,9 +1063,12 @@
 
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
+                                                <select name="curr" id="curr" class="form-control curr">
+                                                    <option {{ $caseList->pa_curr == 'IDR' ? 'selected' : '' }} value="IDR">IDR</option>
+                                                    <option {{ $caseList->pa_curr == 'USD' ? 'selected' : '' }} value="USD">USD</option>
+                                                </select>
                                             </div>
-                                            <input type="number" name="pa_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->pa_amount ?? '' }}">
+                                            <input type="text" name="pa_amount" class="form-control pa_amount" aria-describedby="basic-addon1" value="{{ number_format( $caseList->pa_amount, 0, ',', '.') ?? '' }}">
                                         </div>
 
                                         @error('pa_amount')
@@ -1045,9 +1080,12 @@
                                         @if($caseList->ir_status == 1)
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
+                                                <select name="curr" id="curr" class="form-control curr">
+                                                    <option {{ $caseList->ir_nd_curr == 'IDR' ? 'selected' : '' }} value="IDR">IDR</option>
+                                                    <option {{ $caseList->ir_nd_curr == 'USD' ? 'selected' : '' }} value="USD">USD</option>
+                                                </select>
                                             </div>
-                                            <input type="number" name="ir_nd_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->ir_st_amount ?? '' }}">
+                                            <input type="text" name="ir_nd_amount" class="form-control ir_nd_amount" aria-describedby="basic-addon1" value="{{ number_format( $caseList->ir_nd_amount, 0, ',', '.') ?? '' }}">
                                         </div>
 
                                         @error('ir_nd_amount')
@@ -1066,13 +1104,19 @@
                                 <tr>
                                     <td>
                                         <div class="input-group">
-                                            <input type="date" name="date_complete" class="form-control" value="{{ $caseList->date_complete ?? '' }}">
+                                            <input type="text" name="date_complete" class="form-control time_up" value="{{ Carbon\Carbon::parse($caseList->date_complete)->format('d/m/Y') ?? '' }}">
                                         </div>
                                     </td>
                                     <td>
                                         @if(auth()->user()->hasRole('admin'))
-                                        <div class="form-group">
-                                            <input type="number" class="form-control" placeholder="Professional Service" name="professional_service" value="{{ $caseList->professional_service ?? 0 }}">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <select name="curr" id="curr" class="form-control curr">
+                                                    <option {{ $caseList->ps_curr == 'IDR' ? 'selected' : '' }} value="IDR">IDR</option>
+                                                    <option {{ $caseList->ps_curr == 'USD' ? 'selected' : '' }} value="USD">USD</option>
+                                                </select>
+                                            </div>
+                                            <input type="text" name="professional_service" class="form-control professional_service" aria-describedby="basic-addon1" value="{{ number_format( $caseList->professional_service, 0, ',', '.') ?? '' }}">
                                         </div>
                                         @endif
                                     </td>
@@ -1100,7 +1144,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ str_replace('files/report-tiga/', '', $reporttiga->file_upload) }}</td>
-                                    <td>{{ $reporttiga->time_upload }}</td>
+                                    <td>{{ Carbon\Carbon::parse($reporttiga->time_upload)->format('d/m/Y') }}</td>
                                     @php
                                     $name = str_replace('files/report-tiga/', '', $reporttiga->file_upload);
                                     $file = explode('.',$reporttiga->file_upload);
@@ -1229,7 +1273,7 @@
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </td>
-                                        <td><input type="date" name="time_upload" class="form-control" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"></td>
+                                        <td><input type="text" autocomplete="off" name="time_upload" class="form-control time_up" value="{{ \Carbon\Carbon::now()->format('d/m/Y') }}"></td>
                                         <td><button type="button" class="btn btn-success plus-4"><i class="fas fa-plus"></i></button></td>
                                     </tr>
                                 </tbody>
@@ -1243,9 +1287,12 @@
                                         @if($caseList->ir_status == 1)
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
+                                                <select name="curr" id="curr" class="form-control curr">
+                                                    <option {{ $caseList->pa_curr == 'IDR' ? 'selected' : '' }} value="IDR">IDR</option>
+                                                    <option {{ $caseList->pa_curr == 'USD' ? 'selected' : '' }} value="USD">USD</option>
+                                                </select>
                                             </div>
-                                            <input type="number" name="pa_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->pa_amount ?? '' }}">
+                                            <input type="text" name="pa_amount" class="form-control pa_amount" aria-describedby="basic-addon1" value="{{ number_format( $caseList->pa_amount, 0, ',', '.') ?? '' }}">
                                         </div>
 
                                         @error('pa_amount')
@@ -1254,9 +1301,12 @@
                                         @else
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
+                                                <select name="curr" id="curr" class="form-control curr">
+                                                    <option {{ $caseList->fr_curr == 'IDR' ? 'selected' : '' }} value="IDR">IDR</option>
+                                                    <option {{ $caseList->fr_curr == 'USD' ? 'selected' : '' }} value="USD">USD</option>
+                                                </select>
                                             </div>
-                                            <input type="number" name="fr_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->fr_amount ?? '' }}">
+                                            <input type="text" name="fr_amount" class="form-control fr_amount" aria-describedby="basic-addon1" value="{{ number_format( $caseList->fr_amount, 0, ',', '.') ?? '' }}">
                                         </div>
 
                                         @error('fr_amount')
@@ -1268,9 +1318,12 @@
                                         @if($caseList->ir_status == 0)
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
+                                                <select name="claim_curr" id="curr" class="form-control curr">
+                                                    <option {{ $caseList->claim_amount_curr == 'IDR' ? 'selected' : '' }} value="IDR">IDR</option>
+                                                    <option {{ $caseList->claim_amount_curr == 'USD' ? 'selected' : '' }} value="USD">USD</option>
+                                                </select>
                                             </div>
-                                            <input type="number" name="claim_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->claim_amount ?? '' }}">
+                                            <input type="text" name="claim_amount" class="form-control claim_amount" aria-describedby="basic-addon1" value="{{ number_format($caseList->claim_amount, 0, ',', '.') ?? '' }}">
                                         </div>
 
                                         @error('claim_amount')
@@ -1303,7 +1356,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ str_replace('files/report-empat/', '', $reportempat->file_upload) }}</td>
-                                    <td>{{ $reportempat->time_upload }}</td>
+                                    <td>{{ Carbon\Carbon::parse($reportempat->time_upload)->format('d/m/Y') }}</td>
                                     @php
                                     $name = str_replace('files/report-empat/', '', $reportempat->file_upload);
                                     $file = explode('.',$reportempat->file_upload);
@@ -1394,6 +1447,7 @@
                                     <tr>
                                         <td width="197">File Upload</td>
                                         <td width="214">Time Upload</td>
+                                        <td>&nbsp;</td>
                                         <td width="822">Add new</td>
                                     </tr>
                                     <tr>
@@ -1405,7 +1459,7 @@
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </td>
-                                        <td><input type="date" name="time_upload" class="form-control" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"></td>
+                                        <td colspan="2"><input type="text" autocomplete="off" name="time_upload" class="form-control time_up" value="{{ \Carbon\Carbon::now()->format('d/m/Y') }}"></td>
                                         <td><button type="button" class="btn btn-success plus-5"><i class="fas fa-plus"></i></button></td>
                                     </tr>
                                 </tbody>
@@ -1413,26 +1467,33 @@
                                     <td>Net Adjustment</td>
                                     <td>Gross Adjustment</td>
                                     <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
+                                                <select name="curr" id="curr" class="form-control curr">
+                                                    <option {{ $caseList->fr_curr == 'IDR' ? 'selected' : '' }} value="IDR">IDR</option>
+                                                    <option {{ $caseList->fr_curr == 'USD' ? 'selected' : '' }} value="USD">USD</option>
+                                                </select>
                                             </div>
-                                            <input type="number" name="fr_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->fr_amount ?? '' }}">
+                                            <input type="text" name="fr_amount" class="form-control fr_amount" aria-describedby="basic-addon1" value="{{ number_format( $caseList->fr_amount, 0, ',', '.') ?? '' }}">
                                         </div>
 
                                         @error('fr_amount')
                                         <small class="text-danger"> {{ $message }}</small>
                                         @enderror
                                     </td>
-                                    <td>
+                                    <td colspan="2">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">{{ $caseList->currency == 'IDR' ? 'IDR' : '$' }}</span>
+                                                <select name="claim_curr" id="curr" class="form-control curr">
+                                                    <option {{ $caseList->claim_amount_curr == 'IDR' ? 'selected' : '' }} value="IDR">IDR</option>
+                                                    <option {{ $caseList->claim_amount_curr == 'USD' ? 'selected' : '' }} value="USD">USD</option>
+                                                </select>
                                             </div>
-                                            <input type="number" name="claim_amount" class="form-control" aria-describedby="basic-addon1" value="{{ $caseList->claim_amount ?? '' }}">
+                                            <input type="text" name="claim_amount" class="form-control claim_amount" aria-describedby="basic-addon1" value="{{ number_format( $caseList->claim_amount, 0, ',', '.') ?? '' }}">
                                         </div>
 
                                         @error('claim_amount')
@@ -1443,6 +1504,7 @@
                                 </tr>
                                 <tr>
                                     <td><input type="submit" class="btn btn-success" value="Upload"></td>
+                                    <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                 </tr>
@@ -1462,7 +1524,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ str_replace('files/report-lima/', '', $reportlima->file_upload) }}</td>
-                                    <td>{{ $reportlima->time_upload }}</td>
+                                    <td>{{ Carbon\Carbon::parse($reportlima->time_upload)->format('d/m/Y') }}</td>
                                     @php
                                     $name = str_replace('files/report-lima/', '', $reportlima->file_upload);
                                     $file = explode('.',$reportlima->file_upload);
@@ -1498,8 +1560,24 @@
                     <a href="{{ route('caselist.assignment', $caseList->id) }}" class="btn btn-info">Cetak Assignment</a>
                     @endif
 
-                    @if(request()->get('page') == "nav-report-1" && $caseList->file_status_id != 5)
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable">Close Case</button>
+                    @if(request()->get('page') == "nav-report-1" || request()->get('page') == "nav-report-2" && $caseList->file_status_id != 5)
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCloseCase">Close Case</button>
+                    @endif
+
+                    @if(request()->get('page') == "nav-report-1" || request()->get('page') == "nav-report-2" && $caseList->file_status_id != 5)
+                    <button type="button" class="btn btn-info ml-2" data-toggle="modal" data-target="#modalInstruction">Instruction Closed</button>
+                    @endif
+
+                    @if($caseList->ir_status == 0)
+                    @if(request()->get('page') == "nav-report-3" && $caseList->file_status_id != 5)
+                    <button type="button" class="btn btn-info ml-2" data-toggle="modal" data-target="#modalInstruction">Instruction Closed</button>
+                    @endif
+                    @endif
+
+                    @if($caseList->ir_status == 1)
+                    @if(request()->get('page') == "nav-report-4" && $caseList->file_status_id != 5)
+                    <button type="button" class="btn btn-info ml-2" data-toggle="modal" data-target="#modalInstruction">Instruction Closed</button>
+                    @endif
                     @endif
 
                     @if($caseList->fr_status == 1 && $caseList->ir_status == 0 && $caseList->is_ready == 0)
@@ -1537,7 +1615,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="exampleModalScrollable" role="dialog" aria-labelledby="KonfirmasiModalTitle" aria-hidden="true">
+<div class="modal fade" id="modalCloseCase" role="dialog" aria-labelledby="KonfirmasiModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" style="overflow: auto;" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -1563,7 +1641,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="">Gross Adjustment</label>
-                                    <input type="number" name="claim_amount" id="claim_amount" class="form-control" value="0">
+                                    <input type="text" name="claim_amount" id="claim_amount" class="form-control claim_amount" value="0">
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -1590,6 +1668,45 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modalInstruction" role="dialog" aria-labelledby="KonfirmasiModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" style="overflow: auto;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="KonfirmasiModalTitle">Instruction Closed</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('caselist.instruction') }}" method="post">
+                    @csrf
+                    <div class="container-fluid">
+                        <div class="row">
+                            <input type="hidden" id="caselist" name="id" value="{{ $caseList->id }}">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Date Instruction Closed</label>
+                                    <input type="text" name="date_instruction" id="date_instruction" class="form-control date_instruction" placeholder="dd/mm/yyyy" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">PIC Insurer</label>
+                                    <input type="text" name="pic" id="pic" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" data-primary>Save</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 @stop
 
 
@@ -1601,11 +1718,127 @@
 
 <script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.6/js/responsive.bootstrap.min.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $(".tgl_expense").datepicker({
+            dateFormat: "dd/mm/yy"
+        });
+
+        $(".time_up").datepicker({
+            dateFormat: "dd/mm/yy"
+        });
+
+        $(".date_instruction").datepicker({
+            dateFormat: "dd/mm/yy"
+        });
+
+        $('.amount_expense').keyup(function(event) {
+
+            // skip for arrow keys
+            if (event.which >= 37 && event.which <= 40) return;
+
+            // format number
+            $(this).val(function(index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            });
+        });
+
+        $('.ia_amount').keyup(function(event) {
+            if (event.which >= 37 && event.which <= 40) return;
+
+            $(this).val(function(index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            });
+        });
+        $('.pr_amount').keyup(function(event) {
+            if (event.which >= 37 && event.which <= 40) return;
+
+            $(this).val(function(index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            });
+        });
+        $('.pa_amount').keyup(function(event) {
+            if (event.which >= 37 && event.which <= 40) return;
+
+            $(this).val(function(index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            });
+        });
+        $('.ir_st_amount').keyup(function(event) {
+            if (event.which >= 37 && event.which <= 40) return;
+
+            $(this).val(function(index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            });
+        });
+        $('.ir_nd_amount').keyup(function(event) {
+            if (event.which >= 37 && event.which <= 40) return;
+
+            $(this).val(function(index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            });
+        });
+
+        $('.professional_service').keyup(function(event) {
+            if (event.which >= 37 && event.which <= 40) return;
+
+            $(this).val(function(index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            });
+        });
+
+        $('.fr_amount').keyup(function(event) {
+            if (event.which >= 37 && event.which <= 40) return;
+
+            $(this).val(function(index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            });
+        });
+
+        $('.claim_amount').keyup(function(event) {
+            if (event.which >= 37 && event.which <= 40) return;
+
+            $(this).val(function(index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            });
+        });
+
+        $('#fee').keyup(function(event) {
+            if (event.which >= 37 && event.which <= 40) return;
+
+            $(this).val(function(index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            });
+        });
+    })
+</script>
 <script>
     $(document).ready(function() {
         let tr = `<tr>
                 <td><input type="file" name="file_upload[]"></td>
-                <td><input type="date" name="time_upload" class="form-control" id="" value="{{ Carbon\Carbon::now()->format('Y-m-d') }}"></td>
+                <td><input type="text" autocomplete="off" name="time_upload" class="form-control time_up" id="" value="{{ Carbon\Carbon::now()->format('Y-m-d') }}"></td>
                 <td><button type="button" class="btn btn-danger remove-survey"><i class="fas fa-times"></i></button></td>
             </tr>`;
 
@@ -1658,6 +1891,8 @@
         $(".remove-5").live('click', function() {
             $(this).parent().parent().remove();
         })
+
+
 
         // $('.ia_amount').keyup(function(event) {
 

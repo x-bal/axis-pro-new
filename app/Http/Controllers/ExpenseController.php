@@ -55,10 +55,10 @@ class ExpenseController extends Controller
                 'adjuster' => $request->adjuster,
                 'name' => $request->name,
                 'qty' => $request->qty,
-                'amount' => $request->amount,
-                'total' => intval($request->qty * $request->amount),
+                'amount' => str_replace('.', '',  $request->amount),
+                'total' => intval($request->qty * str_replace('.', '',  $request->amount)),
                 'category_expense' => $request->category,
-                'tanggal' => $request->tanggal
+                'tanggal' => Carbon::createFromFormat('d/m/Y', $request->tanggal)->format('Y-m-d')
             ]);
 
             DB::commit();

@@ -73,8 +73,9 @@ class ReportDuaController extends Controller
 
             $caseList = CaseList::find($request->case_list_id);
             $update = [
-                'pr_amount' => $request->pr_amount,
+                'pr_amount' => str_replace('.', '', $request->pr_amount),
                 'pr_status' => 1,
+                'pr_curr' => $request->curr,
                 'pr_date' => Carbon::now(),
                 'now_update' => Carbon::now(),
                 'ir_status' => $request->ir_status,
@@ -90,7 +91,11 @@ class ReportDuaController extends Controller
                     $caseList->update($update);
                 }
             } else {
-                $caseList->update(['pr_amount' => $request->pr_amount, 'date_complete' => $request->date_complete]);
+                $caseList->update([
+                    'pr_amount' => str_replace('.', '', $request->pr_amount),
+                    'pr_curr' => $request->curr,
+                    'date_complete' => $request->date_complete
+                ]);
             }
 
             return back()->with('success', 'Report dua has been uploaded');
@@ -99,12 +104,6 @@ class ReportDuaController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ReportDua  $reportDua
-     * @return \Illuminate\Http\Response
-     */
     public function show(ReportDua $reportDua)
     {
         $file = explode('.', $reportDua->file_upload);
@@ -117,35 +116,16 @@ class ReportDuaController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\ReportDua  $reportDua
-     * @return \Illuminate\Http\Response
-     */
     public function edit(ReportDua $reportDua)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ReportDua  $reportDua
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, ReportDua $reportDua)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\ReportDua  $reportDua
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(ReportDua $reportDua)
     {
         $file = explode('.', $reportDua->file_upload);

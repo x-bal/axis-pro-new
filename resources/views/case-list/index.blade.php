@@ -36,7 +36,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <input type="date" name="from" id="from" class="form-control @error('from') is-invalid @enderror">
+                                    <input type="text" name="from" id="from" class="form-control @error('from') is-invalid @enderror" autocomplete="off" placeholder="dd/mm/yyyy">
                                     @error('from')
                                     <div class="invalid-feedback">
                                         <strong>{{ $message }}</strong>
@@ -46,7 +46,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <input type="date" name="to" id="to" class="form-control @error('to') is-invalid @enderror">
+                                    <input type="text" name="to" id="to" class="form-control @error('to') is-invalid @enderror" autocomplete="off" placeholder="dd/mm/yyyy">
                                     @error('to')
                                     <div class="invalid-feedback">
                                         <strong>{{ $message }}</strong>
@@ -132,6 +132,7 @@
 @endsection
 
 @section('footer')
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script>
     let table = new DataTable('#table', {
         processing: true,
@@ -226,6 +227,14 @@
         $("#status").on('change', function() {
             table.draw()
         })
+
+        $("#from").datepicker({
+            dateFormat: "dd/mm/yy"
+        });
+
+        $("#to").datepicker({
+            dateFormat: "dd/mm/yy"
+        });
 
     })
 </script>

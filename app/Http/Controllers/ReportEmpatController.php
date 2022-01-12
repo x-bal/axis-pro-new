@@ -76,8 +76,9 @@ class ReportEmpatController extends Controller
             if ($caseList->ir_status == 1) {
                 if ($caseList->pa_status == 0) {
                     $caseList->update([
-                        'pa_amount' => $request->pa_amount,
+                        'pa_amount' => str_replace('.', '', $request->pa_amount),
                         'pa_status' => 1,
+                        'pa_curr' => $request->curr,
                         'fr_limit' => Carbon::now()->addDay(7),
                         'pa_date' => Carbon::now(),
                         'now_update' => Carbon::now(),
@@ -85,16 +86,19 @@ class ReportEmpatController extends Controller
                     ]);
                 } else {
                     $caseList->update([
-                        'pa_amount' => $request->pa_amount,
+                        'pa_amount' => str_replace('.', '', $request->pa_amount),
                         'now_update' => Carbon::now(),
+                        'pa_curr' => $request->curr,
                     ]);
                 }
             } else {
                 if ($caseList->fr_status == 0) {
                     $caseList->update([
-                        'fr_amount' => $request->fr_amount,
-                        'claim_amount' => $request->claim_amount,
+                        'fr_amount' => str_replace('.', '', $request->fr_amount),
+                        'claim_amount' => str_replace('.', '', $request->claim_amount),
                         'fr_status' => 1,
+                        'fr_curr' => $request->curr,
+                        'claim_amount_curr' => $request->claim_curr,
                         'fr_date' => Carbon::now(),
                         'now_update' => Carbon::now(),
                         'file_status_id' => 5
@@ -128,8 +132,9 @@ class ReportEmpatController extends Controller
                     }
                 } else {
                     $caseList->update([
-                        'claim_amount' => $request->fr_amount,
-                        'fr_amount' => $request->claim_amount,
+                        'fr_amount' => str_replace('.', '', $request->fr_amount),
+                        'fr_curr' => $request->curr,
+                        'claim_amount' => str_replace('.', '', $request->claim_amount),
                         'now_update' => Carbon::now(),
                     ]);
                 }
@@ -141,12 +146,6 @@ class ReportEmpatController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ReportEmpat  $reportEmpat
-     * @return \Illuminate\Http\Response
-     */
     public function show(ReportEmpat $reportEmpat)
     {
         $file = explode('.', $reportEmpat->file_upload);

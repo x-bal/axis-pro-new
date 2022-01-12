@@ -73,24 +73,27 @@ class ReportTigaController extends Controller
             if ($caseList->ir_status == 1) {
                 if ($caseList->ir_st_status == 0) {
                     $caseList->update([
-                        'ir_st_amount' => $request->ir_st_amount,
+                        'ir_st_amount' => str_replace('.', '', $request->ir_st_amount),
                         'ir_st_status' => 1,
-                        'ir_nd_amount' => $request->ir_nd_amount,
+                        'ir_st_curr' => $request->curr,
+                        'ir_nd_amount' => str_replace('.', '', $request->ir_nd_amount),
                         'ir_nd_status' => 1,
                         'ir_st_date' => Carbon::now(),
                         'ir_nd_date' => Carbon::now(),
                         'pa_limit' => Carbon::now()->addDay(14),
                         'now_update' => Carbon::now(),
-                        'date_complete' => $request->date_complete,
-                        'professional_service' => $request->professional_service
+                        'date_complete' => Carbon::createFromFormat('d/m/Y', $request->date_complete)->format('Y-m-d'),
+                        'professional_service' => str_replace('.', '', $request->professional_service)
                     ]);
                 } else {
                     $caseList->update([
-                        'ir_st_amount' => $request->ir_st_amount,
-                        'ir_nd_amount' => $request->ir_nd_amount,
+                        'ir_st_amount' => str_replace('.', '', $request->ir_st_amount),
+                        'ir_nd_amount' => str_replace('.', '', $request->ir_nd_amount),
+                        'ir_nd_curr' => $request->curr,
+                        'ps_curr' => $request->curr,
                         'now_update' => Carbon::now(),
-                        'date_complete' => $request->date_complete,
-                        'professional_service' => $request->professional_service
+                        'date_complete' => Carbon::createFromFormat('d/m/Y', $request->date_complete)->format('Y-m-d'),
+                        'professional_service' => str_replace('.', '', $request->professional_service)
                     ]);
                 }
             } else {
@@ -98,14 +101,16 @@ class ReportTigaController extends Controller
                     $caseList->update([
                         'pa_amount' => $request->pa_amount,
                         'pa_status' => 1,
+                        'pa_curr' => $request->curr,
                         'pa_date' => Carbon::now(),
                         'fr_limit' => Carbon::now()->addDay(7),
                         'now_update' => Carbon::now(),
                     ]);
                 } else {
                     $caseList->update([
-                        'pa_amount' => $request->pa_amount,
                         'now_update' => Carbon::now(),
+                        'pa_amount' => $request->pa_amount,
+                        'pa_curr' => $request->curr,
                     ]);
                 }
             }
