@@ -42,7 +42,7 @@ class ReportDuaController extends Controller
         $request->validate([
             'case_list_id' => 'required',
             'file_upload' => 'required',
-            'file_upload.*' => 'max:10240|mimes:xlsx,xls,docx,doc,pdf,mp4',
+            'file_upload.*' => 'max:20480|mimes:xlsx,xls,docx,doc,pdf,mp4',
             'time_upload' => 'required',
             'pr_amount' => 'required',
             'ir_status' => 'required',
