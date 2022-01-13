@@ -179,7 +179,7 @@ class AjaxController extends Controller
         $response = Invoice::find($attr['id'])->update([
             'bank_id' => $attr['bank'],
             'status_paid' => $attr['status'],
-            'tanggal_invoice' => $attr['tanggal_invoice']
+            'tanggal_invoice' => Carbon::createFromFormat('d/m/Y', $attr['tanggal_invoice'])->format('Y-m-d')
         ]);
         return response()->json($response);
     }

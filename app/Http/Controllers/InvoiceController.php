@@ -270,17 +270,17 @@ class InvoiceController extends Controller
 
             $rupiah = Invoice::whereHas('caselist', function ($qr) {
                 return $qr->where('currency', 'IDR');
-            })->whereBetween('date_invoice', [$request->from, $request->to])->sum('grand_total');
+            })->whereBetween('date_invoice', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->sum('grand_total');
 
             $usd = Invoice::whereHas('caselist', function ($qr) {
                 return $qr->where('currency', 'USD');
-            })->whereBetween('date_invoice', [$request->from, $request->to])->sum('grand_total');
+            })->whereBetween('date_invoice', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->sum('grand_total');
 
-            $invoice = Invoice::whereBetween('date_invoice', [$request->from, $request->to])->get();
+            $invoice = Invoice::whereBetween('date_invoice', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->get();
 
             return view('invoice.laporan', [
-                'from' => $request->from,
-                'to' => $request->to,
+                'from' => Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'),
+                'to' => Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d'),
                 'invoice' => $invoice,
                 'usd' => $usd,
                 'rupiah' => $rupiah
@@ -288,17 +288,17 @@ class InvoiceController extends Controller
         } else {
             $rupiah = Invoice::whereHas('caselist', function ($qr) {
                 return $qr->where('currency', 'IDR');
-            })->whereBetween('date_invoice', [$request->from, $request->to])->where('status_paid', $request->status)->sum('grand_total');
+            })->whereBetween('date_invoice', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->where('status_paid', $request->status)->sum('grand_total');
 
             $usd = Invoice::whereHas('caselist', function ($qr) {
                 return $qr->where('currency', 'USD');
-            })->whereBetween('date_invoice', [$request->from, $request->to])->where('status_paid', $request->status)->sum('grand_total');
+            })->whereBetween('date_invoice', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->where('status_paid', $request->status)->sum('grand_total');
 
-            $invoice = Invoice::whereBetween('date_invoice', [$request->from, $request->to])->where('status_paid', $request->status)->get();
+            $invoice = Invoice::whereBetween('date_invoice', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->where('status_paid', $request->status)->get();
 
             return view('invoice.laporan', [
-                'from' => $request->from,
-                'to' => $request->to,
+                'from' => Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'),
+                'to' => Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d'),
                 'invoice' => $invoice,
                 'usd' => $usd,
                 'rupiah' => $rupiah
