@@ -160,7 +160,7 @@
                                 <tr>
                                     <td>{{ $invoice->type_invoice != 1 ? number_format($fee_adj, 2) : number_format($caselist->professional_service, 2) }}</td>
                                     <td>{{ $invoice->type_invoice != 1 ? number_format($share, 2) : number_format($share, 2) }}%</td>
-                                    <td>{{ $caselist->currency }}</td>
+                                    <td>{{ $caselist->claim_amount_curr }}</td>
                                     <td width="100px" class="text-right">
                                         {{ $invoice->type_invoice != 1 ? number_format($fee_adj * $share / 100, 2) : number_format($caselist->professional_service * $share / 100, 2) }}
                                     </td>
@@ -180,7 +180,7 @@
                                     <td>
                                         {{ $invoice->caselist->discount != 0 ? '' : $invoice->caselist->discount_percent .'%' }}
                                     </td>
-                                    <td>{{ $caselist->currency }}</td>
+                                    <td>{{ $caselist->claim_amount_curr }}</td>
                                     <td width="100px" class="text-right">
                                         {{ number_format($discount) }}
                                     </td>
@@ -212,7 +212,7 @@
                                         @endif
                                     </td>
                                     <td>{{ number_format($share, 2) }}%</td>
-                                    <td>{{ $caselist->currency }}</td>
+                                    <td>{{ $caselist->claim_amount_curr }}</td>
                                     <td width="100px" class="text-right">
                                         @if($inv->type_invoice == 1)
                                         {{ number_format($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100, 2) }}
@@ -235,7 +235,7 @@
                                 <tr>
                                     <td width="150px">Sub Total</td>
                                     <td width="270px"></td>
-                                    <td width="50px">{{ $caselist->currency }}</td>
+                                    <td width="50px">{{ $caselist->claim_amount_curr }}</td>
                                     <td width="100px" class="text-right">
                                         @if($inv->type_invoice == 1)
                                         {{number_format(($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100) - $discount , 2) }}
@@ -256,7 +256,7 @@
                                         PPN 10%
                                     </th>
                                     <td width="250px"></td>
-                                    <td width="50px">{{ $caselist->currency }}</td>
+                                    <td width="50px">{{ $caselist->claim_amount_curr }}</td>
                                     <td width="100px" class="text-right">
                                         @if($inv->type_invoice == 1)
                                         {{ number_format((($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100)) * 10 / 100, 2) }}
@@ -279,7 +279,7 @@
                                 <tr>
                                     <th width="150px">TOTAL AMOUNT DUE</th>
                                     <th width="270px"></th>
-                                    <th width="50px">{{ $caselist->currency }}</th>
+                                    <th width="50px">{{ $caselist->claim_amount_curr }}</th>
                                     <th width="100px" class="text-right">
                                         @if($inv->type_invoice == 1)
                                         {{ number_format(($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100) + (($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100)) * 10 / 100 - $discount , 2)  }}
@@ -347,7 +347,7 @@
                                     </tr>
                                     @foreach($type->where('bank_name',$data->bank_name) as $row)
                                     <tr>
-                                        <th>Account No. {{ $row->currency }}</th>
+                                        <th>Account No. {{ $row->claim_amount_curr }}</th>
                                         <th> : </th>
                                         <th>{{ $row->no_account }}</th>
                                     </tr>
