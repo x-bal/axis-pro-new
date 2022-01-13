@@ -134,6 +134,7 @@ class ReportEmpatController extends Controller
                     $caseList->update([
                         'fr_amount' => str_replace('.', '', $request->fr_amount),
                         'fr_curr' => $request->curr,
+                        'claim_amount_curr' => $request->claim_curr,
                         'claim_amount' => str_replace('.', '', $request->claim_amount),
                         'now_update' => Carbon::now(),
                     ]);
