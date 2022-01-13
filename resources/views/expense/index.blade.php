@@ -15,7 +15,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <input type="date" name="from" id="from" class="form-control @error('from') is-invalid @enderror">
+                                    <input type="text" autocomplete="off" name="from" id="from" class="form-control @error('from') is-invalid @enderror">
                                     @error('from')
                                     <div class="invalid-feedback">
                                         <strong>{{ $message }}</strong>
@@ -25,7 +25,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <input type="date" name="to" id="to" class="form-control @error('to') is-invalid @enderror">
+                                    <input type="text" autocomplete="off" name="to" id="to" class="form-control @error('to') is-invalid @enderror">
                                     @error('to')
                                     <div class="invalid-feedback">
                                         <strong>{{ $message }}</strong>
@@ -47,35 +47,15 @@
                                 <tr>
                                     <th>No</th>
                                     <th>File No</th>
-                                    <th>Adjuster</th>
-                                    <th>Description</th>
-                                    <th>Date</th>
-                                    <th>Amount</th>
-                                    <th>Total</th>
-                                    <th>Action</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($expense as $data)
+                                @foreach($caselists as $data)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td><a href="{{ route('case-list.show',$data->caselist->id) }}">{{ $data->caselist->file_no }}</a></td>
-                                    <td>{{ $data->adjuster }}</td>
-                                    <td>{{ $data->name }}</td>
-                                    <td>{{ Carbon\Carbon::parse($data->tanggal)->format('d/m/Y') }}</td>
-                                    <th class="text-right">{{ number_format($data->amount) }}</th>
-                                    <th class="text-right">{{ number_format($data->total) }}</th>
-                                    <td class="text-center">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-warning @if($data->is_active == 1) d-none @endif" onclick="expenseedit(this)" data-id="{{ $data->id }}" data-toggle="modal" data-target="#exampleModalCenter">Edit</button>
-                                            <form action="{{ route('expense.destroy',$data->id) }}" method="post">
-                                                @csrf
-                                                @method('delete')
-                                                <button class="btn btn-danger @if($data->is_active == 1) d-none @endif" onclick="return confirm('Anda Yakin Ingin Menghapus Expense')">Delete</button>
-                                            </form>
-                                            <button type="button" class="btn btn-primary" onclick="expenselog(this)" data-id="{{ $data->id }}" data-toggle="modal" data-target="#exampleModalLong">Log</button>
-                                        </div>
-                                    </td>
+                                    <td><a href="{{ route('case-list.show',$data->id) }}?page=nav-expense">{{ $data->file_no }}</a></td>
+                                    <td>{{ $data->status->nama_status }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -123,6 +103,7 @@
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -159,15 +140,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 <script>
-    // $('#table').DataTable({
-    //     dom: 'Bfrtip',
-    //     buttons: [
-    //         'copy', 'csv', 'excel', 'pdf', 'print'
-    //     ]
-    // })
-
     function expenseedit(qr) {
         let id = $(qr).attr('data-id')
         $('#id_expense').val($(qr).attr('data-id'))
@@ -219,5 +194,13 @@
 
     }
     $('.table').DataTable()
+
+    $("#from").datepicker({
+        dateFormat: "dd/mm/yy"
+    });
+
+    $("#to").datepicker({
+        dateFormat: "dd/mm/yy"
+    });
 </script>
 @stop

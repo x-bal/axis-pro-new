@@ -168,6 +168,9 @@
                                 <tr>
                                     <td colspan="4">&nbsp;</td>
                                 </tr>
+                                @php
+                                $discount = $invoice->caselist->discount != 0 ? $invoice->caselist->discount : ($fee_adj * $share / 100) * $invoice->caselist->discount_percent / 100
+                                @endphp
                                 <tr>
                                     @if($invoice->type_invoice != 1)
                                     @if($invoice->caselist->discount != 0 || $invoice->caselist->discount_percent != 0)
@@ -179,10 +182,6 @@
                                     </td>
                                     <td>{{ $caselist->currency }}</td>
                                     <td width="100px" class="text-right">
-                                        @php
-                                        $discount = $invoice->caselist->discount != 0 ? $invoice->caselist->discount : ($fee_adj * $share / 100) * $invoice->caselist->discount_percent / 100
-                                        @endphp
-
                                         {{ number_format($discount) }}
                                     </td>
                                     @endif

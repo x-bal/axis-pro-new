@@ -74,7 +74,7 @@
             @enderror
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-1">
         <div class="form-group">
             <label for="currency">Currency <strong class="text-danger">*</strong></label>
             <select class="form-control @error('currency') is-invalid @enderror" name="currency" id="currency">
@@ -83,6 +83,19 @@
                 <option @if($caseList->currency == 'USD') selected @endif value="USD">USD</option>
             </select>
             @error('currency')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="claim_estimate">Claim Estimate<strong class="text-danger">*</strong></label>
+            <input type="text" name="claim_estimate" id="claim_estimate" class="form-control" value="{{ $caseList->claim_estimate ?? '' }}">
+
+            @error('claim_estimate')
             <div class="invalid-feedback">
                 {{ $message }}
             </div>
@@ -380,9 +393,22 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script>
     $(function() {
+        $('#claim_estimate').keyup(function(event) {
+
+            // skip for arrow keys
+            if (event.which >= 37 && event.which <= 40) return;
+
+            // format number
+            $(this).val(function(index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            });
+        });
+
         $("#begin").datepicker({
             dateFormat: "dd/mm/yy"
         });

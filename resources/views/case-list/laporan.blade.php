@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Laporan Case Lists Tanggal {{ Carbon\Carbon::parse($from)->format('d/m/Y') }} s.d {{ Carbon\Carbon::parse($from)->format('d/m/Y') }} - {{ $status == 5 ? 'Closed File' : $status }}</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -79,47 +79,60 @@
                 <div class="table-responsive">
                     <table class="table table-bordered" id="table" style="font-size: 15px;">
                         <thead>
-                            <tr>
-                                <th rowspan="2">No.</th>
-                                <th rowspan="2">File No</th>
-                                <th rowspan="2">Insurance</th>
-                                <th rowspan="2">Adjuster</th>
-                                <th rowspan="2">Broker</th>
-                                <th rowspan="2">Incident</th>
-                                <th rowspan="2">Policy</th>
-                                <th rowspan="2">Category</th>
-                                <th rowspan="2">Insured</th>
+                            <tr style="text-align: center;">
+                                <th>No.</th>
+                                <th>File No</th>
+                                <th>Insurance</th>
+                                <th>Adjuster</th>
+                                <th>Broker</th>
+                                <th>Incident</th>
+                                <th>Policy</th>
+                                <th>Category</th>
+                                <th>Insured</th>
+                                @if($status == 'all')
                                 <th colspan="2">Claim Amount</th>
                                 <th colspan="2">Fee</th>
                                 <th colspan="2">Expense</th>
                                 <th colspan="2">PPN 10%</th>
                                 <th colspan="2">Total Invoice</th>
-                                <th rowspan="2">Instruction Date</th>
-                                <th rowspan="2">Survey Date</th>
-                                <th rowspan="2">Now Update</th>
-                                <th rowspan="2">IA Date</th>
-                                <th rowspan="2">IA Amount</th>
-                                <th rowspan="2">IA Status</th>
-                                <th rowspan="2">PR Date</th>
-                                <th rowspan="2">PR amount</th>
-                                <th rowspan="2">PR Status</th>
-                                <th rowspan="2">IR Status</th>
-                                <th rowspan="2">IR St Date</th>
-                                <th rowspan="2">IR St Amount</th>
-                                <th rowspan="2">IR St Status</th>
-                                <th rowspan="2">IR Nd Date</th>
-                                <th rowspan="2">IR Nd Amount</th>
-                                <th rowspan="2">IR Nd Status</th>
-                                <th rowspan="2">PA Date</th>
-                                <th rowspan="2">PA Amount</th>
-                                <th rowspan="2">PA Status</th>
-                                <th rowspan="2">FR Date</th>
-                                <th rowspan="2">FR Amount</th>
-                                <th rowspan="2">FR Status</th>
-                                <th rowspan="2">Remark</th>
-                                <th rowspan="2">File Status</th>
+                                @endif
+                                <th>Instruction Date</th>
+                                <th>Survey Date</th>
+                                <th>Now Update</th>
+                                @if($status != '5')
+                                <th>IA Date</th>
+                                <th>IA Curr</th>
+                                <th>IA Amount</th>
+                                <th>PR Date</th>
+                                <th>PR Curr</th>
+                                <th>PR Amount</th>
+                                <!-- <th>IR Curr</th> -->
+                                <th>IR St Date</th>
+                                <th>IR St Curr</th>
+                                <th>IR St Amount</th>
+                                <th>IR Nd Date</th>
+                                <th>IR Nd Curr</th>
+                                <th>IR Nd Amount</th>
+                                <th>PA Date</th>
+                                <th>PA Curr</th>
+                                <th>PA Amount</th>
+                                <th>FR Date</th>
+                                <th>FR Curr</th>
+                                <th>FR Amount</th>
+                                @endif
+                                <th>Remark</th>
+                                <th>File Status</th>
+                                @if($status == 5)
+                                <th colspan="2">Claim Amount</th>
+                                <th colspan="2">Fee</th>
+                                <th colspan="2">Expense</th>
+                                <th colspan="2">PPN 10%</th>
+                                <th colspan="2">Total Invoice</th>
+                                @endif
                             </tr>
+                            @if($status == '5')
                             <tr>
+                                <td colspan="14"></td>
                                 <th>IDR</th>
                                 <th>USD</th>
                                 <th>IDR</th>
@@ -131,6 +144,23 @@
                                 <th>IDR</th>
                                 <th>USD</th>
                             </tr>
+                            @endif
+                            @if($status == 'all')
+                            <tr>
+                                <td colspan="9"></td>
+                                <th>IDR</th>
+                                <th>USD</th>
+                                <th>IDR</th>
+                                <th>USD</th>
+                                <th>IDR</th>
+                                <th>USD</th>
+                                <th>IDR</th>
+                                <th>USD</th>
+                                <th>IDR</th>
+                                <th>USD</th>
+                                <td colspan="24"></td>
+                            </tr>
+                            @endif
                         </thead>
                         @php
                         $expense_idr = 0;
@@ -152,56 +182,84 @@
                                 <td>{{ $data->policy->type_policy }}</td>
                                 <td>@if($data->category == 1) Marine @else Non Marine @endif</td>
                                 <td>{{ $data->insured }}</td>
+                                @if($status == 'all')
                                 <!-- claim amount -->
-                                <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format($data->claim_amount) }} @endif</td>
-                                <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->claim_amount) }} @endif</td>
+                                <td>@if($data->claim_amount_curr == 'IDR'){{ number_format($data->claim_amount) }} @else 0 @endif</td>
+                                <td>@if($data->claim_amount_curr == 'USD') {{ number_format($data->claim_amount)  }} @else 0 @endif</td>
                                 <!-- claim amount -->
                                 <!-- fee based  -->
-                                <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format($data->fee_idr) }} @endif</td>
-                                <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->fee_usd) }} @endif</td>
+                                <td>@if($data->claim_amount_curr == 'IDR') {{ number_format($data->fee_idr) }} @else 0 @endif</td>
+                                <td>@if($data->claim_amount_curr == 'USD') {{ number_format($data->fee_usd) }} @else 0 @endif</td>
                                 <!-- fee based  -->
                                 <!-- expense -->
-                                <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format($data->expense->sum('total')) }} @php $expense_idr += $data->expense->sum('total') @endphp @endif</td>
-                                <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format($data->expense->sum('total')) }} @php $expense_usd += $data->expense->sum('total') @endphp @endif</td>
+                                <td>@if($data->claim_amount_curr == 'IDR'){{ number_format($data->expense->sum('total')) }} @php $expense_idr += $data->expense->sum('total') @endphp @else 0 @endif</td>
+                                <td>@if($data->claim_amount_curr == 'USD') {{ number_format($data->expense->sum('total')) }} @php $expense_usd += $data->expense->sum('total') @endphp @else 0 @endif</td>
                                 <!-- expense -->
                                 <!-- ppn -->
-                                <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format(($data->fee_idr + $data->expense->sum('total')) * 10 / 100) }} @php $ppn_idr += ($data->fee_idr + $data->expense->sum('total')) * 10 / 100 @endphp @endif</td>
-                                <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format(($data->fee_usd + $data->expense->sum('total')) * 10 / 100) }} @php $ppn_usd += ($data->fee_usd + $data->expense->sum('total')) * 10 / 100 @endphp @endif</td>
+                                <td>@if($data->claim_amount_curr == 'IDR'){{ number_format(($data->fee_idr + $data->expense->sum('total')) * 10 / 100) }} @php $ppn_idr += ($data->fee_idr + $data->expense->sum('total')) * 10 / 100 @endphp @else 0 @endif</td>
+                                <td>@if($data->claim_amount_curr == 'USD') {{ number_format(($data->fee_usd + $data->expense->sum('total')) * 10 / 100) }} @php $ppn_usd += ($data->fee_usd + $data->expense->sum('total')) * 10 / 100 @endphp @else 0 @endif</td>
                                 <!-- ppn -->
                                 <!-- invoice  -->
-                                <td>@if($data->currency == 'IDR')<strong>IDR.</strong> {{ number_format(($data->claim_amount + $data->fee_idr) + (($data->fee_idr + $data->expense->sum('total')) * 10 / 100)) }} @php $invoice_idr += ($data->claim_amount + $data->fee_idr) + (($data->fee_idr + $data->expense->sum('total')) * 10 / 100) @endphp @endif </td>
-                                <td>@if($data->currency == 'USD')<i class="fas fa-dollar-sign"></i> {{ number_format(($data->claim_amount + $data->fee_usd) + (($data->fee_usd + $data->expense->sum('total')) * 10 / 100)) }} @php $invoice_usd += ($data->claim_amount + $data->fee_usd) + (($data->fee_usd + $data->expense->sum('total')) * 10 / 100) @endphp @endif</td>
+                                <td>@if($data->claim_amount_curr == 'IDR'){{ number_format(($data->claim_amount + $data->fee_idr) + (($data->fee_idr + $data->expense->sum('total')) * 10 / 100)) }} @php $invoice_idr += ($data->claim_amount + $data->fee_idr) + (($data->fee_idr + $data->expense->sum('total')) * 10 / 100) @endphp @else 0 @endif </td>
+                                <td>@if($data->claim_amount_curr == 'USD') {{ number_format(($data->claim_amount + $data->fee_usd) + (($data->fee_usd + $data->expense->sum('total')) * 10 / 100)) }} @php $invoice_usd += ($data->claim_amount + $data->fee_usd) + (($data->fee_usd + $data->expense->sum('total')) * 10 / 100) @endphp @else 0 @endif</td>
                                 <!-- invoice -->
+                                @endif
                                 <td>{{ $data->instruction_date ? \Carbon\Carbon::parse($data->instruction_date)->format('d/m/Y') : '' }}</td>
                                 <td>{{ $data->survey_date ? \Carbon\Carbon::parse($data->survey_date)->format('d/m/Y') : '' }}</td>
                                 <td>{{ $data->now_update ? \Carbon\Carbon::parse($data->now_update)->format('d/m/Y') : '' }}</td>
+                                @if($status != 5)
                                 <td>{{ $data->ia_date ? \Carbon\Carbon::parse($data->ia_date)->format('d/m/Y') : ''}}</td>
+                                <td>{{ $data->ia_curr }}</td>
                                 <td> <strong>{{ number_format($data->ia_amount) }}</strong></td>
-                                <td>{{ $data->ia_status }}</td>
                                 <td>{{ $data->pr_date ? \Carbon\Carbon::parse($data->pr_date)->format('d/m/Y') : '' }}</td>
+                                <td>{{ $data->pr_curr }}</td>
                                 <td><strong>{{ number_format($data->pr_amount) }}</strong></td>
-                                <td>{{ $data->pr_status }}</td>
-                                <td>{{ $data->ir_status }}</td>
+                                <!-- <td>{{ $data->ir_status }}</td> -->
                                 <td>{{ $data->ir_st_date ? \Carbon\Carbon::parse($data->ir_st_date)->format('d/m/Y') : '' }}</td>
+                                <td>{{ $data->ir_st_curr }}</td>
                                 <td><strong>{{ number_format($data->ir_st_amount) }}</strong></td>
-                                <td>{{ $data->ir_st_status }}</td>
                                 <td>{{ $data->ir_nd_date ? \Carbon\Carbon::parse($data->ir_nd_date)->format('d/m/Y') : '' }}</td>
+                                <td>{{ $data->ir_nd_curr }}</td>
                                 <td><strong>{{ number_format($data->ir_nd_amount) }}</strong></td>
-                                <td>{{ $data->ir_nd_status }}</td>
                                 <td>{{ $data->pa_date ? \Carbon\Carbon::parse($data->pa_date)->format('d/m/Y') : '' }}</td>
+                                <td>{{ $data->pa_curr }}</td>
                                 <td><strong>{{ number_format($data->pa_amount) }}</strong></td>
-                                <td>{{ $data->pa_status }}</td>
                                 <td>{{ $data->fr_date ? \Carbon\Carbon::parse($data->fr_date)->format('d/m/Y') : '' }}</td>
+                                <td>{{ $data->fr_curr }}</td>
                                 <td><strong>{{ number_format($data->fr_amount) }}</strong></td>
-                                <td>{{ $data->fr_status }}</td>
+                                @endif
                                 <td>{{ $data->remark }}</td>
                                 <td>{{ $data->status->nama_status }}</td>
+                                @if($status == 5)
+                                <!-- claim amount -->
+                                <td>@if($data->claim_amount_curr == 'IDR'){{ number_format($data->claim_amount) }} @else 0 @endif</td>
+                                <td>@if($data->claim_amount_curr == 'USD') {{ number_format($data->claim_amount)  }} @else 0 @endif</td>
+                                <!-- claim amount -->
+                                <!-- fee based  -->
+                                <td>@if($data->claim_amount_curr == 'IDR') {{ number_format($data->fee_idr) }} @else 0 @endif</td>
+                                <td>@if($data->claim_amount_curr == 'USD') {{ number_format($data->fee_usd) }} @else 0 @endif</td>
+                                <!-- fee based  -->
+                                <!-- expense -->
+                                <td>@if($data->claim_amount_curr == 'IDR'){{ number_format($data->expense->sum('total')) }} @php $expense_idr += $data->expense->sum('total') @endphp @else 0 @endif</td>
+                                <td>@if($data->claim_amount_curr == 'USD') {{ number_format($data->expense->sum('total')) }} @php $expense_usd += $data->expense->sum('total') @endphp @else 0 @endif</td>
+                                <!-- expense -->
+                                <!-- ppn -->
+                                <td>@if($data->claim_amount_curr == 'IDR'){{ number_format(($data->fee_idr + $data->expense->sum('total')) * 10 / 100) }} @php $ppn_idr += ($data->fee_idr + $data->expense->sum('total')) * 10 / 100 @endphp @else 0 @endif</td>
+                                <td>@if($data->claim_amount_curr == 'USD') {{ number_format(($data->fee_usd + $data->expense->sum('total')) * 10 / 100) }} @php $ppn_usd += ($data->fee_usd + $data->expense->sum('total')) * 10 / 100 @endphp @else 0 @endif</td>
+                                <!-- ppn -->
+                                <!-- invoice  -->
+                                <td>@if($data->claim_amount_curr == 'IDR'){{ number_format(($data->claim_amount + $data->fee_idr) + (($data->fee_idr + $data->expense->sum('total')) * 10 / 100)) }} @php $invoice_idr += ($data->claim_amount + $data->fee_idr) + (($data->fee_idr + $data->expense->sum('total')) * 10 / 100) @endphp @else 0 @endif </td>
+                                <td>@if($data->claim_amount_curr == 'USD') {{ number_format(($data->claim_amount + $data->fee_usd) + (($data->fee_usd + $data->expense->sum('total')) * 10 / 100)) }} @php $invoice_usd += ($data->claim_amount + $data->fee_usd) + (($data->fee_usd + $data->expense->sum('total')) * 10 / 100) @endphp @else 0 @endif</td>
+                                <!-- invoice -->
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>
                         <tfoot>
+                            @if($status == 'all')
                             <tr>
-                                <td colspan="9">total</td>
+                                <td>Total : </td>
+                                <td colspan="8"></td>
                                 <td>{{ number_format($claim_amount_idr) }}</td>
                                 <td>{{ number_format($claim_amount_usd) }}</td>
                                 <td>{{ number_format($fee_idr) }}</td>
@@ -214,6 +272,23 @@
                                 <td>{{ number_format($invoice_usd) }}</td>
                                 <td colspan="24"></td>
                             </tr>
+                            @endif
+                            @if($status == 5)
+                            <tr>
+                                <td>Total : </td>
+                                <td colspan="13"></td>
+                                <td>{{ number_format($claim_amount_idr) }}</td>
+                                <td>{{ number_format($claim_amount_usd) }}</td>
+                                <td>{{ number_format($fee_idr) }}</td>
+                                <td>{{ number_format($fee_usd) }}</td>
+                                <td>{{ number_format($expense_idr) }}</td>
+                                <td>{{ number_format($expense_usd) }}</td>
+                                <td>{{ number_format($ppn_idr) }}</td>
+                                <td>{{ number_format($ppn_usd) }}</td>
+                                <td>{{ number_format($invoice_idr) }}</td>
+                                <td>{{ number_format($invoice_usd) }}</td>
+                            </tr>
+                            @endif
                         </tfoot>
                     </table>
                 </div>
@@ -232,9 +307,21 @@
     <script>
         $('#table').DataTable({
             dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
+            buttons: [{
+                    extend: 'excelHtml5',
+                    footer: true,
+                    exportOptions: {
+                        modifier: {
+                            page: 'all'
+                        },
+                        columns: ':visible',
+                    }
+                },
+                'copy', 'csv', 'pdf', 'print'
             ],
+            columnDefs: [{
+                visible: true
+            }],
             "paging": false,
             "ordering": false,
             "searching": false

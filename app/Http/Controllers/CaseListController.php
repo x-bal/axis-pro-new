@@ -199,6 +199,7 @@ class CaseListController extends Controller
             'broker' => 'required',
             'incident' => 'required',
             'policy' => 'required',
+            // 'claim_estimate' => 'required',
             // 'no_leader_policy' => 'required',
             'instruction_date' => 'required',
             // 'leader_claim_no' => 'required',
@@ -209,6 +210,7 @@ class CaseListController extends Controller
             'copy_polis' => 'mimes:pdf,docx',
             'file_penunjukan' => 'mimes:pdf,docx',
         ]);
+
         if (!(array_sum($request->percent) <= 100 and array_sum($request->percent) >= 100)) {
             $error = \Illuminate\Validation\ValidationException::withMessages([
                 'percent' => ['the total member share must fit 100%, not less or more, your member share input : ' . array_sum($request->percent) . '%'],
@@ -228,6 +230,7 @@ class CaseListController extends Controller
                     $name_copy_polis = Carbon::now()->format('YmdHis') . '_' . $request->file('copy_polis')->getClientOriginalName();
                     $path_copy_polis = $request->file('copy_polis')->storeAs('/files/copypolis', $name_copy_polis);
                 }
+
                 $caselist = Caselist::create([
                     'file_no' => $request->file_no . '-JAK',
                     'insurance_id' => $request->insurance,
@@ -239,16 +242,17 @@ class CaseListController extends Controller
                     'risk_location' => $request->risk_location,
                     'currency' => $request->currency,
                     'leader' => $request->insurance,
-                    'begin' => Carbon::parse($request->begin)->format('Y-m-d'),
+                    'begin' => Carbon::createFromFormat('d/m/Y', $request->begin)->format('Y-m-d'),
                     'end' => Carbon::createFromFormat('d/m/Y', $request->end)->format('Y-m-d'),
-                    'dol' => Carbon::parse($request->dol)->format('Y-m-d'),
+                    'dol' => Carbon::createFromFormat('d/m/Y', $request->dol)->format('Y-m-d'),
                     'category' => $request->category,
                     'no_leader_policy' => $request->no_leader_policy,
-                    'instruction_date' => Carbon::parse($request->instruction_date)->format('Y-m-d'),
+                    'instruction_date' => Carbon::createFromFormat('d/m/Y', $request->instruction_date)->format('Y-m-d'),
                     'leader_claim_no' => $request->leader_claim_no,
+                    'claim_estimate' => str_replace('.', '', $request->claim_estimate),
                     'file_status_id' => 1,
-                    'survey_date' => Carbon::parse($request->survey_date)->format('Y-m-d'),
-                    'ia_limit' => Carbon::parse($request->survey_date)->addDay(7)->format('Y-m-d'),
+                    'survey_date' => Carbon::createFromFormat('d/m/Y', $request->survey_date)->format('Y-m-d'),
+                    'ia_limit' => Carbon::createFromFormat('d/m/Y', $request->survey_date)->addDay(7)->format('Y-m-d'),
                     'conveyance' => $request->conveyance,
                     'location_of_loss' => $request->location_of_loss,
                     'no_ref_surat_asuransi' => $request->no_ref_surat_asuransi,
@@ -257,6 +261,7 @@ class CaseListController extends Controller
                     'history_id' => auth()->user()->id,
                     'history_date' => Carbon::now()->format('Y-m-d H:i:s')
                 ]);
+
                 History::create([
                     'name' => auth()->user()->nama_lengkap,
                     'type' => 'Case List Create : ' . $request->file_no . '-JAK',
@@ -287,6 +292,11 @@ class CaseListController extends Controller
     public function show(CaseList $caseList)
     {
         Gate::allows(abort_unless('case-list-show', 403));
+        if (auth()->user()->hasRole('adjuster')) {
+            if (!auth()->user()->is($caseList->adjuster)) {
+                abort(403);
+            }
+        }
 
         $messages = [];
         $status = FileStatus::get();
@@ -481,68 +491,68 @@ class CaseListController extends Controller
                 return back()->with('error', $error->getMessage());
             }
         }
-        if ($request->currency != $caseList->currency) {
-            $currency = Currency::get()->firstOrFail();
-            try {
-                DB::beginTransaction();
-                $caseList =  CaseList::where('id', $caseList->id)->first();
-                if ($request->currency == 'IDR') {
-                    if ($caseList->ir_status == 1) {
-                        $caseList->update([
-                            'ia_amount' => strval(round($caseList->ia_amount * $currency->kurs)),
-                            'pr_amount' => strval(round($caseList->pr_amount * $currency->kurs)),
-                            'ir_st_amount' => strval(round($caseList->ir_st_amount * $currency->kurs)),
-                            'pa_amount' => strval(round($caseList->pa_amount * $currency->kurs)),
-                            'fr_amount' => strval(round($caseList->fr_amount * $currency->kurs)),
-                            'claim_amount' => strval(round($caseList->claim_amount * $currency->kurs))
-                        ]);
-                    } else {
-                        $caseList->update([
-                            'ia_amount' => strval(round($caseList->ia_amount * $currency->kurs)),
-                            'pr_amount' => strval(round($caseList->pr_amount * $currency->kurs)),
-                            'pa_amount' => strval(round($caseList->pa_amount * $currency->kurs)),
-                            'fr_amount' => strval(round($caseList->fr_amount * $currency->kurs)),
-                            'claim_amount' => strval(round($caseList->claim_amount * $currency->kurs))
-                        ]);
-                    }
-                    foreach ($caseList->expense as $data) {
-                        Expense::where('case_list_id', $caseList->id)->update([
-                            'amount' => strval(round($data->amount * $currency->kurs))
-                        ]);
-                    }
-                }
-                if ($request->currency == 'USD') {
-                    if ($caseList->ir_status == 1) {
-                        $caseList->update([
-                            'ia_amount' => strval(round($caseList->ia_amount / $currency->kurs, 2)),
-                            'pr_amount' => strval(round($caseList->pr_amount / $currency->kurs, 2)),
-                            'ir_st_amount' => strval(round($caseList->ir_st_amount / $currency->kurs, 2)),
-                            'pa_amount' => strval(round($caseList->pa_amount / $currency->kurs, 2)),
-                            'fr_amount' => strval(round($caseList->fr_amount / $currency->kurs, 2)),
-                            'claim_amount' => strval(round($caseList->claim_amount / $currency->kurs, 2))
-                        ]);
-                    } else {
-                        $caseList->update([
-                            'ia_amount' => strval(round($caseList->ia_amount / $currency->kurs, 2)),
-                            'pr_amount' => strval(round($caseList->pr_amount / $currency->kurs, 2)),
-                            'pa_amount' => strval(round($caseList->pa_amount / $currency->kurs, 2)),
-                            'fr_amount' => strval(round($caseList->fr_amount / $currency->kurs, 2)),
-                            'claim_amount' => strval(round($caseList->claim_amount / $currency->kurs, 2))
-                        ]);
-                    }
+        // if ($request->currency != $caseList->currency) {
+        //     $currency = Currency::get()->firstOrFail();
+        //     try {
+        //         DB::beginTransaction();
+        //         $caseList =  CaseList::where('id', $caseList->id)->first();
+        //         if ($request->currency == 'IDR') {
+        //             if ($caseList->ir_status == 1) {
+        //                 $caseList->update([
+        //                     'ia_amount' => strval(round($caseList->ia_amount * $currency->kurs)),
+        //                     'pr_amount' => strval(round($caseList->pr_amount * $currency->kurs)),
+        //                     'ir_st_amount' => strval(round($caseList->ir_st_amount * $currency->kurs)),
+        //                     'pa_amount' => strval(round($caseList->pa_amount * $currency->kurs)),
+        //                     'fr_amount' => strval(round($caseList->fr_amount * $currency->kurs)),
+        //                     'claim_amount' => strval(round($caseList->claim_amount * $currency->kurs))
+        //                 ]);
+        //             } else {
+        //                 $caseList->update([
+        //                     'ia_amount' => strval(round($caseList->ia_amount * $currency->kurs)),
+        //                     'pr_amount' => strval(round($caseList->pr_amount * $currency->kurs)),
+        //                     'pa_amount' => strval(round($caseList->pa_amount * $currency->kurs)),
+        //                     'fr_amount' => strval(round($caseList->fr_amount * $currency->kurs)),
+        //                     'claim_amount' => strval(round($caseList->claim_amount * $currency->kurs))
+        //                 ]);
+        //             }
+        //             foreach ($caseList->expense as $data) {
+        //                 Expense::where('case_list_id', $caseList->id)->update([
+        //                     'amount' => strval(round($data->amount * $currency->kurs))
+        //                 ]);
+        //             }
+        //         }
+        //         if ($request->currency == 'USD') {
+        //             if ($caseList->ir_status == 1) {
+        //                 $caseList->update([
+        //                     'ia_amount' => strval(round($caseList->ia_amount / $currency->kurs, 2)),
+        //                     'pr_amount' => strval(round($caseList->pr_amount / $currency->kurs, 2)),
+        //                     'ir_st_amount' => strval(round($caseList->ir_st_amount / $currency->kurs, 2)),
+        //                     'pa_amount' => strval(round($caseList->pa_amount / $currency->kurs, 2)),
+        //                     'fr_amount' => strval(round($caseList->fr_amount / $currency->kurs, 2)),
+        //                     'claim_amount' => strval(round($caseList->claim_amount / $currency->kurs, 2))
+        //                 ]);
+        //             } else {
+        //                 $caseList->update([
+        //                     'ia_amount' => strval(round($caseList->ia_amount / $currency->kurs, 2)),
+        //                     'pr_amount' => strval(round($caseList->pr_amount / $currency->kurs, 2)),
+        //                     'pa_amount' => strval(round($caseList->pa_amount / $currency->kurs, 2)),
+        //                     'fr_amount' => strval(round($caseList->fr_amount / $currency->kurs, 2)),
+        //                     'claim_amount' => strval(round($caseList->claim_amount / $currency->kurs, 2))
+        //                 ]);
+        //             }
 
-                    foreach ($caseList->expense as $data) {
-                        Expense::where('case_list_id', $caseList->id)->update([
-                            'amount' => strval(round($data->amount / $currency->kurs, 2))
-                        ]);
-                    }
-                }
-                DB::commit();
-            } catch (Exception $err) {
-                DB::rollBack();
-                return back()->with('error', $err->getMessage());
-            }
-        }
+        //             foreach ($caseList->expense as $data) {
+        //                 Expense::where('case_list_id', $caseList->id)->update([
+        //                     'amount' => strval(round($data->amount / $currency->kurs, 2))
+        //                 ]);
+        //             }
+        //         }
+        //         DB::commit();
+        //     } catch (Exception $err) {
+        //         DB::rollBack();
+        //         return back()->with('error', $err->getMessage());
+        //     }
+        // }
         try {
             $member = array_values($request->member);
             $share = array_values($request->percent);
@@ -565,6 +575,7 @@ class CaseListController extends Controller
                 'end' => Carbon::createFromFormat('d/m/Y', $request->end)->format('Y-m-d'),
                 'dol' => Carbon::createFromFormat('d/m/Y', $request->dol)->format('Y-m-d'),
                 'category' => $request->category,
+                'claim_estimate' => str_replace('.', '', $request->claim_estimate),
                 // 'no_leader_policy' => $request->no_leader_policy,
                 'survey_date' => Carbon::createFromFormat('d/m/Y', $request->survey_date)->format('Y-m-d'),
                 'conveyance' => $request->conveyance,
@@ -663,53 +674,77 @@ class CaseListController extends Controller
                 'status' => 'required'
             ]);
         }
+
         if (auth()->user()->hasRole('admin')) {
+            if ($request->status == "all") {
+                // $case =  CaseList::whereBetween('instruction_date', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->get();
+
+                // $claim_amount_idr = $case->where('claim_amount_curr', 'IDR')->sum('claim_amount');
+                // $claim_amount_usd = $case->where('claim_amount_curr', 'USD')->sum('claim_amount');
+                // $fee_idr = $case->where('claim_amount_curr', 'IDR')->sum('fee_idr');
+                // $fee_usd = $case->where('claim_amount_curr', 'USD')->sum('fee_usd');
+
+                if ($request->adjuster == "All") {
+                    $case = CaseList::whereBetween('instruction_date', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->get();
+                    $claim_amount_idr = $case->where('claim_amount_curr', 'IDR')->sum('claim_amount');
+                    $claim_amount_usd = $case->where('claim_amount_curr', 'USD')->sum('claim_amount');
+                    $fee_idr = $case->where('claim_amount_curr', 'IDR')->sum('fee_idr');
+                    $fee_usd = $case->where('claim_amount_curr', 'USD')->sum('fee_usd');
+                } else {
+                    $case = CaseList::where('adjuster_id', $request->adjuster)->whereBetween('instruction_date', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->get();
+                }
+            }
+
             if ($request->status == 'outstanding') {
 
                 $case = CaseList::where('file_status_id', '!=', 5)->whereBetween('instruction_date', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->where('adjuster_id', $request->adjuster)->get();
 
-
-                $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
-                $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
-                $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
-                $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
+                $claim_amount_idr = $case->where('claim_amount_curr', 'IDR')->sum('claim_amount');
+                $claim_amount_usd = $case->where('claim_amount_curr', 'USD')->sum('claim_amount');
+                $fee_idr = $case->where('claim_amount_curr', 'IDR')->sum('fee_idr');
+                $fee_usd = $case->where('claim_amount_curr', 'USD')->sum('fee_usd');
 
                 if ($request->adjuster == "All") {
 
-                    $case =  CaseList::where('file_status_id', '!=', 5)->whereBetween('instruction_date', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->get();
-                    $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
-                    $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
-                    $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
-                    $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
+                    $case = CaseList::where('file_status_id', '!=', 5)->whereBetween('instruction_date', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->get();
+                    $claim_amount_idr = $case->where('claim_amount_curr', 'IDR')->sum('claim_amount');
+                    $claim_amount_usd = $case->where('claim_amount_curr', 'USD')->sum('claim_amount');
+                    $fee_idr = $case->where('claim_amount_curr', 'IDR')->sum('fee_idr');
+                    $fee_usd = $case->where('claim_amount_curr', 'USD')->sum('fee_usd');
                 }
-            } else {
+            }
+
+            if ($request->status == 5) {
                 $case = CaseList::where('file_status_id', 5)->whereBetween('instruction_date', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->where('adjuster_id', $request->adjuster)->get();
 
 
-                $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
-                $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
-                $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
-                $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
+                $claim_amount_idr = $case->where('claim_amount_curr', 'IDR')->sum('claim_amount');
+                $claim_amount_usd = $case->where('claim_amount_curr', 'USD')->sum('claim_amount');
+                $fee_idr = $case->where('claim_amount_curr', 'IDR')->sum('fee_idr');
+                $fee_usd = $case->where('claim_amount_curr', 'USD')->sum('fee_usd');
 
                 if ($request->adjuster == "All") {
 
                     $case =  CaseList::where('file_status_id', 5)->whereBetween('instruction_date', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->get();
-                    $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
-                    $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
-                    $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
-                    $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
+                    $claim_amount_idr = $case->where('claim_amount_curr', 'IDR')->sum('claim_amount');
+                    $claim_amount_usd = $case->where('claim_amount_curr', 'USD')->sum('claim_amount');
+                    $fee_idr = $case->where('claim_amount_curr', 'IDR')->sum('fee_idr');
+                    $fee_usd = $case->where('claim_amount_curr', 'USD')->sum('fee_usd');
                 }
             }
+
 
             History::create([
                 'name' => auth()->user()->nama_lengkap,
                 'type' => 'Case List Laporan Admin',
                 'datetime' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
+
             return view('case-list.laporan', [
                 'from' =>  Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'),
                 'to' => Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d'),
                 'case' => $case,
+                'status' => $request->status,
                 'adjuster' => $request->adjuster,
                 'claim_amount_idr' => $claim_amount_idr,
                 'claim_amount_usd' => $claim_amount_usd,
@@ -720,24 +755,26 @@ class CaseListController extends Controller
             $case = CaseList::whereBetween('instruction_date', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->where('file_status_id', $request->status)->where('adjuster_id', auth()->user()->id)->get();
 
 
-            $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
-            $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
-            $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
-            $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
+            $claim_amount_idr = $case->where('claim_amount_curr', 'IDR')->sum('claim_amount');
+            $claim_amount_usd = $case->where('claim_amount_curr', 'USD')->sum('claim_amount');
+            $fee_idr = $case->where('claim_amount_curr', 'IDR')->sum('fee_idr');
+            $fee_usd = $case->where('claim_amount_curr', 'USD')->sum('fee_usd');
 
             if ($request->status == "All") {
                 $case =  CaseList::whereBetween('instruction_date', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->where('adjuster_id', auth()->user()->id)->get();
 
-                $claim_amount_idr = $case->where('currency', 'IDR')->sum('claim_amount');
-                $claim_amount_usd = $case->where('currency', 'USD')->sum('claim_amount');
-                $fee_idr = $case->where('currency', 'IDR')->sum('fee_idr');
-                $fee_usd = $case->where('currency', 'USD')->sum('fee_usd');
+                $claim_amount_idr = $case->where('claim_amount_curr', 'IDR')->sum('claim_amount');
+                $claim_amount_usd = $case->where('claim_amount_curr', 'USD')->sum('claim_amount');
+                $fee_idr = $case->where('claim_amount_curr', 'IDR')->sum('fee_idr');
+                $fee_usd = $case->where('claim_amount_curr', 'USD')->sum('fee_usd');
             }
+
             History::create([
                 'name' => auth()->user()->nama_lengkap,
                 'type' => 'Case List Laporan Adjuster',
                 'datetime' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
+
             return view('case-list.laporan', [
                 'from' => Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'),
                 'to' => Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d'),
@@ -882,20 +919,22 @@ class CaseListController extends Controller
         try {
             DB::beginTransaction();
             $caselist = CaseList::findOrFail($request->id);
+            $caselist->update([
+                'date_instruction' => Carbon::createFromFormat('d/m/Y', $request->date_instruction)->format('Y-m-d'),
+                'pic_insurer' => $request->pic
+            ]);
+
             $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
-            $beautymail->send('emails.welcome', ['adjuster' => $caselist->adjuster->nama_lengkap, 'fileno' => $caselist->file_no], function ($message) use ($caselist) {
+            $beautymail->send('emails.instruction', ['adjuster' => $caselist->adjuster->nama_lengkap, 'fileno' => $caselist->file_no, 'ref' => $caselist->no_ref_surat_asuransi, 'kode' => $caselist->adjuster->kode_adjuster, 'insured' => $caselist->insured, 'date' => Carbon::parse($caselist->date_instruction)->format('d/m/Y'), 'pic' => $caselist->pic_insurer, 'leader' => $caselist->leader_id->brand], function ($message) use ($caselist) {
                 $message
                     ->from('admin@axisers.com')
                     ->to($caselist->adjuster->email, $caselist->adjuster->nama_lengkap)
                     ->subject('Reminder - Instruction Closed Case');
             });
 
-            $caselist->update([
-                'date_instruction' => Carbon::createFromFormat('d/m/Y', $request->date_instruction)->format('Y-m-d'),
-                'pic_insurer' => $request->pic
-            ]);
-
             DB::commit();
+
+            return back()->with('success', 'Instruction Closed File has been sended');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', $th->getMessage());

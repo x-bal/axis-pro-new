@@ -7,6 +7,7 @@ use App\Models\CaseList;
 use App\Models\Client;
 use App\Models\FeeBased;
 use App\Http\Controllers\Controller;
+use App\Models\CategoryExpense;
 use App\Models\Currency;
 use App\Models\Expense;
 use App\Models\User;
@@ -46,7 +47,7 @@ class AjaxController extends Controller
             // 1
             if ($caselist->category == 1) {
                 $feebased = FeeBased::where('category_fee', 1)->get();
-                if ($caselist->currency == 'IDR') {
+                if ($caselist->claim_amount_curr == 'IDR') {
                     $max = FeeBased::where('category_fee', 1)->max('adjusted_idr');
                     foreach ($feebased as $data) {
                         if ($caselist->claim_amount <= $data->adjusted_idr) {
@@ -68,7 +69,7 @@ class AjaxController extends Controller
 
                     $fee = $caselist->fee_idr;
                 }
-                if ($caselist->currency == 'USD') {
+                if ($caselist->claim_amount_curr == 'USD') {
                     $max = FeeBased::where('category_fee', 1)->max('adjusted_usd');
                     foreach ($feebased as $data) {
                         if ($caselist->claim_amount <= $data->adjusted_usd) {
@@ -93,7 +94,7 @@ class AjaxController extends Controller
             // 2
             if ($caselist->category == 2) {
                 $feebased = FeeBased::where('category_fee', 2)->get();
-                if ($caselist->currency == 'IDR') {
+                if ($caselist->claim_amount_curr == 'IDR') {
                     $max = FeeBased::where('category_fee', 2)->max('adjusted_idr');
                     foreach ($feebased as $data) {
                         if ($caselist->claim_amount <= $data->adjusted_idr) {
@@ -115,7 +116,7 @@ class AjaxController extends Controller
 
                     $fee = $caselist->fee_idr;
                 }
-                if ($caselist->currency == 'USD') {
+                if ($caselist->claim_amount_curr == 'USD') {
                     $max = FeeBased::where('category_fee', 2)->max('adjusted_usd');
                     foreach ($feebased as $data) {
                         if ($caselist->claim_amount <= $data->adjusted_usd) {
@@ -305,6 +306,10 @@ class AjaxController extends Controller
     public function ExpenseShow($id)
     {
         $response = Expense::find($id);
+        $response['tanggal'] = Carbon::parse($response->tanggal)->format('d/m/Y');
+        $response['amount'] = number_format($response->amount, 0, ',', '.');
+        $response['adjuster'] = User::where('kode_adjuster', $response->adjuster)->first();
+        $response['category'] = CategoryExpense::where('nama_kategory', $response->category_expense)->first();
         return response()->json($response);
     }
 
@@ -313,7 +318,7 @@ class AjaxController extends Controller
         $caselist = CaseList::find($id);
         if ($caselist->category == 1) {
             $feebased = FeeBased::where('category_fee', 1)->get();
-            if ($caselist->currency == 'IDR') {
+            if ($caselist->claim_amount_curr == 'IDR') {
                 $min = FeeBased::where('category_fee', 1)->min('adjusted_idr');
                 foreach ($feebased as $data) {
                     if ($caselist->claim_amount <= $data->adjusted_idr) {
@@ -326,7 +331,7 @@ class AjaxController extends Controller
                     }
                 }
             }
-            if ($caselist->currency == 'USD') {
+            if ($caselist->claim_amount_curr == 'USD') {
                 $min = FeeBased::where('category_fee', 1)->min('adjusted_usd');
                 foreach ($feebased as $data) {
                     if ($caselist->claim_amount <= $data->adjusted_usd) {
@@ -343,7 +348,7 @@ class AjaxController extends Controller
         // 2
         if ($caselist->category == 2) {
             $feebased = FeeBased::where('category_fee', 2)->get();
-            if ($caselist->currency == 'IDR') {
+            if ($caselist->claim_amount_curr == 'IDR') {
                 $min = FeeBased::where('category_fee', 2)->min('adjusted_idr');
                 foreach ($feebased as $data) {
                     if ($caselist->claim_amount <= $data->adjusted_idr) {
@@ -356,7 +361,7 @@ class AjaxController extends Controller
                     }
                 }
             }
-            if ($caselist->currency == 'USD') {
+            if ($caselist->claim_amount_curr == 'USD') {
                 $min = FeeBased::where('category_fee', 2)->min('adjusted_usd');
                 foreach ($feebased as $data) {
                     if ($caselist->claim_amount <= $data->adjusted_usd) {

@@ -22,7 +22,7 @@ class ExpenseController extends Controller
     public function index()
     {
         return view('expense.index', [
-            'expense' => Expense::get()
+            'caselists' => CaseList::get()
         ]);
     }
 
@@ -49,17 +49,22 @@ class ExpenseController extends Controller
 
         try {
             DB::beginTransaction();
-
-            Expense::create([
-                'case_list_id' => $request->case_list_id,
-                'adjuster' => $request->adjuster,
-                'name' => $request->name,
-                'qty' => $request->qty,
-                'amount' => str_replace('.', '',  $request->amount),
-                'total' => intval($request->qty * str_replace('.', '',  $request->amount)),
-                'category_expense' => $request->category,
-                'tanggal' => Carbon::createFromFormat('d/m/Y', $request->tanggal)->format('Y-m-d')
-            ]);
+            // dd($request->all());
+            Expense::updateOrCreate(
+                [
+                    'id' => $request->expense_id
+                ],
+                [
+                    'case_list_id' => $request->case_list_id,
+                    'adjuster' => $request->adjuster,
+                    'name' => $request->name,
+                    'qty' => $request->qty,
+                    'amount' => str_replace('.', '',  $request->amount),
+                    'total' => intval($request->qty * str_replace('.', '',  $request->amount)),
+                    'category_expense' => $request->category,
+                    'tanggal' => Carbon::createFromFormat('d/m/Y', $request->tanggal)->format('Y-m-d')
+                ]
+            );
 
             DB::commit();
 
@@ -182,7 +187,8 @@ class ExpenseController extends Controller
             'from' => 'required',
             'to' => 'required'
         ]);
-        $expense = Expense::whereBetween('tanggal', [$request->from, $request->to])->get();
+
+        $expense = Expense::whereBetween('tanggal', [Carbon::createFromFormat('d/m/Y', $request->from)->format('Y-m-d'), Carbon::createFromFormat('d/m/Y', $request->to)->format('Y-m-d')])->get();
         return view('expense.laporan', [
             'expense' => $expense
         ]);

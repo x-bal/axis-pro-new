@@ -262,8 +262,9 @@
                                         @csrf
                                         <tr>
                                             <input type="hidden" name="case_list_id" value="{{ $caseList->id }}">
+                                            <input type="hidden" name="expense_id" id="expense_id" value="">
                                             <td>
-                                                <input type="text" name="name" class="form-control" placeholder="Name">
+                                                <input type="text" name="name" class="form-control" placeholder="Name" id="name">
                                                 @error('name')
                                                 <small class="text-danger">{{ $message }}</small>
                                                 @enderror
@@ -293,20 +294,20 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <input type="number" name="qty" class="form-control" placeholder="Qty">
+                                                <input type="number" name="qty" id="qty" class="form-control" placeholder="Qty">
                                                 @error('qty')
                                                 <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </td>
                                             <td>
-                                                <input type="text" name="amount" class="form-control amount_expense" placeholder="Amount" autocomplete="off">
+                                                <input type="text" id="amount" name="amount" class="form-control amount_expense" placeholder="Amount" autocomplete="off">
                                                 @error('amount')
                                                 <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </td>
 
                                             <td>
-                                                <input type="text" name="tanggal" id="" class="form-control tgl_expense" autocomplete="off" placeholder="dd/mm/yyyy">
+                                                <input type="text" name="tanggal" id="tgl_expense" class="form-control tgl_expense" autocomplete="off" placeholder="dd/mm/yyyy">
                                                 @error('tanggal')
                                                 <small class="text-danger">{{ $message }}</small>
                                                 @enderror
@@ -367,6 +368,7 @@
                                     </td>
                                     @if(auth()->user()->hasRole('admin'))
                                     <td>
+                                        <button type="button" class="btn btn-sm btn-warning btn-expense @if($expense->is_active == 1) d-none @endif" data-id="{{ $expense->id }}" data-toggle="modal" data-target="#modalExpense"><i class="fas fa-edit"></i></button>
                                         <form action="{{ route('expense.destroy', $expense->id) }}" method="post" onclick="return confirm('Are you sure to delete this expense ?')" style="display: inline;">
                                             @method('DELETE')
                                             @csrf
@@ -1614,6 +1616,47 @@
         </div>
     </div>
 </div>
+<!-- <div class="modal fade" id="modalExpense" tabindex="-1" role="dialog" aria-labelledby="modalExpenseTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit Expense</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('expense.update') }}" method="post">
+                <div class="modal-body">
+                    @csrf
+                    @method('put')
+                    <input type="hidden" name="id" id="id_expense">
+                    <div class="form-group">
+                        <label for="adjuster">Adjuster</label>
+                        <select name="adjuster" id="adjuster" class="form-control">
+                            <option disabled selected></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Name</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Qty</label>
+                        <input type="number" class="form-control" name="qty" id="qty">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Nominal</label>
+                        <input type="text" class="form-control" id="nominal" name="nominal">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> -->
 
 <div class="modal fade" id="modalCloseCase" role="dialog" aria-labelledby="KonfirmasiModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" style="overflow: auto;" role="document">
@@ -1693,7 +1736,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="">PIC Insurer</label>
-                                    <input type="text" name="pic" id="pic" class="form-control">
+                                    <input type="text" name="pic" id="pic" class="form-control" value="{{ $caseList->pic_insurer ?? '' }}">
                                 </div>
                             </div>
                         </div>
@@ -1722,6 +1765,26 @@
 
 <script>
     $(document).ready(function() {
+        $(".btn-expense").on('click', function() {
+            let id = $(this).attr('data-id')
+            $('#id_expense').val($(this).attr('data-id'))
+            $.ajax({
+                url: `/api/admin/expense/show/${id}`,
+                success: function(resource) {
+                    $('#expense_id').val(resource.id)
+                    $('#name').val(resource.name)
+                    $('#qty').val(resource.qty)
+                    $('#amount').val(resource.amount)
+                    $("#tgl_expense").val(resource.tanggal)
+                    $("#adjuster").append(`<option value="` + resource.adjuster.kode_adjuster + `" selected>` + resource.adjuster.nama_lengkap + `(` + resource.adjuster.kode_adjuster + `)</option>`)
+                    $("#category").append(`<option value="` + resource.category.nama_kategory + `" selected>` + resource.category.nama_kategory + `</option>`)
+                },
+                error: function(error) {
+                    alert(error.statusText)
+                }
+            })
+        })
+
         $(".tgl_expense").datepicker({
             dateFormat: "dd/mm/yy"
         });
@@ -1756,6 +1819,17 @@
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             });
         });
+
+        $('#nominal').keyup(function(event) {
+            if (event.which >= 37 && event.which <= 40) return;
+
+            $(this).val(function(index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            });
+        });
+
         $('.pr_amount').keyup(function(event) {
             if (event.which >= 37 && event.which <= 40) return;
 
@@ -1914,6 +1988,8 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+
 
         $("#ir_status").on('change', function() {
             let id = "{{ $caseList->id }}";
