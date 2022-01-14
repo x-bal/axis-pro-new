@@ -42,15 +42,15 @@
                     <td width="31%">{{ $caseList->status->nama_status }} </td>
                     <td width="15%">INSURED</td>
                     <td width="2%">:</td>
-                    <td width="38%">{{ $caseList->insurance->name }}</td>
+                    <td width="38%">{{ $caseList->insured }}</td>
                 </tr>
                 <tr>
                     <td width="12%">FILE NO</td>
                     <td width="2%">:</td>
                     <td width="31%">{{ $caseList->file_no }}</td>
-                    <td width="15%">INSURED</td>
-                    <td width="2%">:</td>
-                    <td width="38%">{{ $caseList->insured }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td width="12%">FILE NO</td>
