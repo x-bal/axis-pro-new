@@ -13,7 +13,7 @@
 
 <p>
     Please Closing file to issue Final Report & Fee Note or Fee Note only (for other conditions) <br>
-    Axis {{ $ref }}. {{ $fileno }}/{{ $kode }}, {{ $insured }} - {{ $leader }}
+    Axis Ref. {{ $fileno }}/{{ $kode }}, {{ $insured }} - {{ $leader }}
 
 <table border="0">
     <tr>

@@ -48,6 +48,7 @@ class ReportLimaController extends Controller
             'time_upload' => 'required',
         ]);
 
+
         try {
             if ($request->hasFile('file_upload')) {
                 $files = $request->file('file_upload');
@@ -78,7 +79,7 @@ class ReportLimaController extends Controller
                 'fr_status' => 1,
                 'fr_curr' => $request->curr,
                 'claim_amount_curr' => $request->claim_curr,
-                'fr_date' => Carbon::now(),
+                'fr_date' => Carbon::createFromFormat('d/m/Y', $request->fr_date)->format('Y-m-d'),
                 'now_update' => Carbon::now(),
                 'file_status_id' => 5
             ]);

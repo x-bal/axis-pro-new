@@ -81,23 +81,23 @@
                                     </td>
                                     <td width="15%">INSURED</td>
                                     <td width="2%">:</td>
-                                    <td width="38%">{{ $caseList->insurance->name }}</td>
+                                    <td width="38%">{{ $caseList->insured }}</td>
                                 </tr>
                                 <tr>
                                     <td width="12%">FILE NO</td>
                                     <td width="2%">:</td>
                                     <td width="31%">{{ $caseList->file_no }}</td>
-                                    <td width="15%">INSURED</td>
-                                    <td width="2%">:</td>
-                                    <td width="38%">{{ $caseList->insurance->name }}</td>
+                                    <td>DOL</td>
+                                    <td>:</td>
+                                    <td>{{ Carbon\Carbon::parse($caseList->dol)->format('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
                                     <td>INITIAL ADJUSTER</td>
                                     <td>:</td>
                                     <td>{{ $caseList->adjuster->kode_adjuster }} ({{ $caseList->adjuster->nama_lengkap }})</td>
-                                    <td>DOL</td>
+                                    <td>LOCATION RISK / PROJECT</td>
                                     <td>:</td>
-                                    <td>{{ Carbon\Carbon::parse($caseList->dol)->format('d/m/Y') }}</td>
+                                    <td>{{ $caseList->risk_location }}</td>
                                 </tr>
                                 <tr>
                                     <td>INSURANCE</td>
@@ -107,38 +107,30 @@
                                         <p>{{ App\Models\Client::find($member->member_insurance)->name ?? 'Kosong' }} ({{ $member->share }}) - @if($member->is_leader) <strong class="text-primary">Leader</strong> @else <strong class="text-secondary">Member</strong> @endif</p>
                                         @endforeach
                                     </td>
-                                    <td>LOCATION RISK / PROJECT</td>
-                                    <td>:</td>
-                                    <td>{{ $caseList->risk_location }}</td>
-                                </tr>
-                                <tr>
-                                    <td>BROKER</td>
-                                    <td>:</td>
-                                    <td><span class="bg-secondary p-2 text-light">{{ $caseList->broker->nama_broker }}</span> </td>
                                     <td>CAUSE OF LOSS</td>
                                     <td>:</td>
                                     <td>{{ $caseList->incident->type_incident }}</td>
                                 </tr>
                                 <tr>
-                                    <td>TYPE OF BUSINESS</td>
+                                    <td>BROKER</td>
                                     <td>:</td>
-                                    <td>{{ $caseList->policy->type_policy }}</td>
+                                    <td><span class="bg-secondary p-2 text-light">{{ $caseList->broker->nama_broker }}</span> </td>
                                     <td>LEADER POLICY NO</td>
                                     <td>:</td>
                                     <td>{{ $caseList->no_leader_policy }} | PERIOD BEGIN : {{ Carbon\Carbon::parse($caseList->begin)->format('d/m/Y') }} PERIOD END : {{ Carbon\Carbon::parse($caseList->end)->format('d/m/Y') }} <br> </td>
                                 </tr>
                                 <tr>
-                                    <td>SURVEY DATE</td>
+                                    <td>TYPE OF BUSINESS</td>
                                     <td>:</td>
-                                    <td>{{ Carbon\Carbon::parse($caseList->survey_date)->format('d/m/Y') }}</td>
+                                    <td>{{ $caseList->policy->type_policy }}</td>
                                     <td>LEADER CLAIM NO</td>
                                     <td>:</td>
                                     <td>{{ $caseList->leader_claim_no }} - <strong>{{ $caseList->no_ref_surat_asuransi }}</strong></td>
                                 </tr>
                                 <tr>
-                                    <td>NOW UPDATE</td>
+                                    <td>SURVEY DATE</td>
                                     <td>:</td>
-                                    <td>{{ Carbon\Carbon::parse($caseList->now_update)->format('d/m/Y') }}</td>
+                                    <td>{{ Carbon\Carbon::parse($caseList->survey_date)->format('d/m/Y') }}</td>
                                     <td>AGING (DAY)</td>
                                     <td>:</td>
                                     <td>
@@ -146,13 +138,13 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
+                                    <td>NOW UPDATE</td>
+                                    <td>:</td>
+                                    <td>{{ Carbon\Carbon::parse($caseList->now_update)->format('d/m/Y') }}</td>
                                     <td>CLAIM AMOUNT</td>
                                     <td>:</td>
                                     <td>
-                                        {{ $caseList->currency }} {{ number_format($caseList->claim_amount, 0, ',','.') }}
+                                        {{ $caseList->currency }} {{ number_format($caseList->claim_estimate, 0, ',','.') }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -674,7 +666,7 @@
                                 </tbody>
                                 <tr>
                                     <td width="197">IA Amount</td>
-                                    <td>&nbsp;</td>
+                                    <td>Date Report</td>
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
@@ -689,7 +681,9 @@
                                             <input type="text" id="" name="ia_amount" class="form-control ia_amount" aria-describedby="basic-addon1" value="{{ number_format($caseList->ia_amount, 0, ',', '.') ?? '' }}">
                                         </div>
                                     </td>
-                                    <td>&nbsp;</td>
+                                    <td>
+                                        <input type="text" autocomplete="off" name="date_report" class="form-control time_up" value="{{ \Carbon\Carbon::parse($caseList->ia_date)->format('d/m/Y') ?? 'dd/mm/yyy' }}">
+                                    </td>
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
@@ -1042,7 +1036,7 @@
                                 </tbody>
                                 <tr>
                                     <td>{{ $caseList->ir_status == 0 ? 'PA Amount' : 'IR St Amount' }}</td>
-                                    <td>{{ $caseList->ir_status == 0 ? '' : 'IR Nd Amount' }}</td>
+                                    <td>{{ $caseList->ir_status == 0 ? 'Date Report' : 'IR Nd Amount' }}</td>
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
@@ -1093,6 +1087,10 @@
                                         @error('ir_nd_amount')
                                         <small class="text-danger"> {{ $message }}</small>
                                         @enderror
+                                        @else
+                                        <div class="input-group">
+                                            <input type="text" name="date_complete" class="form-control time_up" value="{{ Carbon\Carbon::parse($caseList->pa_date)->format('d/m/Y') ?? '' }}">
+                                        </div>
                                         @endif
                                     </td>
                                     <td>&nbsp;</td>
@@ -1259,12 +1257,12 @@
 
                         <form action="{{ route('report-empat.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
-                            <table width="658" border="0" class="table table-4 mt-3">
+                            <table width="100%" border="0" class="table table-4 mt-3">
                                 <tbody>
                                     <tr>
                                         <td width="197">File Upload</td>
-                                        <td width="214">Time Upload</td>
-                                        <td width="822">Add new</td>
+                                        <td width="270">Time Upload</td>
+                                        <td width="800">Add new</td>
                                     </tr>
                                     <tr>
                                         <input type="hidden" name="case_list_id" value="{{ $caseList->id }}">
@@ -1275,13 +1273,15 @@
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </td>
-                                        <td><input type="text" autocomplete="off" name="time_upload" class="form-control time_up" value="{{ \Carbon\Carbon::now()->format('d/m/Y') }}"></td>
+                                        <td>
+                                            <input type="text" autocomplete="off" name="time_upload" class="form-control time_up" value="{{ \Carbon\Carbon::now()->format('d/m/Y') }}">
+                                        </td>
                                         <td><button type="button" class="btn btn-success plus-4"><i class="fas fa-plus"></i></button></td>
                                     </tr>
                                 </tbody>
                                 <tr>
                                     <td>{{ $caseList->ir_status == 0 ? 'Net Adjustment' : 'PA Amount' }}</td>
-                                    <td>{{ $caseList->ir_status == 0 ? 'Gross Adjustment' : '' }}</td>
+                                    <td>{{ $caseList->ir_status == 0 ? 'Gross Adjustment' : 'Date Report' }}</td>
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
@@ -1332,11 +1332,29 @@
                                         <small class="text-danger"> {{ $message }}</small>
                                         @enderror
                                         @else
-                                        &nbsp;
+                                        <div class="input-group">
+                                            <input type="text" name="pa_date" class="form-control time_up" value="{{ Carbon\Carbon::parse($caseList->pa_date)->format('d/m/Y') ?? 'dd/mm/yyyy' }}">
+                                        </div>
                                         @endif
                                     </td>
                                     <td>&nbsp;</td>
                                 </tr>
+                                @if($caseList->ir_status == 0)
+                                <tr>
+                                    <td>Date Report</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="text" name="fr_date" class="form-control time_up" value="{{ Carbon\Carbon::parse($caseList->fr_date)->format('d/m/Y') ?? 'dd/mm/yyyy' }}">
+                                        </div>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                @endif
                                 <tr>
                                     <td><input type="submit" class="btn btn-success" value="Upload"></td>
                                     <td>&nbsp;</td>
@@ -1444,13 +1462,12 @@
 
                         <form action="{{ route('report-lima.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
-                            <table width="658" border="0" class="table table-5 mt-3">
+                            <table width="100%" border="0" class="table table-5 mt-3">
                                 <tbody>
                                     <tr>
                                         <td width="197">File Upload</td>
-                                        <td width="214">Time Upload</td>
-                                        <td>&nbsp;</td>
-                                        <td width="822">Add new</td>
+                                        <td width="270">Time Upload</td>
+                                        <td width="800">Add new</td>
                                     </tr>
                                     <tr>
                                         <input type="hidden" name="case_list_id" value="{{ $caseList->id }}">
@@ -1461,14 +1478,13 @@
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </td>
-                                        <td colspan="2"><input type="text" autocomplete="off" name="time_upload" class="form-control time_up" value="{{ \Carbon\Carbon::now()->format('d/m/Y') }}"></td>
+                                        <td><input type="text" autocomplete="off" name="time_upload" class="form-control time_up" value="{{ \Carbon\Carbon::now()->format('d/m/Y') }}"></td>
                                         <td><button type="button" class="btn btn-success plus-5"><i class="fas fa-plus"></i></button></td>
                                     </tr>
                                 </tbody>
                                 <tr>
                                     <td>Net Adjustment</td>
                                     <td>Gross Adjustment</td>
-                                    <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
@@ -1487,7 +1503,7 @@
                                         <small class="text-danger"> {{ $message }}</small>
                                         @enderror
                                     </td>
-                                    <td colspan="2">
+                                    <td>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <select name="claim_curr" id="curr" class="form-control curr">
@@ -1505,8 +1521,21 @@
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="submit" class="btn btn-success" value="Upload"></td>
+                                    <td>Date Report</td>
                                     <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="text" name="fr_date" class="form-control time_up" value="{{ Carbon\Carbon::parse($caseList->fr_date)->format('d/m/Y') ?? 'dd/mm/yyyy' }}">
+                                        </div>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="submit" class="btn btn-success" value="Upload"></td>
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                 </tr>
@@ -1566,18 +1595,18 @@
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCloseCase">Close Case</button>
                     @endif
 
-                    @if(request()->get('page') == "nav-report-1" || request()->get('page') == "nav-report-2" && $caseList->file_status_id != 5)
+                    @if(request()->get('page') == "nav-report-1" || request()->get('page') == "nav-report-2")
                     <button type="button" class="btn btn-info ml-2" data-toggle="modal" data-target="#modalInstruction">Instruction Closed</button>
                     @endif
 
                     @if($caseList->ir_status == 0)
-                    @if(request()->get('page') == "nav-report-3" && $caseList->file_status_id != 5)
+                    @if(request()->get('page') == "nav-report-3")
                     <button type="button" class="btn btn-info ml-2" data-toggle="modal" data-target="#modalInstruction">Instruction Closed</button>
                     @endif
                     @endif
 
                     @if($caseList->ir_status == 1)
-                    @if(request()->get('page') == "nav-report-4" && $caseList->file_status_id != 5)
+                    @if(request()->get('page') == "nav-report-4")
                     <button type="button" class="btn btn-info ml-2" data-toggle="modal" data-target="#modalInstruction">Instruction Closed</button>
                     @endif
                     @endif

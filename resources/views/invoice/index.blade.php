@@ -453,7 +453,8 @@
                 status: $('#status_invoice').val(),
                 tanggal_invoice: $('#tanggal_invoice').val()
             },
-            method: 'post',
+            method: 'POST',
+            type: 'POSt',
             success: function(data) {
                 console.log(data)
                 location.reload()

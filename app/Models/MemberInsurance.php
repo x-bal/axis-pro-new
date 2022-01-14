@@ -14,7 +14,7 @@ class MemberInsurance extends Model
 
     public function insurance()
     {
-        return $this->hasMany(Client::class, 'member_insurance');
+        return $this->belongsTo(Client::class, 'member_insurance');
     }
 
     public function client()

@@ -46,7 +46,9 @@ class ReportDuaController extends Controller
             'time_upload' => 'required',
             'pr_amount' => 'required',
             'ir_status' => 'required',
+            'date_complete' => 'required',
         ]);
+
 
         try {
 
@@ -76,7 +78,7 @@ class ReportDuaController extends Controller
                 'pr_amount' => str_replace('.', '', $request->pr_amount),
                 'pr_status' => 1,
                 'pr_curr' => $request->curr,
-                'pr_date' => Carbon::now(),
+                'pr_date' => Carbon::createFromFormat('d/m/Y', $request->date_complete)->format('Y-m-d'),
                 'now_update' => Carbon::now(),
                 'ir_status' => $request->ir_status,
                 'file_status_id' => 4
@@ -84,13 +86,21 @@ class ReportDuaController extends Controller
 
             if ($caseList->pr_status == 0) {
                 if ($request->ir_status == 0) {
-                    $update['pa_limit'] = Carbon::now()->addDay(14);
+                    $update['pa_limit'] = Carbon::createFromFormat('d/m/Y', $request->date_complete)->addDay(14)->format('Y-m-d');
                     $caseList->update($update);
                 } else {
-                    $update['ir_st_limit'] = Carbon::now()->addDay(14);
+                    $update['ir_st_limit'] = Carbon::createFromFormat('d/m/Y', $request->date_complete)->addDay(14)->format('Y-m-d');
                     $caseList->update($update);
                 }
             } else {
+                if ($request->ir_status == 0) {
+                    $update['pa_limit'] = Carbon::createFromFormat('d/m/Y', $request->date_complete)->addDay(14)->format('Y-m-d');
+                    $caseList->update($update);
+                } else {
+                    $update['ir_st_limit'] = Carbon::createFromFormat('d/m/Y', $request->date_complete)->addDay(14)->format('Y-m-d');
+                    $caseList->update($update);
+                }
+
                 $caseList->update([
                     'pr_amount' => str_replace('.', '', $request->pr_amount),
                     'pr_curr' => $request->curr,

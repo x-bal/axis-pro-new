@@ -44,6 +44,7 @@ class ReportTigaController extends Controller
             'file_upload' => 'required|max:20480',
             'file_upload.*' => 'max:20480|mimes:xlsx,xls,docx,doc,pdf,mp4',
             'time_upload' => 'required',
+            'date_complete' => 'required',
         ]);
 
         try {
@@ -78,9 +79,9 @@ class ReportTigaController extends Controller
                         'ir_st_curr' => $request->curr,
                         'ir_nd_amount' => str_replace('.', '', $request->ir_nd_amount),
                         'ir_nd_status' => 1,
-                        'ir_st_date' => Carbon::now(),
-                        'ir_nd_date' => Carbon::now(),
-                        'pa_limit' => Carbon::now()->addDay(14),
+                        'ir_st_date' => Carbon::createFromFormat('d/m/Y', $request->date_complete)->format('Y-m-d'),
+                        'ir_nd_date' => Carbon::createFromFormat('d/m/Y', $request->date_complete)->format('Y-m-d'),
+                        'pa_limit' => Carbon::createFromFormat('d/m/Y', $request->date_complete)->addDay(14)->format('Y-m-d'),
                         'now_update' => Carbon::now(),
                         'date_complete' => Carbon::createFromFormat('d/m/Y', $request->date_complete)->format('Y-m-d'),
                         'professional_service' => str_replace('.', '', $request->professional_service)
@@ -102,12 +103,14 @@ class ReportTigaController extends Controller
                         'pa_amount' => $request->pa_amount,
                         'pa_status' => 1,
                         'pa_curr' => $request->curr,
-                        'pa_date' => Carbon::now(),
-                        'fr_limit' => Carbon::now()->addDay(7),
+                        'pa_date' => Carbon::createFromFormat('d/m/Y', $request->date_complete)->format('Y-m-d'),
+                        'fr_limit' => Carbon::createFromFormat('d/m/Y', $request->date_complete)->addDay(7)->format('Y-m-d'),
                         'now_update' => Carbon::now(),
                     ]);
                 } else {
                     $caseList->update([
+                        'pa_date' => Carbon::createFromFormat('d/m/Y', $request->date_complete)->format('Y-m-d'),
+                        'fr_limit' => Carbon::createFromFormat('d/m/Y', $request->date_complete)->addDay(7)->format('Y-m-d'),
                         'now_update' => Carbon::now(),
                         'pa_amount' => $request->pa_amount,
                         'pa_curr' => $request->curr,

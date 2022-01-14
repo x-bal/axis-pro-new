@@ -17,7 +17,7 @@ class Client extends Model
 
     public function member()
     {
-        return $this->belongsTo(MemberInsurance::class, 'member_insurance');
+        return $this->hasOne(MemberInsurance::class, 'member_insurance');
     }
 
     public function share()

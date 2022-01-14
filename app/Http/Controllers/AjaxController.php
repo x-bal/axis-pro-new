@@ -176,11 +176,13 @@ class AjaxController extends Controller
     public function invoice(Request $request)
     {
         $attr = $request->all();
+
         $response = Invoice::find($attr['id'])->update([
             'bank_id' => $attr['bank'],
             'status_paid' => $attr['status'],
-            'tanggal_invoice' => Carbon::createFromFormat('d/m/Y', $attr['tanggal_invoice'])->format('Y-m-d')
+            'tanggal_invoice' => $attr['tanggal_invoice'] == null ? NULL : Carbon::createFromFormat('d/m/Y', $attr['tanggal_invoice'])->format('Y-m-d')
         ]);
+
         return response()->json($response);
     }
     public function kurs(Request $request)

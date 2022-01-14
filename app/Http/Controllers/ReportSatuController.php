@@ -44,6 +44,7 @@ class ReportSatuController extends Controller
             'file_upload' => 'required|max:20480',
             'file_upload.*' => 'max:20480|mimes:xlsx,xls,docx,doc,pdf,mp4',
             'time_upload' => 'required',
+            'date_report' => 'required',
         ]);
 
         try {
@@ -74,9 +75,9 @@ class ReportSatuController extends Controller
                     'ia_amount' => str_replace('.', '', $request->ia_amount),
                     'ia_status' => 1,
                     'ia_curr' => $request->curr,
-                    'ia_date' => Carbon::now(),
+                    'ia_date' => Carbon::createFromFormat('d/m/Y', $request->date_report)->format('Y-m-d'),
                     'now_update' => Carbon::now(),
-                    'pr_limit' => Carbon::now()->addDay(14),
+                    'pr_limit' =>  Carbon::createFromFormat('d/m/Y', $request->date_report)->addDays(14)->format('Y-m-d'),
                     'file_status_id' => 3
                 ]);
             } else {

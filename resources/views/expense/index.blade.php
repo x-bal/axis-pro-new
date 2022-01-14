@@ -47,6 +47,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>File No</th>
+                                    <th>Insured</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
@@ -55,6 +56,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td><a href="{{ route('case-list.show',$data->id) }}?page=nav-expense">{{ $data->file_no }}</a></td>
+                                    <td>{{ $data->insured }}</td>
                                     <td>{{ $data->status->nama_status }}</td>
                                 </tr>
                                 @endforeach

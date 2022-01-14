@@ -50,51 +50,61 @@
                     <td width="31%">{{ $caseList->file_no }}</td>
                     <td width="15%">INSURED</td>
                     <td width="2%">:</td>
-                    <td width="38%">{{ $caseList->insurance->name }}</td>
+                    <td width="38%">{{ $caseList->insured }}</td>
+                </tr>
+                <tr>
+                    <td width="12%">FILE NO</td>
+                    <td width="2%">:</td>
+                    <td width="31%">{{ $caseList->file_no }}</td>
+                    <td>DOL</td>
+                    <td>:</td>
+                    <td>{{ Carbon\Carbon::parse($caseList->dol)->format('d/m/Y') }}</td>
                 </tr>
                 <tr>
                     <td>INITIAL ADJUSTER</td>
                     <td>:</td>
                     <td>{{ $caseList->adjuster->kode_adjuster }} ({{ $caseList->adjuster->nama_lengkap }})</td>
-                    <td>DOL</td>
+                    <td>LOCATION RISK / PROJECT</td>
                     <td>:</td>
-                    <td>{{ Carbon\Carbon::parse($caseList->dol)->format('d/m/Y') }}</td>
+                    <td>{{ $caseList->risk_location }}</td>
                 </tr>
                 <tr>
                     <td>INSURANCE</td>
                     <td>:</td>
                     <td>
                         @foreach($caseList->member as $member)
-                        <p>{{ App\Models\Client::find($member->member_insurance)->name ?? 'Kosong' }} ({{ $member->share }}) - @if($member->is_leader) <strong class="text-dark">Leader</strong> @else <strong class="text-secondary">Member</strong> @endif</p>
+                        <p>{{ App\Models\Client::find($member->member_insurance)->name ?? 'Kosong' }} ({{ $member->share }}) - @if($member->is_leader) <strong class="text-primary">Leader</strong> @else <strong class="text-secondary">Member</strong> @endif</p>
                         @endforeach
                     </td>
-                    <td>LOCATION RISK / PROJECT</td>
-                    <td>:</td>
-                    <td>{{ $caseList->risk_location }}</td>
-                </tr>
-                <tr>
-                    <td>BROKER</td>
-                    <td>:</td>
-                    <td><span class="text-dark"><b>{{ $caseList->broker->nama_broker }}</b></span> </td>
                     <td>CAUSE OF LOSS</td>
                     <td>:</td>
                     <td>{{ $caseList->incident->type_incident }}</td>
                 </tr>
                 <tr>
-                    <td>TYPE OF BUSINESS</td>
+                    <td>BROKER</td>
                     <td>:</td>
-                    <td>{{ $caseList->policy->type_policy }}</td>
+                    <td>{{ $caseList->broker->nama_broker }}</td>
                     <td>LEADER POLICY NO</td>
                     <td>:</td>
                     <td>{{ $caseList->no_leader_policy }} | PERIOD BEGIN : {{ Carbon\Carbon::parse($caseList->begin)->format('d/m/Y') }} PERIOD END : {{ Carbon\Carbon::parse($caseList->end)->format('d/m/Y') }} <br> </td>
                 </tr>
                 <tr>
+                    <td>TYPE OF BUSINESS</td>
+                    <td>:</td>
+                    <td>{{ $caseList->policy->type_policy }}</td>
+                    <td>LEADER CLAIM NO</td>
+                    <td>:</td>
+                    <td>{{ $caseList->leader_claim_no }} - <strong>{{ $caseList->no_ref_surat_asuransi }}</strong></td>
+                </tr>
+                <tr>
                     <td>SURVEY DATE</td>
                     <td>:</td>
                     <td>{{ Carbon\Carbon::parse($caseList->survey_date)->format('d/m/Y') }}</td>
-                    <td>LEADER CLAIM NO</td>
+                    <td>AGING (DAY)</td>
                     <td>:</td>
-                    <td>{{ $caseList->leader_claim_no }} - {{ $caseList->no_ref_surat_asuransi }}</td>
+                    <td>
+                        {{ Carbon\Carbon::parse($caseList->instruction_date)->diff($caseList->file_status_id == 5 ? $caseList->now_update : Carbon\Carbon::now())->d  }}
+                    </td>
                 </tr>
                 <tr>
                     <td>NOW UPDATE</td>
@@ -103,7 +113,7 @@
                     <td>CLAIM AMOUNT</td>
                     <td>:</td>
                     <td>
-                        {{ $caseList->currency }} {{ number_format($caseList->claim_amount, 0, ',','.') }}
+                        {{ $caseList->currency }} {{ number_format($caseList->claim_estimate, 0, ',','.') }}
                     </td>
                 </tr>
             </tbody>

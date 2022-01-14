@@ -198,8 +198,8 @@
             <table style="margin-left: -4px;" width="100%">
                 @foreach($caseList->member as $member)
                 <tr style="text-transform: uppercase;">
-                    <td width="300px"><b>{{ App\Models\Client::find($member->member_insurance)->brand }}</b></td>
-                    <td width="300px">{{ App\Models\Client::find($member->member_insurance)->name }}</td>
+                    <td width="200px"><b>{{ App\Models\Client::find($member->member_insurance)->brand }}</b></td>
+                    <td width="400px">{{ App\Models\Client::find($member->member_insurance)->name }}</td>
                     <td>{{ $member->share}}</td>
                 </tr>
                 @endforeach

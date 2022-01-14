@@ -158,8 +158,12 @@
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td>{{ $invoice->type_invoice != 1 ? number_format($fee_adj, 2) : number_format($caselist->professional_service, 2) }}</td>
-                                    <td>{{ $invoice->type_invoice != 1 ? number_format($share, 2) : number_format($share, 2) }}%</td>
+                                    <td>
+                                        {{ $invoice->type_invoice != 1 ? number_format($fee_adj, 2) : number_format($caselist->professional_service, 2) }}
+                                    </td>
+                                    <td>
+                                        {{ $invoice->type_invoice != 1 ? number_format($share, 2) : number_format($share, 2) }}%
+                                    </td>
                                     <td>{{ $caselist->claim_amount_curr }}</td>
                                     <td width="100px" class="text-right">
                                         {{ $invoice->type_invoice != 1 ? number_format($fee_adj * $share / 100, 2) : number_format($caselist->professional_service * $share / 100, 2) }}
@@ -238,9 +242,15 @@
                                     <td width="50px">{{ $caselist->claim_amount_curr }}</td>
                                     <td width="100px" class="text-right">
                                         @if($inv->type_invoice == 1)
-                                        {{number_format(($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100) - $discount , 2) }}
+                                        @php
+                                        $subtotal = ($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100) - $discount
+                                        @endphp
+                                        {{ $subtotal }}
                                         @else
-                                        {{ number_format(($fee_adj * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100) - $discount, 2) }}
+                                        @php
+                                        $subtotal = ($fee_adj * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100) - $discount
+                                        @endphp
+                                        {{ number_format($subtotal, 2) }}
                                         @endif
                                     </td>
                                 </tr>
@@ -258,11 +268,7 @@
                                     <td width="250px"></td>
                                     <td width="50px">{{ $caselist->claim_amount_curr }}</td>
                                     <td width="100px" class="text-right">
-                                        @if($inv->type_invoice == 1)
-                                        {{ number_format((($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100)) * 10 / 100, 2) }}
-                                        @else
-                                        {{ number_format((($fee_adj * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100)) * 10 / 100, 2) }}
-                                        @endif
+                                        {{ number_format($subtotal *10 / 100,2) }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -281,11 +287,7 @@
                                     <th width="270px"></th>
                                     <th width="50px">{{ $caselist->claim_amount_curr }}</th>
                                     <th width="100px" class="text-right">
-                                        @if($inv->type_invoice == 1)
-                                        {{ number_format(($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100) + (($inv->caselist->expense->where('is_active', 1)->sum('total') * $share / 100) + ($caselist->professional_service * $share / 100)) * 10 / 100 - $discount , 2)  }}
-                                        @else
-                                        {{ number_format(((($fee_adj * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100)) * 10 / 100) + ($fee_adj * $share / 100) + ($inv->caselist->expense->where('is_active', 2)->sum('total') * $share / 100) - $discount, 2) }}
-                                        @endif
+                                        {{ number_format($subtotal + ($subtotal *10 / 100), 2) }}
                                     </th>
                                 </tr>
                                 <tr>
