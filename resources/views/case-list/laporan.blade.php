@@ -89,6 +89,12 @@
                                 <th>Policy</th>
                                 <th>Category</th>
                                 <th>Insured</th>
+                                <th>DOL</th>
+                                <th>Risk Location / Project</th>
+                                <th>Ledaer Policy No</th>
+                                <th>Claim No</th>
+                                <th>Period Begin Date</th>
+                                <th>Period End Date</th>
                                 <th>Instruction Date</th>
                                 <th>Survey Date</th>
                                 <th>Now Update</th>
@@ -140,7 +146,7 @@
                                 <th>Share</th>
                                 <th>Leader / Member</th>
                                 @if($status == 'all' )
-                                <th colspan="30"></th>
+                                <th colspan="36"></th>
                                 <th>IDR</th>
                                 <th>USD</th>
                                 <th>IDR</th>
@@ -156,14 +162,14 @@
                                 @endif
 
                                 @if($status == 'outstanding')
-                                <th colspan="30"></th>
+                                <th colspan="36"></th>
                                 <th>IDR</th>
                                 <th>USD</th>
                                 <th></th>
                                 @endif
 
                                 @if($status == 5)
-                                <th colspan="12"></th>
+                                <th colspan="18"></th>
                                 <th>IDR</th>
                                 <th>USD</th>
                                 <th>IDR</th>
@@ -217,6 +223,12 @@
                                 <td>{{ $caselist->policy->type_policy }}</td>
                                 <td>{{ $caselist->category == 1 ? 'Marine' : 'Non Marine' }}</td>
                                 <td>{{ $caselist->insured }}</td>
+                                <td>{{ Carbon\Carbon::parse($caselist->dol)->format('d/m/Y') }}</td>
+                                <td>{{ $caselist->risk_location }}</td>
+                                <td>{{ $caselist->no_leader_policy }}</td>
+                                <td>{{ $caselist->leader_claim_no }}</td>
+                                <td>{{ Carbon\Carbon::parse($caselist->begin)->format('d/m/Y') }}</td>
+                                <td>{{ Carbon\Carbon::parse($caselist->end)->format('d/m/Y') }}</td>
                                 <td>{{ Carbon\Carbon::parse($caselist->instruction_date)->format('d/m/Y') }}</td>
                                 <td>{{ Carbon\Carbon::parse($caselist->survey)->format('d/m/Y') }}</td>
                                 <td>{{ Carbon\Carbon::parse($caselist->now_update)->format('d/m/Y') }}</td>
@@ -300,7 +312,7 @@
                             <tr>
                                 <th>Total : </th>
                                 @if($status == 'all')
-                                <th colspan="15"></th>
+                                <th colspan="21"></th>
                                 <th>{{ number_format($case->sum('ia_amount'), 2) }}</th>
                                 <th colspan="2"></th>
                                 <th>{{ number_format($case->sum('pr_amount'), 2) }}</th>
@@ -315,11 +327,11 @@
                                 <th colspan="4"></th>
                                 @endif
                                 @if($status == '5')
-                                <th colspan="17"></th>
+                                <th colspan="23"></th>
                                 @endif
 
                                 @if($status == 'outstanding')
-                                <th colspan="15"></th>
+                                <th colspan="21"></th>
                                 <th>{{ number_format($case->sum('ia_amount'), 2) }}</th>
                                 <th colspan="2"></th>
                                 <th>{{ number_format($case->sum('pr_amount'), 2) }}</th>
