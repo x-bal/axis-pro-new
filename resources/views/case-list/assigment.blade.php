@@ -48,14 +48,6 @@
                     <td width="12%">FILE NO</td>
                     <td width="2%">:</td>
                     <td width="31%">{{ $caseList->file_no }}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td width="12%">FILE NO</td>
-                    <td width="2%">:</td>
-                    <td width="31%">{{ $caseList->file_no }}</td>
                     <td>DOL</td>
                     <td>:</td>
                     <td>{{ Carbon\Carbon::parse($caseList->dol)->format('d/m/Y') }}</td>
