@@ -17,8 +17,8 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Type Policy</th>
                                 <th>Abbreviation</th>
+                                <th>Type of Policy</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
